@@ -54,7 +54,10 @@ const RuleTestingTab = ({ rules }: RuleTestingTabProps) => {
       .filter(rule => rule.isActive && rule.type === scenario.type)
       .map(rule => {
         let matches = true;
-        let calculatedRate = { rateType: rule.rateType, rate: rule.rate };
+        let calculatedRate: { rateType: 'fixed' | 'percentage' | 'tiered'; rate: number } = { 
+          rateType: rule.rateType, 
+          rate: rule.rate 
+        };
         
         // Check basic conditions
         if (rule.minAmount && scenario.amount < rule.minAmount) matches = false;
@@ -66,11 +69,16 @@ const RuleTestingTab = ({ rules }: RuleTestingTabProps) => {
           matches = evaluateAdvancedConditions(rule.advancedConditions, context);
           
           if (matches) {
-            calculatedRate = calculateConditionalRate(
+            const conditionalRate = calculateConditionalRate(
               rule.advancedConditions,
               context,
               { rateType: rule.rateType, rate: rule.rate }
             );
+            
+            calculatedRate = {
+              rateType: conditionalRate.rateType as 'fixed' | 'percentage' | 'tiered',
+              rate: conditionalRate.rate
+            };
           }
         }
         
