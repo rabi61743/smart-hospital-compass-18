@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UseFormReturn } from "react-hook-form";
 import { CommissionRule } from "@/types/commission";
 import { CommissionRuleFormData } from "@/schemas/commissionValidation";
-import { AdvancedConditions } from "@/types/conditions";
+import { AdvancedConditions, ConditionRule } from "@/types/conditions";
 import AdvancedConditionsBuilder from "./AdvancedConditionsBuilder";
 import { AlertTriangle, Info } from "lucide-react";
 
@@ -55,12 +55,21 @@ const CommissionRuleForm = ({ form, editingRule, onSubmit, onCancel }: Commissio
     form.setValue("advancedConditions", conditions);
   };
 
-  // Ensure we always have a valid AdvancedConditions object
+  // Ensure we always have a valid AdvancedConditions object with proper ConditionRule objects
   const getAdvancedConditions = (): AdvancedConditions => {
     const formConditions = watchAdvancedConditions;
+    const normalizedConditions: ConditionRule[] = (formConditions?.conditions || []).map((condition, index) => ({
+      id: condition.id || `condition-${Date.now()}-${index}`,
+      field: condition.field || 'amount',
+      operator: condition.operator || 'gt',
+      value: condition.value || '',
+      secondValue: condition.secondValue,
+      rateOverride: condition.rateOverride
+    }));
+
     return {
       logic: formConditions?.logic || 'AND',
-      conditions: formConditions?.conditions || []
+      conditions: normalizedConditions
     };
   };
 

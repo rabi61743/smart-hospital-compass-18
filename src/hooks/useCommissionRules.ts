@@ -3,7 +3,7 @@ import { useToast } from "@/hooks/use-toast";
 import { CommissionRule } from "@/types/commission";
 import { CommissionRuleFormData } from "@/schemas/commissionValidation";
 import { useAuditTrail } from "./useAuditTrail";
-import { AdvancedConditions } from "@/types/conditions";
+import { AdvancedConditions, ConditionRule } from "@/types/conditions";
 
 const initialRules: CommissionRule[] = [
   {
@@ -93,13 +93,22 @@ export const useCommissionRules = () => {
     getRecentActivity
   } = useAuditTrail();
 
-  // Helper function to ensure AdvancedConditions has required properties
+  // Helper function to ensure AdvancedConditions has required properties with proper ConditionRule objects
   const normalizeAdvancedConditions = (conditions?: Partial<AdvancedConditions>): AdvancedConditions | undefined => {
     if (!conditions) return undefined;
     
+    const normalizedConditions: ConditionRule[] = (conditions.conditions || []).map((condition, index) => ({
+      id: condition.id || `condition-${Date.now()}-${index}`,
+      field: condition.field || 'amount',
+      operator: condition.operator || 'gt',
+      value: condition.value || '',
+      secondValue: condition.secondValue,
+      rateOverride: condition.rateOverride
+    }));
+    
     return {
       logic: conditions.logic || 'AND',
-      conditions: conditions.conditions || []
+      conditions: normalizedConditions
     };
   };
 
