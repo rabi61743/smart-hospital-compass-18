@@ -98,10 +98,11 @@ const ActiveRulesTab = ({
                   rule={rule}
                   isSelected={selectedRuleIds.includes(rule.id)}
                   isHighlighted={highlightedRuleIds.includes(rule.id)}
+                  showSelection={true}
                   onToggleStatus={() => onToggleStatus(rule.id)}
                   onEdit={() => onEdit(rule)}
                   onDelete={() => onDelete(rule.id)}
-                  onSelect={(isSelected) => onRuleSelection(rule.id, isSelected)}
+                  onSelect={(ruleId, isSelected) => onRuleSelection(ruleId, isSelected)}
                 />
               ))}
             </div>
