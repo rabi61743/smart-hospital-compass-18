@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Download, Upload } from "lucide-react";
+import { Plus, Upload } from "lucide-react";
 import { CommissionRule } from "@/types/commission";
 import CommissionRuleCard from "./CommissionRuleCard";
 import BulkOperationsBar from "./BulkOperationsBar";
@@ -72,6 +72,7 @@ const ActiveRulesTab = ({
           {selectedRuleIds.length > 0 && (
             <BulkOperationsBar
               selectedCount={selectedRuleIds.length}
+              totalCount={activeRules.length}
               onSelectAll={onSelectAll}
               onBulkEnable={onBulkEnable}
               onBulkDisable={onBulkDisable}

@@ -18,7 +18,7 @@ import { CheckSquare, X, Trash2, ToggleLeft, ToggleRight } from "lucide-react";
 
 interface BulkOperationsBarProps {
   selectedCount: number;
-  totalCount: number;
+  totalCount?: number;
   onSelectAll: () => void;
   onBulkEnable: () => void;
   onBulkDisable: () => void;
@@ -28,14 +28,14 @@ interface BulkOperationsBarProps {
 
 const BulkOperationsBar = ({
   selectedCount,
-  totalCount,
+  totalCount = 0,
   onSelectAll,
   onBulkEnable,
   onBulkDisable,
   onBulkDelete,
   onClearSelection
 }: BulkOperationsBarProps) => {
-  const isAllSelected = selectedCount === totalCount;
+  const isAllSelected = totalCount > 0 && selectedCount === totalCount;
 
   return (
     <Card className="p-4 bg-blue-50 border-blue-200">

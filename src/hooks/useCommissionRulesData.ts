@@ -34,6 +34,7 @@ export const useCommissionRulesData = () => {
     bulkDeleteRules,
     auditLog,
     getRuleHistory,
-    getRecentActivity
+    getRecentActivity,
+    setActiveRules
   };
 };
