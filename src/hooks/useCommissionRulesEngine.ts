@@ -47,9 +47,12 @@ export const useCommissionRulesEngine = () => {
   } = useCommissionRulesSelection(activeRules, bulkToggleStatus, bulkDeleteRules);
 
   const handleCreateRule = (data: any) => {
-    const success = formHandleCreateRule(data);
-    if (success) {
+    try {
+      formHandleCreateRule(data);
       stopCreating();
+    } catch (error) {
+      // Handle error if needed
+      console.error('Error creating rule:', error);
     }
   };
 
