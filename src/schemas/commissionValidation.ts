@@ -1,6 +1,23 @@
 
 import { z } from "zod";
 
+const tieredRateSchema = z.object({
+  id: z.string(),
+  minAmount: z.number(),
+  maxAmount: z.number().optional(),
+  rate: z.number(),
+  rateType: z.enum(['percentage', 'fixed']),
+  description: z.string().optional()
+});
+
+const tieredCommissionConfigSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  tiers: z.array(tieredRateSchema),
+  cumulativeCalculation: z.boolean(),
+  baseAmount: z.number().optional()
+});
+
 const conditionRuleSchema = z.object({
   id: z.string(),
   field: z.enum(['amount', 'quantity', 'category', 'type', 'date']),
@@ -55,7 +72,9 @@ export const commissionRuleSchema = z.object({
   
   isActive: z.boolean().default(true),
   
-  advancedConditions: advancedConditionsSchema.optional()
+  advancedConditions: advancedConditionsSchema.optional(),
+  
+  tieredConfig: tieredCommissionConfigSchema.optional()
 }).superRefine((data, ctx) => {
   // Cross-field validation
   if (data.minAmount && data.maxAmount && data.minAmount >= data.maxAmount) {

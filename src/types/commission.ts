@@ -1,5 +1,6 @@
 
 import { AdvancedConditions } from './conditions';
+import { TieredCommissionConfig } from './tieredCommission';
 
 export interface CommissionRule {
   id: string;
@@ -13,6 +14,7 @@ export interface CommissionRule {
   isActive: boolean;
   category: string;
   advancedConditions?: AdvancedConditions;
+  tieredConfig?: TieredCommissionConfig; // New field for complex tiered configurations
 }
 
 export interface CommissionRuleTemplate {
@@ -24,4 +26,5 @@ export interface CommissionRuleTemplate {
   rate: number;
   category: string;
   advancedConditions?: AdvancedConditions;
+  tieredConfig?: TieredCommissionConfig;
 }

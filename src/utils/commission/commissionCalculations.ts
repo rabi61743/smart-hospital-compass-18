@@ -1,7 +1,7 @@
-
 import { CommissionRule } from '@/types/commission';
 import { Transaction, CommissionCalculation } from '@/types/transaction';
 import { evaluateAdvancedConditions, calculateConditionalRate, EvaluationContext } from '../conditionEvaluator';
+import { TieredCommissionCalculator } from './tieredCommissionCalculator';
 
 export const isRuleApplicable = (rule: CommissionRule, transaction: Transaction): boolean => {
   // Check basic conditions
@@ -64,8 +64,19 @@ export const calculateRuleCommission = (rule: CommissionRule, transaction: Trans
       break;
     
     case 'tiered':
-      commission = calculateTieredCommission(transaction.amount, effectiveRate.rate);
-      details = `Tiered calculation on ₹${transaction.amount}`;
+      if (rule.tieredConfig) {
+        // Use complex tiered configuration
+        const tieredResult = TieredCommissionCalculator.calculateTieredCommission(
+          transaction.amount,
+          rule.tieredConfig
+        );
+        commission = tieredResult.totalCommission;
+        details = `Tiered calculation (${tieredResult.effectiveRate}% effective rate) on ₹${transaction.amount}`;
+      } else {
+        // Fallback to simple tiered calculation
+        commission = calculateTieredCommission(transaction.amount, effectiveRate.rate);
+        details = `Simple tiered calculation on ₹${transaction.amount}`;
+      }
       break;
   }
 
@@ -90,4 +101,15 @@ export const calculateTieredCommission = (amount: number, baseRate: number): num
   } else {
     return (10000 * baseRate) / 100 + (40000 * (baseRate + 2)) / 100 + ((amount - 50000) * (baseRate + 5)) / 100;
   }
+};
+
+// New function to get detailed tiered breakdown
+export const getTieredCommissionBreakdown = (rule: CommissionRule, transaction: Transaction) => {
+  if (rule.rateType === 'tiered' && rule.tieredConfig) {
+    return TieredCommissionCalculator.calculateTieredCommission(
+      transaction.amount,
+      rule.tieredConfig
+    );
+  }
+  return null;
 };
