@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -7,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Users, Heart, Hospital, Bell, Settings, DollarSign, TrendingUp, Calculator, Receipt } from "lucide-react";
 import { Link } from "react-router-dom";
+import CommissionRulesEngine from "@/components/CommissionRulesEngine";
 
 const CommissionTracking = () => {
   const commissionSummary = [
@@ -273,26 +273,7 @@ const CommissionTracking = () => {
                 <CardDescription>Configure flexible commission rules for different scenarios</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  <div className="p-6 bg-blue-50 rounded-lg">
-                    <TrendingUp className="h-8 w-8 text-blue-600 mb-3" />
-                    <h4 className="font-medium text-blue-900 mb-2">Doctor Rules</h4>
-                    <p className="text-sm text-blue-700 mb-4">Configure consultation and procedure rates</p>
-                    <Button variant="outline" size="sm">Manage Rules</Button>
-                  </div>
-                  <div className="p-6 bg-green-50 rounded-lg">
-                    <Users className="h-8 w-8 text-green-600 mb-3" />
-                    <h4 className="font-medium text-green-900 mb-2">Agent Rules</h4>
-                    <p className="text-sm text-green-700 mb-4">Set referral and performance incentives</p>
-                    <Button variant="outline" size="sm">Manage Rules</Button>
-                  </div>
-                  <div className="p-6 bg-purple-50 rounded-lg">
-                    <Receipt className="h-8 w-8 text-purple-600 mb-3" />
-                    <h4 className="font-medium text-purple-900 mb-2">Department Rules</h4>
-                    <p className="text-sm text-purple-700 mb-4">Configure lab and pharmacy commissions</p>
-                    <Button variant="outline" size="sm">Manage Rules</Button>
-                  </div>
-                </div>
+                <CommissionRulesEngine />
               </CardContent>
             </Card>
           </TabsContent>
