@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -58,14 +59,25 @@ const CommissionRuleForm = ({ form, editingRule, onSubmit, onCancel }: Commissio
   // Ensure we always have a valid AdvancedConditions object with proper ConditionRule objects
   const getAdvancedConditions = (): AdvancedConditions => {
     const formConditions = watchAdvancedConditions;
-    const normalizedConditions: ConditionRule[] = (formConditions?.conditions || []).map((condition, index) => ({
-      id: condition.id || `condition-${Date.now()}-${index}`,
-      field: condition.field || 'amount',
-      operator: condition.operator || 'gt',
-      value: condition.value || '',
-      secondValue: condition.secondValue,
-      rateOverride: condition.rateOverride
-    }));
+    const normalizedConditions: ConditionRule[] = (formConditions?.conditions || []).map((condition, index) => {
+      const conditionRule: ConditionRule = {
+        id: condition.id || `condition-${Date.now()}-${index}`,
+        field: condition.field || 'amount',
+        operator: condition.operator || 'gt',
+        value: condition.value || '',
+        secondValue: condition.secondValue,
+      };
+
+      // Only add rateOverride if it has the required properties
+      if (condition.rateOverride && condition.rateOverride.rateType && typeof condition.rateOverride.rate === 'number') {
+        conditionRule.rateOverride = {
+          rateType: condition.rateOverride.rateType,
+          rate: condition.rateOverride.rate
+        };
+      }
+
+      return conditionRule;
+    });
 
     return {
       logic: formConditions?.logic || 'AND',
