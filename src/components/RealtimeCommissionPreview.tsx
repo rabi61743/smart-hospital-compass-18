@@ -1,11 +1,12 @@
 
 import React, { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Calculator, TrendingUp, DollarSign } from "lucide-react";
+import { Calculator } from "lucide-react";
 import { CommissionCalculator, Transaction, createSampleTransactions } from "@/utils/commissionCalculator";
 import { CommissionRule } from "@/types/commission";
+import PreviewSummaryStats from "./preview/PreviewSummaryStats";
+import PreviewSampleCalculations from "./preview/PreviewSampleCalculations";
+import PreviewRateInsights from "./preview/PreviewRateInsights";
 
 interface RealtimeCommissionPreviewProps {
   ruleData: {
@@ -134,75 +135,18 @@ const RealtimeCommissionPreview = ({ ruleData }: RealtimeCommissionPreviewProps)
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {/* Summary Stats */}
-        <div className="grid grid-cols-3 gap-3">
-          <div className="text-center">
-            <div className="text-lg font-semibold text-blue-600">
-              {getRateDisplay()}
-            </div>
-            <div className="text-xs text-muted-foreground">Rate</div>
-          </div>
-          <div className="text-center">
-            <div className="text-lg font-semibold text-green-600">
-              ₹{totalCommission.toFixed(0)}
-            </div>
-            <div className="text-xs text-muted-foreground">Total Commission</div>
-          </div>
-          <div className="text-center">
-            <div className="text-lg font-semibold text-purple-600">
-              {averageRate.toFixed(1)}%
-            </div>
-            <div className="text-xs text-muted-foreground">Effective Rate</div>
-          </div>
-        </div>
+        <PreviewSummaryStats
+          rateDisplay={getRateDisplay()}
+          totalCommission={totalCommission}
+          averageRate={averageRate}
+        />
 
-        <Separator />
+        <PreviewSampleCalculations previewResults={previewResults} />
 
-        {/* Sample Calculations */}
-        <div className="space-y-2">
-          <h4 className="text-xs font-medium text-muted-foreground">Sample Calculations</h4>
-          <div className="space-y-2 max-h-48 overflow-y-auto">
-            {previewResults.slice(0, 5).map((result, index) => (
-              <div key={result.transaction.id} className="flex items-center justify-between text-xs p-2 bg-white/70 rounded">
-                <div>
-                  <div className="font-medium">₹{result.transaction.amount.toLocaleString()}</div>
-                  <div className="text-muted-foreground">{result.transaction.description}</div>
-                </div>
-                <div className="text-right">
-                  {result.totalCommission > 0 ? (
-                    <>
-                      <div className="font-medium text-green-600">
-                        ₹{result.totalCommission.toFixed(0)}
-                      </div>
-                      <div className="text-muted-foreground">
-                        ({((result.totalCommission / result.transaction.amount) * 100).toFixed(1)}%)
-                      </div>
-                    </>
-                  ) : (
-                    <Badge variant="secondary" className="text-xs">
-                      Not Applicable
-                    </Badge>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Rate Insights */}
-        {ruleData.rateType === 'percentage' && ruleData.rate > 20 && (
-          <div className="flex items-center gap-2 p-2 bg-yellow-50 border border-yellow-200 rounded text-xs">
-            <TrendingUp className="h-3 w-3 text-yellow-600" />
-            <span className="text-yellow-700">High percentage rate - consider impact on profitability</span>
-          </div>
-        )}
-
-        {ruleData.rateType === 'fixed' && ruleData.rate > 10000 && (
-          <div className="flex items-center gap-2 p-2 bg-blue-50 border border-blue-200 rounded text-xs">
-            <DollarSign className="h-3 w-3 text-blue-600" />
-            <span className="text-blue-700">High fixed rate - ensure alignment with transaction values</span>
-          </div>
-        )}
+        <PreviewRateInsights
+          rateType={ruleData.rateType}
+          rate={ruleData.rate}
+        />
       </CardContent>
     </Card>
   );
