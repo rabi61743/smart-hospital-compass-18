@@ -5,8 +5,10 @@ import { CommissionRule } from "@/types/commission";
 import { commissionRuleSchema, CommissionRuleFormData } from "@/schemas/commissionValidation";
 import { commissionRuleTemplates } from "@/data/commissionTemplates";
 import { useCommissionRules } from "@/hooks/useCommissionRules";
+import { useToast } from "@/hooks/use-toast";
 
 export const useCommissionRulesEngine = () => {
+  const { toast } = useToast();
   const { 
     activeRules, 
     createRule, 
@@ -17,7 +19,8 @@ export const useCommissionRulesEngine = () => {
     bulkDeleteRules,
     auditLog,
     getRuleHistory,
-    getRecentActivity
+    getRecentActivity,
+    setActiveRules
   } = useCommissionRules();
   const [isCreating, setIsCreating] = useState(false);
   const [editingRule, setEditingRule] = useState<CommissionRule | null>(null);
@@ -159,6 +162,29 @@ export const useCommissionRulesEngine = () => {
     form.reset();
   };
 
+  const handleImportRules = (importedRules: CommissionRule[]) => {
+    try {
+      // Generate new IDs for imported rules to avoid conflicts
+      const rulesWithNewIds = importedRules.map(rule => ({
+        ...rule,
+        id: Date.now().toString() + Math.random().toString(36).substr(2, 9)
+      }));
+      
+      setActiveRules(rulesWithNewIds);
+      
+      toast({
+        title: "Import Successful",
+        description: `${importedRules.length} rules imported successfully.`,
+      });
+    } catch (error) {
+      toast({
+        title: "Import Failed",
+        description: "Failed to import rules. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return {
     // State
     activeRules,
@@ -194,6 +220,9 @@ export const useCommissionRulesEngine = () => {
     
     // Audit functions
     getRuleHistory,
-    getRecentActivity
+    getRecentActivity,
+    
+    // Import rules
+    handleImportRules
   };
 };

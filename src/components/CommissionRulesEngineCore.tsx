@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { commissionRuleTemplates } from "@/data/commissionTemplates";
@@ -32,6 +31,7 @@ const CommissionRulesEngineCore = () => {
     handleBulkDelete,
     handleHighlightRules,
     handleClearHighlight,
+    handleImportRules,
     startCreating,
     toggleRuleStatus,
     deleteRule
@@ -66,6 +66,7 @@ const CommissionRulesEngineCore = () => {
             onBulkDisable={handleBulkDisable}
             onBulkDelete={handleBulkDelete}
             onClearSelection={() => setSelectedRuleIds([])}
+            onImportRules={handleImportRules}
           />
         </TabsContent>
 

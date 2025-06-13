@@ -1,10 +1,12 @@
 
-import React from 'react';
+import React, { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, Download, Upload } from "lucide-react";
 import { CommissionRule } from "@/types/commission";
 import CommissionRuleCard from "./CommissionRuleCard";
 import BulkOperationsBar from "./BulkOperationsBar";
+import ImportExportDialog from "./rule-import-export/ImportExportDialog";
 
 interface ActiveRulesTabProps {
   activeRules: CommissionRule[];
@@ -20,6 +22,7 @@ interface ActiveRulesTabProps {
   onBulkDisable: () => void;
   onBulkDelete: () => void;
   onClearSelection: () => void;
+  onImportRules: (rules: CommissionRule[]) => void;
 }
 
 const ActiveRulesTab = ({
@@ -35,48 +38,83 @@ const ActiveRulesTab = ({
   onBulkEnable,
   onBulkDisable,
   onBulkDelete,
-  onClearSelection
+  onClearSelection,
+  onImportRules
 }: ActiveRulesTabProps) => {
+  const [showImportExport, setShowImportExport] = useState(false);
+
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <div>
-          <h3 className="text-lg font-semibold">Active Commission Rules</h3>
-          <p className="text-sm text-muted-foreground">Manage your current commission rules</p>
-        </div>
-        <Button onClick={onStartCreating}>
-          <Plus className="h-4 w-4 mr-2" />
-          Add Rule
-        </Button>
-      </div>
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+          <div>
+            <CardTitle>Active Commission Rules</CardTitle>
+            <CardDescription>
+              Manage your commission calculation rules
+            </CardDescription>
+          </div>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowImportExport(true)}
+            >
+              <Upload className="h-4 w-4 mr-2" />
+              Import/Export
+            </Button>
+            <Button onClick={onStartCreating}>
+              <Plus className="h-4 w-4 mr-2" />
+              Create Rule
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {selectedRuleIds.length > 0 && (
+            <BulkOperationsBar
+              selectedCount={selectedRuleIds.length}
+              onSelectAll={onSelectAll}
+              onBulkEnable={onBulkEnable}
+              onBulkDisable={onBulkDisable}
+              onBulkDelete={onBulkDelete}
+              onClearSelection={onClearSelection}
+            />
+          )}
 
-      {selectedRuleIds.length > 0 && (
-        <BulkOperationsBar
-          selectedCount={selectedRuleIds.length}
-          totalCount={activeRules.length}
-          onSelectAll={onSelectAll}
-          onBulkEnable={onBulkEnable}
-          onBulkDisable={onBulkDisable}
-          onBulkDelete={onBulkDelete}
-          onClearSelection={onClearSelection}
-        />
-      )}
+          {activeRules.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-sm text-muted-foreground">
+                No commission rules configured yet. Create your first rule to get started.
+              </p>
+              <Button onClick={onStartCreating} className="mt-4">
+                <Plus className="h-4 w-4 mr-2" />
+                Create First Rule
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {activeRules.map((rule) => (
+                <CommissionRuleCard
+                  key={rule.id}
+                  rule={rule}
+                  isSelected={selectedRuleIds.includes(rule.id)}
+                  isHighlighted={highlightedRuleIds.includes(rule.id)}
+                  onToggleStatus={() => onToggleStatus(rule.id)}
+                  onEdit={() => onEdit(rule)}
+                  onDelete={() => onDelete(rule.id)}
+                  onSelect={(isSelected) => onRuleSelection(rule.id, isSelected)}
+                />
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
-      <div className="grid gap-4">
-        {activeRules.map((rule) => (
-          <CommissionRuleCard
-            key={rule.id}
-            rule={rule}
-            isSelected={selectedRuleIds.includes(rule.id)}
-            isHighlighted={highlightedRuleIds.includes(rule.id)}
-            onToggleStatus={onToggleStatus}
-            onEdit={onEdit}
-            onDelete={onDelete}
-            onSelect={onRuleSelection}
-            showSelection={true}
-          />
-        ))}
-      </div>
+      <ImportExportDialog
+        open={showImportExport}
+        onOpenChange={setShowImportExport}
+        rules={activeRules}
+        onImportRules={onImportRules}
+      />
     </div>
   );
 };
