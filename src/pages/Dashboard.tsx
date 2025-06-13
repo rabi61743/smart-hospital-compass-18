@@ -43,6 +43,12 @@ const Dashboard = () => {
               <Badge variant="secondary">Admin Dashboard</Badge>
             </div>
             <div className="flex items-center space-x-4">
+              <Link to="/commission-tracking">
+                <Button variant="outline" size="sm">
+                  <DollarSign className="h-4 w-4 mr-2" />
+                  Commissions
+                </Button>
+              </Link>
               <Button variant="outline" size="sm">
                 <Bell className="h-4 w-4 mr-2" />
                 Notifications
@@ -174,6 +180,12 @@ const Dashboard = () => {
                         <span className="font-medium">₹2,000</span>
                       </div>
                     </div>
+                    <Link to="/commission-tracking">
+                      <Button className="w-full mt-4">
+                        <DollarSign className="h-4 w-4 mr-2" />
+                        View Detailed Tracking
+                      </Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>

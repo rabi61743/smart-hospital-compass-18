@@ -46,7 +46,8 @@ const Index = () => {
     color: "bg-orange-500",
     users: "Insurance, Labs, Pharmacies"
   }];
-  return <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
       {/* Navigation */}
       <nav className="bg-white/80 backdrop-blur-sm shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -58,6 +59,9 @@ const Index = () => {
             <div className="flex space-x-4">
               <Link to="/dashboard">
                 <Button variant="outline">Dashboard</Button>
+              </Link>
+              <Link to="/commission-tracking">
+                <Button variant="outline">Commissions</Button>
               </Link>
               <Link to="/patient-portal">
                 <Button>Patient Portal</Button>
@@ -75,8 +79,7 @@ const Index = () => {
           </Badge>
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
             Unified Hospital Management
-            <span className="text-blue-600 block">
-          </span>
+            <span className="text-blue-600 block">with Integrated Commission Tracking</span>
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             Transform your hospital operations with our comprehensive platform that integrates patient care, 
@@ -86,6 +89,11 @@ const Index = () => {
             <Link to="/dashboard">
               <Button size="lg" className="w-full sm:w-auto">
                 Explore Dashboard
+              </Button>
+            </Link>
+            <Link to="/commission-tracking">
+              <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                Commission Tracking
               </Button>
             </Link>
             <Link to="/patient-portal">
@@ -197,6 +205,8 @@ const Index = () => {
           </p>
         </div>
       </footer>
-    </div>;
+    </div>
+  );
 };
+
 export default Index;
