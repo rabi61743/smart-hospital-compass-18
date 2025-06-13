@@ -3,6 +3,7 @@ import { useToast } from "@/hooks/use-toast";
 import { CommissionRule } from "@/types/commission";
 import { CommissionRuleFormData } from "@/schemas/commissionValidation";
 import { useAuditTrail } from "./useAuditTrail";
+import { AdvancedConditions } from "@/types/conditions";
 
 const initialRules: CommissionRule[] = [
   {
@@ -92,6 +93,16 @@ export const useCommissionRules = () => {
     getRecentActivity
   } = useAuditTrail();
 
+  // Helper function to ensure AdvancedConditions has required properties
+  const normalizeAdvancedConditions = (conditions?: Partial<AdvancedConditions>): AdvancedConditions | undefined => {
+    if (!conditions) return undefined;
+    
+    return {
+      logic: conditions.logic || 'AND',
+      conditions: conditions.conditions || []
+    };
+  };
+
   const createRule = (data: CommissionRuleFormData) => {
     console.log("Creating rule with validated data:", data);
     
@@ -121,7 +132,7 @@ export const useCommissionRules = () => {
         conditions: data.conditions,
         category: data.category,
         isActive: data.isActive,
-        advancedConditions: data.advancedConditions,
+        advancedConditions: normalizeAdvancedConditions(data.advancedConditions),
       };
       
       setActiveRules([...activeRules, newRule]);
@@ -158,7 +169,7 @@ export const useCommissionRules = () => {
         conditions: data.conditions,
         category: data.category,
         isActive: data.isActive,
-        advancedConditions: data.advancedConditions,
+        advancedConditions: normalizeAdvancedConditions(data.advancedConditions),
       };
       
       setActiveRules(rules => 

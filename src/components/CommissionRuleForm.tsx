@@ -55,6 +55,15 @@ const CommissionRuleForm = ({ form, editingRule, onSubmit, onCancel }: Commissio
     form.setValue("advancedConditions", conditions);
   };
 
+  // Ensure we always have a valid AdvancedConditions object
+  const getAdvancedConditions = (): AdvancedConditions => {
+    const formConditions = watchAdvancedConditions;
+    return {
+      logic: formConditions?.logic || 'AND',
+      conditions: formConditions?.conditions || []
+    };
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -291,7 +300,7 @@ const CommissionRuleForm = ({ form, editingRule, onSubmit, onCancel }: Commissio
                     <FormItem>
                       <FormControl>
                         <AdvancedConditionsBuilder
-                          conditions={field.value || { logic: 'AND', conditions: [] }}
+                          conditions={getAdvancedConditions()}
                           onChange={handleAdvancedConditionsChange}
                         />
                       </FormControl>
