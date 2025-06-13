@@ -1,4 +1,5 @@
 
+
 import { useState } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { CommissionRule } from "@/types/commission";
@@ -124,6 +125,37 @@ export const useCommissionRules = () => {
     };
   };
 
+  // Helper function to normalize form data before processing
+  const normalizeFormAdvancedConditions = (formData: CommissionRuleFormData): AdvancedConditions | undefined => {
+    if (!formData.advancedConditions) return undefined;
+    
+    const conditions = formData.advancedConditions.conditions || [];
+    const normalizedConditions: ConditionRule[] = conditions.map((condition: any, index) => {
+      const conditionRule: ConditionRule = {
+        id: condition.id || `condition-${Date.now()}-${index}`,
+        field: condition.field || 'amount',
+        operator: condition.operator || 'gt',
+        value: condition.value || '',
+        secondValue: condition.secondValue,
+      };
+
+      // Only add rateOverride if it has the required properties
+      if (condition.rateOverride && condition.rateOverride.rateType && typeof condition.rateOverride.rate === 'number') {
+        conditionRule.rateOverride = {
+          rateType: condition.rateOverride.rateType,
+          rate: condition.rateOverride.rate
+        };
+      }
+
+      return conditionRule;
+    });
+    
+    return {
+      logic: formData.advancedConditions.logic || 'AND',
+      conditions: normalizedConditions
+    };
+  };
+
   const createRule = (data: CommissionRuleFormData) => {
     console.log("Creating rule with validated data:", data);
     
@@ -153,7 +185,7 @@ export const useCommissionRules = () => {
         conditions: data.conditions,
         category: data.category,
         isActive: data.isActive,
-        advancedConditions: normalizeAdvancedConditions(data.advancedConditions),
+        advancedConditions: normalizeFormAdvancedConditions(data),
       };
       
       setActiveRules([...activeRules, newRule]);
@@ -190,7 +222,7 @@ export const useCommissionRules = () => {
         conditions: data.conditions,
         category: data.category,
         isActive: data.isActive,
-        advancedConditions: normalizeAdvancedConditions(data.advancedConditions),
+        advancedConditions: normalizeFormAdvancedConditions(data),
       };
       
       setActiveRules(rules => 
