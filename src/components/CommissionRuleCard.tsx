@@ -4,24 +4,45 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Edit, Trash2 } from "lucide-react";
 import { CommissionRule } from "@/types/commission";
 
 interface CommissionRuleCardProps {
   rule: CommissionRule;
+  isSelected?: boolean;
+  showSelection?: boolean;
   onToggleStatus: (ruleId: string) => void;
   onEdit: (rule: CommissionRule) => void;
   onDelete: (ruleId: string) => void;
+  onSelect?: (ruleId: string, isSelected: boolean) => void;
 }
 
-const CommissionRuleCard = ({ rule, onToggleStatus, onEdit, onDelete }: CommissionRuleCardProps) => {
+const CommissionRuleCard = ({ 
+  rule, 
+  isSelected = false,
+  showSelection = false,
+  onToggleStatus, 
+  onEdit, 
+  onDelete,
+  onSelect
+}: CommissionRuleCardProps) => {
   return (
-    <Card className={`${!rule.isActive ? 'opacity-60' : ''}`}>
+    <Card className={`${!rule.isActive ? 'opacity-60' : ''} ${isSelected ? 'ring-2 ring-blue-500 bg-blue-50' : ''}`}>
       <CardHeader className="pb-3">
         <div className="flex justify-between items-start">
-          <div>
-            <CardTitle className="text-base">{rule.name}</CardTitle>
-            <CardDescription>{rule.conditions}</CardDescription>
+          <div className="flex items-start space-x-3">
+            {showSelection && onSelect && (
+              <Checkbox
+                checked={isSelected}
+                onCheckedChange={(checked) => onSelect(rule.id, checked as boolean)}
+                className="mt-1"
+              />
+            )}
+            <div>
+              <CardTitle className="text-base">{rule.name}</CardTitle>
+              <CardDescription>{rule.conditions}</CardDescription>
+            </div>
           </div>
           <div className="flex items-center space-x-2">
             <Badge variant={rule.isActive ? "default" : "secondary"}>

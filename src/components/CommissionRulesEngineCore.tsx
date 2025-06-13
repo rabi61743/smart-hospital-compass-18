@@ -12,12 +12,14 @@ import { useCommissionRules } from "@/hooks/useCommissionRules";
 import CommissionRuleCard from "./CommissionRuleCard";
 import CommissionRuleForm from "./CommissionRuleForm";
 import CommissionRuleTemplates from "./CommissionRuleTemplates";
+import BulkOperationsBar from "./BulkOperationsBar";
 
 const CommissionRulesEngineCore = () => {
-  const { activeRules, createRule, updateRule, toggleRuleStatus, deleteRule } = useCommissionRules();
+  const { activeRules, createRule, updateRule, toggleRuleStatus, deleteRule, bulkToggleStatus, bulkDeleteRules } = useCommissionRules();
   const [isCreating, setIsCreating] = useState(false);
   const [editingRule, setEditingRule] = useState<CommissionRule | null>(null);
   const [activeTab, setActiveTab] = useState('active-rules');
+  const [selectedRuleIds, setSelectedRuleIds] = useState<string[]>([]);
 
   const form = useForm<CommissionRuleFormData>({
     resolver: zodResolver(commissionRuleSchema),
@@ -95,6 +97,37 @@ const CommissionRulesEngineCore = () => {
     setActiveTab('create-rule');
   };
 
+  const handleRuleSelection = (ruleId: string, isSelected: boolean) => {
+    if (isSelected) {
+      setSelectedRuleIds([...selectedRuleIds, ruleId]);
+    } else {
+      setSelectedRuleIds(selectedRuleIds.filter(id => id !== ruleId));
+    }
+  };
+
+  const handleSelectAll = () => {
+    if (selectedRuleIds.length === activeRules.length) {
+      setSelectedRuleIds([]);
+    } else {
+      setSelectedRuleIds(activeRules.map(rule => rule.id));
+    }
+  };
+
+  const handleBulkEnable = () => {
+    bulkToggleStatus(selectedRuleIds, true);
+    setSelectedRuleIds([]);
+  };
+
+  const handleBulkDisable = () => {
+    bulkToggleStatus(selectedRuleIds, false);
+    setSelectedRuleIds([]);
+  };
+
+  const handleBulkDelete = () => {
+    bulkDeleteRules(selectedRuleIds);
+    setSelectedRuleIds([]);
+  };
+
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
@@ -123,14 +156,29 @@ const CommissionRulesEngineCore = () => {
             </Button>
           </div>
 
+          {selectedRuleIds.length > 0 && (
+            <BulkOperationsBar
+              selectedCount={selectedRuleIds.length}
+              totalCount={activeRules.length}
+              onSelectAll={handleSelectAll}
+              onBulkEnable={handleBulkEnable}
+              onBulkDisable={handleBulkDisable}
+              onBulkDelete={handleBulkDelete}
+              onClearSelection={() => setSelectedRuleIds([])}
+            />
+          )}
+
           <div className="grid gap-4">
             {activeRules.map((rule) => (
               <CommissionRuleCard
                 key={rule.id}
                 rule={rule}
+                isSelected={selectedRuleIds.includes(rule.id)}
                 onToggleStatus={toggleRuleStatus}
                 onEdit={handleEditRule}
                 onDelete={deleteRule}
+                onSelect={handleRuleSelection}
+                showSelection={true}
               />
             ))}
           </div>

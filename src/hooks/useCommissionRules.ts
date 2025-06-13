@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { CommissionRule } from "@/types/commission";
@@ -143,11 +142,36 @@ export const useCommissionRules = () => {
     });
   };
 
+  const bulkToggleStatus = (ruleIds: string[], isActive: boolean) => {
+    setActiveRules(rules =>
+      rules.map(rule =>
+        ruleIds.includes(rule.id) ? { ...rule, isActive } : rule
+      )
+    );
+    
+    const action = isActive ? 'enabled' : 'disabled';
+    toast({
+      title: "Bulk Operation Complete",
+      description: `${ruleIds.length} rule${ruleIds.length !== 1 ? 's' : ''} ${action} successfully.`,
+    });
+  };
+
+  const bulkDeleteRules = (ruleIds: string[]) => {
+    setActiveRules(rules => rules.filter(rule => !ruleIds.includes(rule.id)));
+    
+    toast({
+      title: "Bulk Delete Complete",
+      description: `${ruleIds.length} rule${ruleIds.length !== 1 ? 's' : ''} deleted successfully.`,
+    });
+  };
+
   return {
     activeRules,
     createRule,
     updateRule,
     toggleRuleStatus,
-    deleteRule
+    deleteRule,
+    bulkToggleStatus,
+    bulkDeleteRules
   };
 };
