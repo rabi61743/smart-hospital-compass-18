@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,6 +13,7 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { TrendingUp, Users, Receipt, Plus, Edit, Trash2, Copy } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface CommissionRule {
   id: string;
@@ -29,6 +29,7 @@ interface CommissionRule {
 }
 
 const CommissionRulesEngine = () => {
+  const { toast } = useToast();
   const [activeRules, setActiveRules] = useState<CommissionRule[]>([
     {
       id: '1',
@@ -65,6 +66,8 @@ const CommissionRulesEngine = () => {
 
   const [selectedTemplate, setSelectedTemplate] = useState<string>('');
   const [isCreating, setIsCreating] = useState(false);
+  const [editingRule, setEditingRule] = useState<CommissionRule | null>(null);
+  const [activeTab, setActiveTab] = useState('active-rules');
 
   const form = useForm({
     defaultValues: {
@@ -129,14 +132,61 @@ const CommissionRulesEngine = () => {
   ];
 
   const handleCreateRule = (data: any) => {
-    const newRule: CommissionRule = {
-      id: Date.now().toString(),
-      ...data,
-      conditions: data.conditions || `${data.rateType === 'percentage' ? data.rate + '%' : '₹' + data.rate} commission`
-    };
-    setActiveRules([...activeRules, newRule]);
+    if (editingRule) {
+      // Update existing rule
+      const updatedRule: CommissionRule = {
+        ...editingRule,
+        ...data,
+        conditions: data.conditions || `${data.rateType === 'percentage' ? data.rate + '%' : '₹' + data.rate} commission`
+      };
+      setActiveRules(rules => 
+        rules.map(rule => rule.id === editingRule.id ? updatedRule : rule)
+      );
+      toast({
+        title: "Rule Updated",
+        description: `Commission rule "${updatedRule.name}" has been updated successfully.`,
+      });
+      setEditingRule(null);
+    } else {
+      // Create new rule
+      const newRule: CommissionRule = {
+        id: Date.now().toString(),
+        ...data,
+        conditions: data.conditions || `${data.rateType === 'percentage' ? data.rate + '%' : '₹' + data.rate} commission`
+      };
+      setActiveRules([...activeRules, newRule]);
+      toast({
+        title: "Rule Created",
+        description: `New commission rule "${newRule.name}" has been created successfully.`,
+      });
+    }
+    setIsCreating(false);
+    setActiveTab('active-rules');
+    form.reset();
+  };
+
+  const handleEditRule = (rule: CommissionRule) => {
+    setEditingRule(rule);
+    form.reset({
+      name: rule.name,
+      type: rule.type,
+      rateType: rule.rateType,
+      rate: rule.rate,
+      minAmount: rule.minAmount || 0,
+      maxAmount: rule.maxAmount || 0,
+      conditions: rule.conditions,
+      category: rule.category,
+      isActive: rule.isActive
+    });
+    setActiveTab('create-rule');
+    setIsCreating(true);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingRule(null);
     setIsCreating(false);
     form.reset();
+    setActiveTab('active-rules');
   };
 
   const handleTemplateSelect = (templateId: string) => {
@@ -161,14 +211,20 @@ const CommissionRulesEngine = () => {
 
   const deleteRule = (ruleId: string) => {
     setActiveRules(rules => rules.filter(rule => rule.id !== ruleId));
+    toast({
+      title: "Rule Deleted",
+      description: "Commission rule has been deleted successfully.",
+    });
   };
 
   return (
     <div className="space-y-6">
-      <Tabs defaultValue="active-rules" className="space-y-6">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="active-rules">Active Rules</TabsTrigger>
-          <TabsTrigger value="create-rule">Create Rule</TabsTrigger>
+          <TabsTrigger value="create-rule">
+            {editingRule ? 'Edit Rule' : 'Create Rule'}
+          </TabsTrigger>
           <TabsTrigger value="templates">Templates</TabsTrigger>
         </TabsList>
 
@@ -178,7 +234,12 @@ const CommissionRulesEngine = () => {
               <h3 className="text-lg font-semibold">Active Commission Rules</h3>
               <p className="text-sm text-muted-foreground">Manage your current commission rules</p>
             </div>
-            <Button onClick={() => setIsCreating(true)}>
+            <Button onClick={() => {
+              setEditingRule(null);
+              setIsCreating(true);
+              setActiveTab('create-rule');
+              form.reset();
+            }}>
               <Plus className="h-4 w-4 mr-2" />
               Add Rule
             </Button>
@@ -221,7 +282,11 @@ const CommissionRulesEngine = () => {
                         checked={rule.isActive}
                         onCheckedChange={() => toggleRuleStatus(rule.id)}
                       />
-                      <Button variant="outline" size="sm">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => handleEditRule(rule)}
+                      >
                         <Edit className="h-4 w-4" />
                       </Button>
                       <Button variant="outline" size="sm" onClick={() => deleteRule(rule.id)}>
@@ -238,8 +303,12 @@ const CommissionRulesEngine = () => {
         <TabsContent value="create-rule" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Create New Commission Rule</CardTitle>
-              <CardDescription>Define a new commission structure for your organization</CardDescription>
+              <CardTitle>
+                {editingRule ? `Edit Rule: ${editingRule.name}` : 'Create New Commission Rule'}
+              </CardTitle>
+              <CardDescription>
+                {editingRule ? 'Modify the existing commission rule' : 'Define a new commission structure for your organization'}
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <Form {...form}>
@@ -281,7 +350,7 @@ const CommissionRulesEngine = () => {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Rule Type</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <Select onValueChange={field.onChange} value={field.value}>
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="Select type" />
@@ -307,7 +376,7 @@ const CommissionRulesEngine = () => {
                           <FormControl>
                             <RadioGroup
                               onValueChange={field.onChange}
-                              defaultValue={field.value}
+                              value={field.value}
                               className="flex space-x-4"
                             >
                               <div className="flex items-center space-x-2">
@@ -405,10 +474,16 @@ const CommissionRulesEngine = () => {
                   <Separator />
 
                   <div className="flex justify-end space-x-2">
-                    <Button type="button" variant="outline" onClick={() => form.reset()}>
-                      Reset
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      onClick={handleCancelEdit}
+                    >
+                      Cancel
                     </Button>
-                    <Button type="submit">Create Rule</Button>
+                    <Button type="submit">
+                      {editingRule ? 'Update Rule' : 'Create Rule'}
+                    </Button>
                   </div>
                 </form>
               </Form>
@@ -452,7 +527,9 @@ const CommissionRulesEngine = () => {
                         className="flex-1"
                         onClick={() => {
                           handleTemplateSelect(template.id);
+                          setEditingRule(null);
                           setIsCreating(true);
+                          setActiveTab('create-rule');
                         }}
                       >
                         <Copy className="h-3 w-3 mr-1" />
