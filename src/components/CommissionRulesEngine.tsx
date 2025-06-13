@@ -1,32 +1,14 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
-import { useForm } from "react-hook-form";
-import { TrendingUp, Users, Receipt, Plus, Edit, Trash2, Copy } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 
-interface CommissionRule {
-  id: string;
-  name: string;
-  type: 'doctor' | 'agent' | 'department';
-  rateType: 'percentage' | 'fixed' | 'tiered';
-  rate: number;
-  minAmount?: number;
-  maxAmount?: number;
-  conditions: string;
-  isActive: boolean;
-  category: string;
-}
+import React, { useState } from 'react';
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useForm } from "react-hook-form";
+import { Plus } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { CommissionRule, CommissionRuleTemplate } from "@/types/commission";
+import CommissionRuleCard from "./CommissionRuleCard";
+import CommissionRuleForm from "./CommissionRuleForm";
+import CommissionRuleTemplates from "./CommissionRuleTemplates";
 
 const CommissionRulesEngine = () => {
   const { toast } = useToast();
@@ -64,7 +46,6 @@ const CommissionRulesEngine = () => {
     }
   ]);
 
-  const [selectedTemplate, setSelectedTemplate] = useState<string>('');
   const [isCreating, setIsCreating] = useState(false);
   const [editingRule, setEditingRule] = useState<CommissionRule | null>(null);
   const [activeTab, setActiveTab] = useState('active-rules');
@@ -83,7 +64,7 @@ const CommissionRulesEngine = () => {
     }
   });
 
-  const ruleTemplates = [
+  const ruleTemplates: CommissionRuleTemplate[] = [
     {
       id: 'doctor-consultation',
       name: 'Doctor Consultation',
@@ -133,7 +114,6 @@ const CommissionRulesEngine = () => {
 
   const handleCreateRule = (data: any) => {
     if (editingRule) {
-      // Update existing rule
       const updatedRule: CommissionRule = {
         ...editingRule,
         ...data,
@@ -148,7 +128,6 @@ const CommissionRulesEngine = () => {
       });
       setEditingRule(null);
     } else {
-      // Create new rule
       const newRule: CommissionRule = {
         id: Date.now().toString(),
         ...data,
@@ -199,6 +178,9 @@ const CommissionRulesEngine = () => {
       form.setValue('category', template.category);
       form.setValue('conditions', template.description);
     }
+    setEditingRule(null);
+    setIsCreating(true);
+    setActiveTab('create-rule');
   };
 
   const toggleRuleStatus = (ruleId: string) => {
@@ -247,300 +229,31 @@ const CommissionRulesEngine = () => {
 
           <div className="grid gap-4">
             {activeRules.map((rule) => (
-              <Card key={rule.id} className={`${!rule.isActive ? 'opacity-60' : ''}`}>
-                <CardHeader className="pb-3">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle className="text-base">{rule.name}</CardTitle>
-                      <CardDescription>{rule.conditions}</CardDescription>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Badge variant={rule.isActive ? "default" : "secondary"}>
-                        {rule.isActive ? "Active" : "Inactive"}
-                      </Badge>
-                      <Badge variant="outline">{rule.type}</Badge>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center space-x-4">
-                      <div>
-                        <span className="text-2xl font-bold text-green-600">
-                          {rule.rateType === 'percentage' ? `${rule.rate}%` : `₹${rule.rate}`}
-                        </span>
-                        <p className="text-xs text-muted-foreground">{rule.rateType} rate</p>
-                      </div>
-                      {rule.minAmount && (
-                        <div>
-                          <span className="text-sm font-medium">Min: ₹{rule.minAmount}</span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Switch
-                        checked={rule.isActive}
-                        onCheckedChange={() => toggleRuleStatus(rule.id)}
-                      />
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => handleEditRule(rule)}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button variant="outline" size="sm" onClick={() => deleteRule(rule.id)}>
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <CommissionRuleCard
+                key={rule.id}
+                rule={rule}
+                onToggleStatus={toggleRuleStatus}
+                onEdit={handleEditRule}
+                onDelete={deleteRule}
+              />
             ))}
           </div>
         </TabsContent>
 
         <TabsContent value="create-rule" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>
-                {editingRule ? `Edit Rule: ${editingRule.name}` : 'Create New Commission Rule'}
-              </CardTitle>
-              <CardDescription>
-                {editingRule ? 'Modify the existing commission rule' : 'Define a new commission structure for your organization'}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(handleCreateRule)} className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <FormField
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Rule Name</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Enter rule name" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="category"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Category</FormLabel>
-                          <FormControl>
-                            <Input placeholder="e.g., consultation, surgery" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <FormField
-                      control={form.control}
-                      name="type"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Rule Type</FormLabel>
-                          <Select onValueChange={field.onChange} value={field.value}>
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select type" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="doctor">Doctor</SelectItem>
-                              <SelectItem value="agent">Agent</SelectItem>
-                              <SelectItem value="department">Department</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="rateType"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Rate Type</FormLabel>
-                          <FormControl>
-                            <RadioGroup
-                              onValueChange={field.onChange}
-                              value={field.value}
-                              className="flex space-x-4"
-                            >
-                              <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="percentage" id="percentage" />
-                                <Label htmlFor="percentage">Percentage</Label>
-                              </div>
-                              <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="fixed" id="fixed" />
-                                <Label htmlFor="fixed">Fixed Amount</Label>
-                              </div>
-                            </RadioGroup>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <FormField
-                      control={form.control}
-                      name="rate"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Rate Value</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="number"
-                              placeholder="Enter rate"
-                              {...field}
-                              onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="minAmount"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Min Amount (Optional)</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="number"
-                              placeholder="Minimum amount"
-                              {...field}
-                              onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="maxAmount"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Max Amount (Optional)</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="number"
-                              placeholder="Maximum amount"
-                              {...field}
-                              onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <FormField
-                    control={form.control}
-                    name="conditions"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Conditions & Description</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            placeholder="Describe when this rule applies and any special conditions"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <Separator />
-
-                  <div className="flex justify-end space-x-2">
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      onClick={handleCancelEdit}
-                    >
-                      Cancel
-                    </Button>
-                    <Button type="submit">
-                      {editingRule ? 'Update Rule' : 'Create Rule'}
-                    </Button>
-                  </div>
-                </form>
-              </Form>
-            </CardContent>
-          </Card>
+          <CommissionRuleForm
+            form={form}
+            editingRule={editingRule}
+            onSubmit={handleCreateRule}
+            onCancel={handleCancelEdit}
+          />
         </TabsContent>
 
         <TabsContent value="templates" className="space-y-4">
-          <div>
-            <h3 className="text-lg font-semibold mb-2">Commission Rule Templates</h3>
-            <p className="text-sm text-muted-foreground mb-4">
-              Use these pre-configured templates to quickly set up common commission structures
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {ruleTemplates.map((template) => (
-              <Card key={template.id} className="cursor-pointer hover:shadow-md transition-shadow">
-                <CardHeader className="pb-3">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle className="text-base">{template.name}</CardTitle>
-                      <CardDescription className="text-xs">{template.description}</CardDescription>
-                    </div>
-                    <Badge variant="outline" className="text-xs">
-                      {template.type}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div>
-                      <span className="text-xl font-bold text-blue-600">
-                        {template.rateType === 'percentage' ? `${template.rate}%` : `₹${template.rate}`}
-                      </span>
-                      <p className="text-xs text-muted-foreground">{template.rateType} commission</p>
-                    </div>
-                    <div className="flex space-x-2">
-                      <Button
-                        size="sm"
-                        className="flex-1"
-                        onClick={() => {
-                          handleTemplateSelect(template.id);
-                          setEditingRule(null);
-                          setIsCreating(true);
-                          setActiveTab('create-rule');
-                        }}
-                      >
-                        <Copy className="h-3 w-3 mr-1" />
-                        Use Template
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <CommissionRuleTemplates
+            templates={ruleTemplates}
+            onTemplateSelect={handleTemplateSelect}
+          />
         </TabsContent>
       </Tabs>
     </div>
