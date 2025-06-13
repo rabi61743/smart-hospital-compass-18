@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { Users, Calendar, Heart, Hospital, Bell, Settings } from "lucide-react";
+import { Users, Calendar, Heart, Hospital, Bell, Settings, DollarSign } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {
