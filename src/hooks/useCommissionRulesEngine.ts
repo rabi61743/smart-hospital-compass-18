@@ -8,7 +8,18 @@ import { commissionRuleTemplates } from "@/data/commissionTemplates";
 import { useCommissionRules } from "@/hooks/useCommissionRules";
 
 export const useCommissionRulesEngine = () => {
-  const { activeRules, createRule, updateRule, toggleRuleStatus, deleteRule, bulkToggleStatus, bulkDeleteRules } = useCommissionRules();
+  const { 
+    activeRules, 
+    createRule, 
+    updateRule, 
+    toggleRuleStatus, 
+    deleteRule, 
+    bulkToggleStatus, 
+    bulkDeleteRules,
+    auditLog,
+    getRuleHistory,
+    getRecentActivity
+  } = useCommissionRules();
   const [isCreating, setIsCreating] = useState(false);
   const [editingRule, setEditingRule] = useState<CommissionRule | null>(null);
   const [activeTab, setActiveTab] = useState('active-rules');
@@ -146,6 +157,7 @@ export const useCommissionRulesEngine = () => {
     selectedRuleIds,
     highlightedRuleIds,
     form,
+    auditLog,
     
     // Setters
     setActiveTab,
@@ -167,6 +179,10 @@ export const useCommissionRulesEngine = () => {
     
     // Rule operations
     toggleRuleStatus,
-    deleteRule
+    deleteRule,
+    
+    // Audit functions
+    getRuleHistory,
+    getRecentActivity
   };
 };

@@ -1,7 +1,9 @@
+
 import { useState } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { CommissionRule } from "@/types/commission";
 import { CommissionRuleFormData } from "@/schemas/commissionValidation";
+import { useAuditTrail } from "./useAuditTrail";
 
 const initialRules: CommissionRule[] = [
   {
@@ -40,6 +42,15 @@ const initialRules: CommissionRule[] = [
 export const useCommissionRules = () => {
   const { toast } = useToast();
   const [activeRules, setActiveRules] = useState<CommissionRule[]>(initialRules);
+  const {
+    auditLog,
+    logRuleCreation,
+    logRuleUpdate,
+    logRuleStatusChange,
+    logRuleDeletion,
+    getRuleHistory,
+    getRecentActivity
+  } = useAuditTrail();
 
   const createRule = (data: CommissionRuleFormData) => {
     console.log("Creating rule with validated data:", data);
@@ -73,6 +84,8 @@ export const useCommissionRules = () => {
       };
       
       setActiveRules([...activeRules, newRule]);
+      logRuleCreation(newRule);
+      
       toast({
         title: "Rule Created",
         description: `New commission rule "${newRule.name}" has been created successfully.`,
@@ -110,6 +123,8 @@ export const useCommissionRules = () => {
         rules.map(rule => rule.id === editingRule.id ? updatedRule : rule)
       );
       
+      logRuleUpdate(editingRule, data);
+      
       toast({
         title: "Rule Updated",
         description: `Commission rule "${updatedRule.name}" has been updated successfully.`,
@@ -128,13 +143,23 @@ export const useCommissionRules = () => {
 
   const toggleRuleStatus = (ruleId: string) => {
     setActiveRules(rules =>
-      rules.map(rule =>
-        rule.id === ruleId ? { ...rule, isActive: !rule.isActive } : rule
-      )
+      rules.map(rule => {
+        if (rule.id === ruleId) {
+          const updatedRule = { ...rule, isActive: !rule.isActive };
+          logRuleStatusChange(rule, updatedRule.isActive);
+          return updatedRule;
+        }
+        return rule;
+      })
     );
   };
 
   const deleteRule = (ruleId: string) => {
+    const ruleToDelete = activeRules.find(rule => rule.id === ruleId);
+    if (ruleToDelete) {
+      logRuleDeletion(ruleToDelete);
+    }
+    
     setActiveRules(rules => rules.filter(rule => rule.id !== ruleId));
     toast({
       title: "Rule Deleted",
@@ -144,9 +169,13 @@ export const useCommissionRules = () => {
 
   const bulkToggleStatus = (ruleIds: string[], isActive: boolean) => {
     setActiveRules(rules =>
-      rules.map(rule =>
-        ruleIds.includes(rule.id) ? { ...rule, isActive } : rule
-      )
+      rules.map(rule => {
+        if (ruleIds.includes(rule.id)) {
+          logRuleStatusChange(rule, isActive);
+          return { ...rule, isActive };
+        }
+        return rule;
+      })
     );
     
     const action = isActive ? 'enabled' : 'disabled';
@@ -157,6 +186,9 @@ export const useCommissionRules = () => {
   };
 
   const bulkDeleteRules = (ruleIds: string[]) => {
+    const rulesToDelete = activeRules.filter(rule => ruleIds.includes(rule.id));
+    rulesToDelete.forEach(rule => logRuleDeletion(rule));
+    
     setActiveRules(rules => rules.filter(rule => !ruleIds.includes(rule.id)));
     
     toast({
@@ -172,6 +204,9 @@ export const useCommissionRules = () => {
     toggleRuleStatus,
     deleteRule,
     bulkToggleStatus,
-    bulkDeleteRules
+    bulkDeleteRules,
+    auditLog,
+    getRuleHistory,
+    getRecentActivity
   };
 };
