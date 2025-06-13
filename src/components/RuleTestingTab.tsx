@@ -25,7 +25,7 @@ interface TestScenario {
 interface TestResult {
   rule: CommissionRule;
   matches: boolean;
-  calculatedRate: { rateType: string; rate: number };
+  calculatedRate: { rateType: 'fixed' | 'percentage' | 'tiered'; rate: number };
   commission: number;
 }
 
