@@ -72,7 +72,6 @@ const ActiveRulesTab = ({
           {selectedRuleIds.length > 0 && (
             <BulkOperationsBar
               selectedCount={selectedRuleIds.length}
-              totalCount={activeRules.length}
               onSelectAll={onSelectAll}
               onBulkEnable={onBulkEnable}
               onBulkDisable={onBulkDisable}

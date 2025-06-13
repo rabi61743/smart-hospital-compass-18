@@ -100,14 +100,18 @@ export class CommissionCalculator {
     };
 
     // Get the effective rate (considering conditional rates)
-    let effectiveRate = { rateType: rule.rateType, rate: rule.rate };
+    let effectiveRate = { rateType: rule.rateType as 'percentage' | 'fixed' | 'tiered', rate: rule.rate };
     
     if (rule.advancedConditions && rule.advancedConditions.conditions.length > 0) {
-      effectiveRate = calculateConditionalRate(
+      const conditionalRate = calculateConditionalRate(
         rule.advancedConditions,
         context,
         { rateType: rule.rateType, rate: rule.rate }
       );
+      effectiveRate = { 
+        rateType: conditionalRate.rateType as 'percentage' | 'fixed' | 'tiered', 
+        rate: conditionalRate.rate 
+      };
     }
 
     let commission = 0;
@@ -136,7 +140,7 @@ export class CommissionCalculator {
       ruleName: rule.name,
       amount: transaction.amount,
       rate: effectiveRate.rate,
-      rateType: effectiveRate.rateType as 'percentage' | 'fixed' | 'tiered',
+      rateType: effectiveRate.rateType,
       commission: Math.round(commission * 100) / 100, // Round to 2 decimal places
       details
     };
