@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { commissionRuleTemplates } from "@/data/commissionTemplates";
@@ -8,6 +9,7 @@ import TemplatesTab from "./TemplatesTab";
 import ConflictsTab from "./ConflictsTab";
 import HistoryTab from "./HistoryTab";
 import RuleTestingTab from "./RuleTestingTab";
+import CommissionCalculatorTab from "./CommissionCalculatorTab";
 
 const CommissionRulesEngineCore = () => {
   const {
@@ -40,12 +42,13 @@ const CommissionRulesEngineCore = () => {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-6">
+        <TabsList className="grid w-full grid-cols-7">
           <TabsTrigger value="active-rules">Active Rules</TabsTrigger>
           <TabsTrigger value="create-rule">
             {editingRule ? 'Edit Rule' : 'Create Rule'}
           </TabsTrigger>
           <TabsTrigger value="templates">Templates</TabsTrigger>
+          <TabsTrigger value="calculator">Calculator</TabsTrigger>
           <TabsTrigger value="testing">Testing</TabsTrigger>
           <TabsTrigger value="conflicts">Conflicts</TabsTrigger>
           <TabsTrigger value="history">History</TabsTrigger>
@@ -84,6 +87,10 @@ const CommissionRulesEngineCore = () => {
             templates={commissionRuleTemplates}
             onTemplateSelect={handleTemplateSelect}
           />
+        </TabsContent>
+
+        <TabsContent value="calculator">
+          <CommissionCalculatorTab rules={activeRules} />
         </TabsContent>
 
         <TabsContent value="testing">

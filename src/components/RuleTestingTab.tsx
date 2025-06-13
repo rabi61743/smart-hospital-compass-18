@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { CommissionRule } from "@/types/commission";
-import { evaluateAdvancedConditions, calculateConditionalRate, EvaluationContext } from "@/utils/conditionEvaluator";
+import { CommissionCalculator, Transaction, CommissionResult } from "@/utils/commissionCalculator";
 import TestScenarioForm from './rule-testing/TestScenarioForm';
 import TestResults from './rule-testing/TestResults';
 
@@ -33,68 +33,48 @@ const RuleTestingTab = ({ rules }: RuleTestingTabProps) => {
   
   const [testResults, setTestResults] = useState<TestResult[]>([]);
   const [isRunning, setIsRunning] = useState(false);
+  const [detailedResult, setDetailedResult] = useState<CommissionResult | null>(null);
 
   const runTest = () => {
     setIsRunning(true);
     
-    const context: EvaluationContext = {
+    // Create a transaction from the scenario
+    const transaction: Transaction = {
+      id: 'test-transaction',
       amount: scenario.amount,
       quantity: scenario.quantity,
       category: scenario.category,
-      type: scenario.type
+      type: scenario.type,
+      date: new Date(),
+      description: 'Test transaction'
     };
 
-    const results: TestResult[] = rules
+    // Use the commission calculator
+    const calculator = new CommissionCalculator(rules);
+    const result = calculator.calculateCommission(transaction);
+    setDetailedResult(result);
+
+    // Convert to the format expected by TestResults component
+    const testResults: TestResult[] = rules
       .filter(rule => rule.isActive && rule.type === scenario.type)
       .map(rule => {
-        let matches = true;
-        let calculatedRate: { rateType: 'fixed' | 'percentage' | 'tiered'; rate: number } = { 
-          rateType: rule.rateType, 
-          rate: rule.rate 
-        };
-        
-        // Check basic conditions
-        if (rule.minAmount && scenario.amount < rule.minAmount) matches = false;
-        if (rule.maxAmount && scenario.amount > rule.maxAmount) matches = false;
-        if (rule.category && rule.category.toLowerCase() !== scenario.category.toLowerCase()) matches = false;
-        
-        // Check advanced conditions if they exist
-        if (matches && rule.advancedConditions && rule.advancedConditions.conditions.length > 0) {
-          matches = evaluateAdvancedConditions(rule.advancedConditions, context);
-          
-          if (matches) {
-            const conditionalRate = calculateConditionalRate(
-              rule.advancedConditions,
-              context,
-              { rateType: rule.rateType, rate: rule.rate }
-            );
-            
-            calculatedRate = {
-              rateType: conditionalRate.rateType as 'fixed' | 'percentage' | 'tiered',
-              rate: conditionalRate.rate
-            };
-          }
-        }
-        
-        // Calculate commission
-        let commission = 0;
-        if (matches) {
-          if (calculatedRate.rateType === 'percentage') {
-            commission = (scenario.amount * calculatedRate.rate) / 100;
-          } else if (calculatedRate.rateType === 'fixed') {
-            commission = calculatedRate.rate * scenario.quantity;
-          }
-        }
+        const calculation = result.calculations.find(calc => calc.ruleId === rule.id);
         
         return {
           rule,
-          matches,
-          calculatedRate,
-          commission
+          matches: !!calculation,
+          calculatedRate: calculation ? {
+            rateType: calculation.rateType,
+            rate: calculation.rate
+          } : {
+            rateType: rule.rateType as 'fixed' | 'percentage' | 'tiered',
+            rate: rule.rate
+          },
+          commission: calculation ? calculation.commission : 0
         };
       });
 
-    setTestResults(results);
+    setTestResults(testResults);
     setIsRunning(false);
   };
 
@@ -106,6 +86,7 @@ const RuleTestingTab = ({ rules }: RuleTestingTabProps) => {
       type: 'doctor'
     });
     setTestResults([]);
+    setDetailedResult(null);
   };
 
   return (
@@ -119,6 +100,37 @@ const RuleTestingTab = ({ rules }: RuleTestingTabProps) => {
       />
       
       <TestResults testResults={testResults} />
+      
+      {detailedResult && (
+        <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+          <h3 className="font-medium mb-2">Detailed Calculation Result</h3>
+          <div className="space-y-2 text-sm">
+            <div>
+              <strong>Transaction:</strong> ₹{detailedResult.transaction.amount} | 
+              {detailedResult.transaction.quantity} units | 
+              {detailedResult.transaction.category}
+            </div>
+            <div>
+              <strong>Total Commission:</strong> ₹{detailedResult.totalCommission}
+            </div>
+            <div>
+              <strong>Applicable Rules:</strong> {detailedResult.applicableRules}
+            </div>
+            {detailedResult.calculations.length > 0 && (
+              <div>
+                <strong>Calculations:</strong>
+                <ul className="ml-4 mt-1 space-y-1">
+                  {detailedResult.calculations.map((calc, index) => (
+                    <li key={index}>
+                      {calc.ruleName}: ₹{calc.commission} ({calc.details})
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
