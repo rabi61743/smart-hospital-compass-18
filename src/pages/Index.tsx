@@ -1,53 +1,52 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Users, Heart, Calendar, Settings, Bell, Hospital } from "lucide-react";
 import { Link } from "react-router-dom";
-
 const Index = () => {
-  const features = [
-    {
-      icon: <Hospital className="h-8 w-8" />,
-      title: "Complete Patient Management",
-      description: "Digital patient records, appointment scheduling, and comprehensive medical history tracking"
-    },
-    {
-      icon: <Users className="h-8 w-8" />,
-      title: "Multi-Role Dashboard",
-      description: "Customized interfaces for doctors, administrators, patients, and staff with role-based access"
-    },
-    {
-      icon: <Heart className="h-8 w-8" />,
-      title: "Integrated Commission Tracking",
-      description: "Real-time commission calculations for doctors, agents, and departments with flexible rules"
-    },
-    {
-      icon: <Calendar className="h-8 w-8" />,
-      title: "Smart Scheduling",
-      description: "Automated appointment booking with conflict detection and patient reminders"
-    },
-    {
-      icon: <Settings className="h-8 w-8" />,
-      title: "Analytics & Reporting",
-      description: "Comprehensive dashboards for revenue tracking, patient flow, and performance metrics"
-    },
-    {
-      icon: <Bell className="h-8 w-8" />,
-      title: "Automated Notifications",
-      description: "SMS, email, and WhatsApp notifications for appointments, results, and reminders"
-    }
-  ];
-
-  const userTypes = [
-    { name: "Hospital Admin", color: "bg-blue-500", users: "Administrators, Finance Teams" },
-    { name: "Medical Staff", color: "bg-green-500", users: "Doctors, Nurses, Lab Technicians" },
-    { name: "Patients", color: "bg-purple-500", users: "Patients, Family Members" },
-    { name: "Partners", color: "bg-orange-500", users: "Insurance, Labs, Pharmacies" }
-  ];
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
+  const features = [{
+    icon: <Hospital className="h-8 w-8" />,
+    title: "Complete Patient Management",
+    description: "Digital patient records, appointment scheduling, and comprehensive medical history tracking"
+  }, {
+    icon: <Users className="h-8 w-8" />,
+    title: "Multi-Role Dashboard",
+    description: "Customized interfaces for doctors, administrators, patients, and staff with role-based access"
+  }, {
+    icon: <Heart className="h-8 w-8" />,
+    title: "Integrated Commission Tracking",
+    description: "Real-time commission calculations for doctors, agents, and departments with flexible rules"
+  }, {
+    icon: <Calendar className="h-8 w-8" />,
+    title: "Smart Scheduling",
+    description: "Automated appointment booking with conflict detection and patient reminders"
+  }, {
+    icon: <Settings className="h-8 w-8" />,
+    title: "Analytics & Reporting",
+    description: "Comprehensive dashboards for revenue tracking, patient flow, and performance metrics"
+  }, {
+    icon: <Bell className="h-8 w-8" />,
+    title: "Automated Notifications",
+    description: "SMS, email, and WhatsApp notifications for appointments, results, and reminders"
+  }];
+  const userTypes = [{
+    name: "Hospital Admin",
+    color: "bg-blue-500",
+    users: "Administrators, Finance Teams"
+  }, {
+    name: "Medical Staff",
+    color: "bg-green-500",
+    users: "Doctors, Nurses, Lab Technicians"
+  }, {
+    name: "Patients",
+    color: "bg-purple-500",
+    users: "Patients, Family Members"
+  }, {
+    name: "Partners",
+    color: "bg-orange-500",
+    users: "Insurance, Labs, Pharmacies"
+  }];
+  return <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
       {/* Navigation */}
       <nav className="bg-white/80 backdrop-blur-sm shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -76,7 +75,8 @@ const Index = () => {
           </Badge>
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
             Unified Hospital Management
-            <span className="text-blue-600 block">with Smart Commission Tracking</span>
+            <span className="text-blue-600 block">
+          </span>
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             Transform your hospital operations with our comprehensive platform that integrates patient care, 
@@ -104,8 +104,7 @@ const Index = () => {
             Designed for Every Stakeholder
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {userTypes.map((type, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow">
+            {userTypes.map((type, index) => <Card key={index} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className={`w-12 h-12 ${type.color} rounded-lg flex items-center justify-center mb-3`}>
                     <Users className="h-6 w-6 text-white" />
@@ -113,8 +112,7 @@ const Index = () => {
                   <CardTitle className="text-lg">{type.name}</CardTitle>
                   <CardDescription>{type.users}</CardDescription>
                 </CardHeader>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -126,8 +124,7 @@ const Index = () => {
             Comprehensive Healthcare Solutions
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow bg-white">
+            {features.map((feature, index) => <Card key={index} className="hover:shadow-lg transition-shadow bg-white">
                 <CardHeader>
                   <div className="text-blue-600 mb-3">
                     {feature.icon}
@@ -137,8 +134,7 @@ const Index = () => {
                     {feature.description}
                   </CardDescription>
                 </CardHeader>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -201,8 +197,6 @@ const Index = () => {
           </p>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
