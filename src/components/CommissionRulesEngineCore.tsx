@@ -8,6 +8,7 @@ import CreateRuleTab from "./CreateRuleTab";
 import TemplatesTab from "./TemplatesTab";
 import ConflictsTab from "./ConflictsTab";
 import HistoryTab from "./HistoryTab";
+import RuleTestingTab from "./RuleTestingTab";
 
 const CommissionRulesEngineCore = () => {
   const {
@@ -39,12 +40,13 @@ const CommissionRulesEngineCore = () => {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="active-rules">Active Rules</TabsTrigger>
           <TabsTrigger value="create-rule">
             {editingRule ? 'Edit Rule' : 'Create Rule'}
           </TabsTrigger>
           <TabsTrigger value="templates">Templates</TabsTrigger>
+          <TabsTrigger value="testing">Testing</TabsTrigger>
           <TabsTrigger value="conflicts">Conflicts</TabsTrigger>
           <TabsTrigger value="history">History</TabsTrigger>
         </TabsList>
@@ -81,6 +83,10 @@ const CommissionRulesEngineCore = () => {
             templates={commissionRuleTemplates}
             onTemplateSelect={handleTemplateSelect}
           />
+        </TabsContent>
+
+        <TabsContent value="testing">
+          <RuleTestingTab rules={activeRules} />
         </TabsContent>
 
         <TabsContent value="conflicts">
