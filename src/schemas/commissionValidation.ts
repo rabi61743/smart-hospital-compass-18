@@ -17,19 +17,7 @@ export const commissionRuleSchema = z.object({
   
   rate: z.number()
     .min(0.01, "Rate must be greater than 0")
-    .max(100, "Percentage rate cannot exceed 100%")
-    .refine((val, ctx) => {
-      const rateType = ctx.parent?.rateType;
-      if (rateType === "percentage" && val > 100) {
-        return false;
-      }
-      if (rateType === "fixed" && val > 1000000) {
-        return false;
-      }
-      return true;
-    }, {
-      message: "Rate value is invalid for the selected rate type"
-    }),
+    .max(100, "Percentage rate cannot exceed 100%"),
   
   minAmount: z.number()
     .min(0, "Minimum amount cannot be negative")
