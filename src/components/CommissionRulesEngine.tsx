@@ -3,9 +3,11 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { CommissionRule, CommissionRuleTemplate } from "@/types/commission";
+import { commissionRuleSchema, CommissionRuleFormData } from "@/schemas/commissionValidation";
 import CommissionRuleCard from "./CommissionRuleCard";
 import CommissionRuleForm from "./CommissionRuleForm";
 import CommissionRuleTemplates from "./CommissionRuleTemplates";
@@ -50,14 +52,15 @@ const CommissionRulesEngine = () => {
   const [editingRule, setEditingRule] = useState<CommissionRule | null>(null);
   const [activeTab, setActiveTab] = useState('active-rules');
 
-  const form = useForm({
+  const form = useForm<CommissionRuleFormData>({
+    resolver: zodResolver(commissionRuleSchema),
     defaultValues: {
       name: '',
       type: 'doctor',
       rateType: 'percentage',
       rate: 0,
-      minAmount: 0,
-      maxAmount: 0,
+      minAmount: undefined,
+      maxAmount: undefined,
       conditions: '',
       category: '',
       isActive: true
@@ -112,36 +115,63 @@ const CommissionRulesEngine = () => {
     }
   ];
 
-  const handleCreateRule = (data: any) => {
-    if (editingRule) {
-      const updatedRule: CommissionRule = {
-        ...editingRule,
-        ...data,
-        conditions: data.conditions || `${data.rateType === 'percentage' ? data.rate + '%' : '₹' + data.rate} commission`
-      };
-      setActiveRules(rules => 
-        rules.map(rule => rule.id === editingRule.id ? updatedRule : rule)
-      );
+  const handleCreateRule = (data: CommissionRuleFormData) => {
+    console.log("Creating/updating rule with validated data:", data);
+    
+    try {
+      if (editingRule) {
+        const updatedRule: CommissionRule = {
+          ...editingRule,
+          ...data,
+        };
+        
+        setActiveRules(rules => 
+          rules.map(rule => rule.id === editingRule.id ? updatedRule : rule)
+        );
+        
+        toast({
+          title: "Rule Updated",
+          description: `Commission rule "${updatedRule.name}" has been updated successfully.`,
+        });
+        setEditingRule(null);
+      } else {
+        // Check for duplicate rule names
+        const existingRule = activeRules.find(rule => 
+          rule.name.toLowerCase() === data.name.toLowerCase()
+        );
+        
+        if (existingRule) {
+          toast({
+            title: "Validation Error",
+            description: "A rule with this name already exists. Please choose a different name.",
+            variant: "destructive"
+          });
+          return;
+        }
+        
+        const newRule: CommissionRule = {
+          id: Date.now().toString(),
+          ...data,
+        };
+        
+        setActiveRules([...activeRules, newRule]);
+        toast({
+          title: "Rule Created",
+          description: `New commission rule "${newRule.name}" has been created successfully.`,
+        });
+      }
+      
+      setIsCreating(false);
+      setActiveTab('active-rules');
+      form.reset();
+    } catch (error) {
+      console.error("Error saving rule:", error);
       toast({
-        title: "Rule Updated",
-        description: `Commission rule "${updatedRule.name}" has been updated successfully.`,
-      });
-      setEditingRule(null);
-    } else {
-      const newRule: CommissionRule = {
-        id: Date.now().toString(),
-        ...data,
-        conditions: data.conditions || `${data.rateType === 'percentage' ? data.rate + '%' : '₹' + data.rate} commission`
-      };
-      setActiveRules([...activeRules, newRule]);
-      toast({
-        title: "Rule Created",
-        description: `New commission rule "${newRule.name}" has been created successfully.`,
+        title: "Error",
+        description: "Failed to save the commission rule. Please try again.",
+        variant: "destructive"
       });
     }
-    setIsCreating(false);
-    setActiveTab('active-rules');
-    form.reset();
   };
 
   const handleEditRule = (rule: CommissionRule) => {
@@ -151,8 +181,8 @@ const CommissionRulesEngine = () => {
       type: rule.type,
       rateType: rule.rateType,
       rate: rule.rate,
-      minAmount: rule.minAmount || 0,
-      maxAmount: rule.maxAmount || 0,
+      minAmount: rule.minAmount,
+      maxAmount: rule.maxAmount,
       conditions: rule.conditions,
       category: rule.category,
       isActive: rule.isActive
@@ -171,12 +201,17 @@ const CommissionRulesEngine = () => {
   const handleTemplateSelect = (templateId: string) => {
     const template = ruleTemplates.find(t => t.id === templateId);
     if (template) {
-      form.setValue('name', template.name);
-      form.setValue('type', template.type as any);
-      form.setValue('rateType', template.rateType as any);
-      form.setValue('rate', template.rate);
-      form.setValue('category', template.category);
-      form.setValue('conditions', template.description);
+      form.reset({
+        name: template.name,
+        type: template.type as any,
+        rateType: template.rateType as any,
+        rate: template.rate,
+        category: template.category,
+        conditions: template.description,
+        minAmount: undefined,
+        maxAmount: undefined,
+        isActive: true
+      });
     }
     setEditingRule(null);
     setIsCreating(true);

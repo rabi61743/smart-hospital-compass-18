@@ -9,17 +9,45 @@ import { Separator } from "@/components/ui/separator";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { UseFormReturn } from "react-hook-form";
 import { CommissionRule } from "@/types/commission";
+import { CommissionRuleFormData } from "@/schemas/commissionValidation";
+import { AlertTriangle, Info } from "lucide-react";
 
 interface CommissionRuleFormProps {
-  form: UseFormReturn<any>;
+  form: UseFormReturn<CommissionRuleFormData>;
   editingRule: CommissionRule | null;
-  onSubmit: (data: any) => void;
+  onSubmit: (data: CommissionRuleFormData) => void;
   onCancel: () => void;
 }
 
 const CommissionRuleForm = ({ form, editingRule, onSubmit, onCancel }: CommissionRuleFormProps) => {
+  const watchRateType = form.watch("rateType");
+  const watchRate = form.watch("rate");
+  
+  const getRateHelpText = () => {
+    if (watchRateType === "percentage") {
+      return "Enter percentage value (0-100%)";
+    } else if (watchRateType === "fixed") {
+      return "Enter fixed amount in rupees";
+    } else if (watchRateType === "tiered") {
+      return "Enter base rate for tiered structure";
+    }
+    return "";
+  };
+
+  const getRatePrefix = () => {
+    if (watchRateType === "percentage") return "%";
+    if (watchRateType === "fixed") return "₹";
+    return "";
+  };
+
+  const handleFormSubmit = (data: CommissionRuleFormData) => {
+    console.log("Form submitted with data:", data);
+    onSubmit(data);
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -32,14 +60,14 @@ const CommissionRuleForm = ({ form, editingRule, onSubmit, onCancel }: Commissio
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Rule Name</FormLabel>
+                    <FormLabel>Rule Name *</FormLabel>
                     <FormControl>
                       <Input placeholder="Enter rule name" {...field} />
                     </FormControl>
@@ -53,7 +81,7 @@ const CommissionRuleForm = ({ form, editingRule, onSubmit, onCancel }: Commissio
                 name="category"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Category</FormLabel>
+                    <FormLabel>Category *</FormLabel>
                     <FormControl>
                       <Input placeholder="e.g., consultation, surgery" {...field} />
                     </FormControl>
@@ -69,7 +97,7 @@ const CommissionRuleForm = ({ form, editingRule, onSubmit, onCancel }: Commissio
                 name="type"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Rule Type</FormLabel>
+                    <FormLabel>Rule Type *</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
@@ -92,7 +120,7 @@ const CommissionRuleForm = ({ form, editingRule, onSubmit, onCancel }: Commissio
                 name="rateType"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Rate Type</FormLabel>
+                    <FormLabel>Rate Type *</FormLabel>
                     <FormControl>
                       <RadioGroup
                         onValueChange={field.onChange}
@@ -106,6 +134,10 @@ const CommissionRuleForm = ({ form, editingRule, onSubmit, onCancel }: Commissio
                         <div className="flex items-center space-x-2">
                           <RadioGroupItem value="fixed" id="fixed" />
                           <Label htmlFor="fixed">Fixed Amount</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="tiered" id="tiered" />
+                          <Label htmlFor="tiered">Tiered</Label>
                         </div>
                       </RadioGroup>
                     </FormControl>
@@ -121,15 +153,27 @@ const CommissionRuleForm = ({ form, editingRule, onSubmit, onCancel }: Commissio
                 name="rate"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Rate Value</FormLabel>
+                    <FormLabel>Rate Value *</FormLabel>
                     <FormControl>
-                      <Input
-                        type="number"
-                        placeholder="Enter rate"
-                        {...field}
-                        onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                      />
+                      <div className="relative">
+                        <Input
+                          type="number"
+                          step="0.01"
+                          placeholder="Enter rate"
+                          {...field}
+                          onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                          className={getRatePrefix() === "₹" ? "pl-8" : ""}
+                        />
+                        {getRatePrefix() && (
+                          <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">
+                            {getRatePrefix()}
+                          </span>
+                        )}
+                      </div>
                     </FormControl>
+                    {getRateHelpText() && (
+                      <p className="text-xs text-muted-foreground">{getRateHelpText()}</p>
+                    )}
                     <FormMessage />
                   </FormItem>
                 )}
@@ -142,12 +186,19 @@ const CommissionRuleForm = ({ form, editingRule, onSubmit, onCancel }: Commissio
                   <FormItem>
                     <FormLabel>Min Amount (Optional)</FormLabel>
                     <FormControl>
-                      <Input
-                        type="number"
-                        placeholder="Minimum amount"
-                        {...field}
-                        onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                      />
+                      <div className="relative">
+                        <Input
+                          type="number"
+                          step="0.01"
+                          placeholder="Minimum amount"
+                          {...field}
+                          onChange={(e) => field.onChange(parseFloat(e.target.value) || undefined)}
+                          className="pl-8"
+                        />
+                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">
+                          ₹
+                        </span>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -161,12 +212,19 @@ const CommissionRuleForm = ({ form, editingRule, onSubmit, onCancel }: Commissio
                   <FormItem>
                     <FormLabel>Max Amount (Optional)</FormLabel>
                     <FormControl>
-                      <Input
-                        type="number"
-                        placeholder="Maximum amount"
-                        {...field}
-                        onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                      />
+                      <div className="relative">
+                        <Input
+                          type="number"
+                          step="0.01"
+                          placeholder="Maximum amount"
+                          {...field}
+                          onChange={(e) => field.onChange(parseFloat(e.target.value) || undefined)}
+                          className="pl-8"
+                        />
+                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">
+                          ₹
+                        </span>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -174,16 +232,35 @@ const CommissionRuleForm = ({ form, editingRule, onSubmit, onCancel }: Commissio
               />
             </div>
 
+            {watchRateType === "percentage" && watchRate > 50 && (
+              <Alert>
+                <AlertTriangle className="h-4 w-4" />
+                <AlertDescription>
+                  High percentage rates may significantly impact profitability. Consider reviewing this rate.
+                </AlertDescription>
+              </Alert>
+            )}
+
+            {watchRateType === "fixed" && watchRate > 50000 && (
+              <Alert>
+                <Info className="h-4 w-4" />
+                <AlertDescription>
+                  This is a high fixed commission amount. Ensure it aligns with your business model.
+                </AlertDescription>
+              </Alert>
+            )}
+
             <FormField
               control={form.control}
               name="conditions"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Conditions & Description</FormLabel>
+                  <FormLabel>Conditions & Description *</FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Describe when this rule applies and any special conditions"
                       {...field}
+                      rows={3}
                     />
                   </FormControl>
                   <FormMessage />
