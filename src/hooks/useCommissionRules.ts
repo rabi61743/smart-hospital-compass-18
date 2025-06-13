@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { CommissionRule } from "@/types/commission";
@@ -25,7 +24,22 @@ const initialRules: CommissionRule[] = [
     minAmount: 5000,
     conditions: 'Major surgical procedures',
     isActive: true,
-    category: 'surgery'
+    category: 'surgery',
+    advancedConditions: {
+      logic: 'AND',
+      conditions: [
+        {
+          id: '1',
+          field: 'amount',
+          operator: 'gt',
+          value: 50000,
+          rateOverride: {
+            rateType: 'percentage',
+            rate: 25
+          }
+        }
+      ]
+    }
   },
   {
     id: '3',
@@ -35,7 +49,33 @@ const initialRules: CommissionRule[] = [
     rate: 850,
     conditions: 'Per successful patient referral',
     isActive: true,
-    category: 'referral'
+    category: 'referral',
+    advancedConditions: {
+      logic: 'OR',
+      conditions: [
+        {
+          id: '1',
+          field: 'amount',
+          operator: 'between',
+          value: 10000,
+          secondValue: 50000,
+          rateOverride: {
+            rateType: 'fixed',
+            rate: 1200
+          }
+        },
+        {
+          id: '2',
+          field: 'amount',
+          operator: 'gt',
+          value: 50000,
+          rateOverride: {
+            rateType: 'percentage',
+            rate: 3
+          }
+        }
+      ]
+    }
   }
 ];
 
@@ -81,6 +121,7 @@ export const useCommissionRules = () => {
         conditions: data.conditions,
         category: data.category,
         isActive: data.isActive,
+        advancedConditions: data.advancedConditions,
       };
       
       setActiveRules([...activeRules, newRule]);
@@ -117,6 +158,7 @@ export const useCommissionRules = () => {
         conditions: data.conditions,
         category: data.category,
         isActive: data.isActive,
+        advancedConditions: data.advancedConditions,
       };
       
       setActiveRules(rules => 

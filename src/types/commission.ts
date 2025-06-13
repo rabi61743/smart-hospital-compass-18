@@ -1,4 +1,6 @@
 
+import { AdvancedConditions } from './conditions';
+
 export interface CommissionRule {
   id: string;
   name: string;
@@ -10,6 +12,7 @@ export interface CommissionRule {
   conditions: string;
   isActive: boolean;
   category: string;
+  advancedConditions?: AdvancedConditions;
 }
 
 export interface CommissionRuleTemplate {
@@ -20,4 +23,5 @@ export interface CommissionRuleTemplate {
   rateType: 'percentage' | 'fixed' | 'tiered';
   rate: number;
   category: string;
+  advancedConditions?: AdvancedConditions;
 }

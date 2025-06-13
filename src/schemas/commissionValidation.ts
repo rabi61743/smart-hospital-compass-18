@@ -1,6 +1,23 @@
 
 import { z } from "zod";
 
+const conditionRuleSchema = z.object({
+  id: z.string(),
+  field: z.enum(['amount', 'quantity', 'category', 'type', 'date']),
+  operator: z.enum(['gt', 'gte', 'lt', 'lte', 'eq', 'neq', 'between', 'in']),
+  value: z.any(),
+  secondValue: z.any().optional(),
+  rateOverride: z.object({
+    rateType: z.enum(['percentage', 'fixed', 'tiered']),
+    rate: z.number()
+  }).optional()
+});
+
+const advancedConditionsSchema = z.object({
+  logic: z.enum(['AND', 'OR']),
+  conditions: z.array(conditionRuleSchema)
+});
+
 export const commissionRuleSchema = z.object({
   name: z.string()
     .min(3, "Rule name must be at least 3 characters long")
@@ -36,7 +53,9 @@ export const commissionRuleSchema = z.object({
     .min(10, "Conditions must be at least 10 characters long")
     .max(200, "Conditions must not exceed 200 characters"),
   
-  isActive: z.boolean().default(true)
+  isActive: z.boolean().default(true),
+  
+  advancedConditions: advancedConditionsSchema.optional()
 }).superRefine((data, ctx) => {
   // Cross-field validation
   if (data.minAmount && data.maxAmount && data.minAmount >= data.maxAmount) {
@@ -47,7 +66,6 @@ export const commissionRuleSchema = z.object({
     });
   }
   
-  // Rate type specific validations
   if (data.rateType === "percentage" && data.rate > 100) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,

@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,7 +36,11 @@ export const useCommissionRulesEngine = () => {
       maxAmount: undefined,
       conditions: '',
       category: '',
-      isActive: true
+      isActive: true,
+      advancedConditions: {
+        logic: 'AND',
+        conditions: []
+      }
     }
   });
 
@@ -69,7 +72,11 @@ export const useCommissionRulesEngine = () => {
       maxAmount: rule.maxAmount,
       conditions: rule.conditions,
       category: rule.category,
-      isActive: rule.isActive
+      isActive: rule.isActive,
+      advancedConditions: rule.advancedConditions || {
+        logic: 'AND',
+        conditions: []
+      }
     });
     setActiveTab('create-rule');
     setIsCreating(true);
@@ -94,7 +101,11 @@ export const useCommissionRulesEngine = () => {
         conditions: template.description,
         minAmount: undefined,
         maxAmount: undefined,
-        isActive: true
+        isActive: true,
+        advancedConditions: template.advancedConditions || {
+          logic: 'AND',
+          conditions: []
+        }
       });
     }
     setEditingRule(null);
