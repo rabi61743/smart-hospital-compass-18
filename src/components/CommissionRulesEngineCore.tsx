@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -13,6 +12,7 @@ import CommissionRuleCard from "./CommissionRuleCard";
 import CommissionRuleForm from "./CommissionRuleForm";
 import CommissionRuleTemplates from "./CommissionRuleTemplates";
 import BulkOperationsBar from "./BulkOperationsBar";
+import RuleConflictAnalyzer from "./RuleConflictAnalyzer";
 
 const CommissionRulesEngineCore = () => {
   const { activeRules, createRule, updateRule, toggleRuleStatus, deleteRule, bulkToggleStatus, bulkDeleteRules } = useCommissionRules();
@@ -20,6 +20,7 @@ const CommissionRulesEngineCore = () => {
   const [editingRule, setEditingRule] = useState<CommissionRule | null>(null);
   const [activeTab, setActiveTab] = useState('active-rules');
   const [selectedRuleIds, setSelectedRuleIds] = useState<string[]>([]);
+  const [highlightedRuleIds, setHighlightedRuleIds] = useState<string[]>([]);
 
   const form = useForm<CommissionRuleFormData>({
     resolver: zodResolver(commissionRuleSchema),
@@ -128,15 +129,24 @@ const CommissionRulesEngineCore = () => {
     setSelectedRuleIds([]);
   };
 
+  const handleHighlightRules = (ruleIds: string[]) => {
+    setHighlightedRuleIds(ruleIds);
+  };
+
+  const handleClearHighlight = () => {
+    setHighlightedRuleIds([]);
+  };
+
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="active-rules">Active Rules</TabsTrigger>
           <TabsTrigger value="create-rule">
             {editingRule ? 'Edit Rule' : 'Create Rule'}
           </TabsTrigger>
           <TabsTrigger value="templates">Templates</TabsTrigger>
+          <TabsTrigger value="conflicts">Conflicts</TabsTrigger>
         </TabsList>
 
         <TabsContent value="active-rules" className="space-y-4">
@@ -174,6 +184,7 @@ const CommissionRulesEngineCore = () => {
                 key={rule.id}
                 rule={rule}
                 isSelected={selectedRuleIds.includes(rule.id)}
+                isHighlighted={highlightedRuleIds.includes(rule.id)}
                 onToggleStatus={toggleRuleStatus}
                 onEdit={handleEditRule}
                 onDelete={deleteRule}
@@ -197,6 +208,14 @@ const CommissionRulesEngineCore = () => {
           <CommissionRuleTemplates
             templates={commissionRuleTemplates}
             onTemplateSelect={handleTemplateSelect}
+          />
+        </TabsContent>
+
+        <TabsContent value="conflicts" className="space-y-4">
+          <RuleConflictAnalyzer
+            rules={activeRules}
+            onHighlightRules={handleHighlightRules}
+            onClearHighlight={handleClearHighlight}
           />
         </TabsContent>
       </Tabs>

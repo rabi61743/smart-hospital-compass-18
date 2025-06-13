@@ -11,6 +11,7 @@ import { CommissionRule } from "@/types/commission";
 interface CommissionRuleCardProps {
   rule: CommissionRule;
   isSelected?: boolean;
+  isHighlighted?: boolean;
   showSelection?: boolean;
   onToggleStatus: (ruleId: string) => void;
   onEdit: (rule: CommissionRule) => void;
@@ -21,14 +22,31 @@ interface CommissionRuleCardProps {
 const CommissionRuleCard = ({ 
   rule, 
   isSelected = false,
+  isHighlighted = false,
   showSelection = false,
   onToggleStatus, 
   onEdit, 
   onDelete,
   onSelect
 }: CommissionRuleCardProps) => {
+  const getCardClassName = () => {
+    let className = '';
+    
+    if (!rule.isActive) {
+      className += 'opacity-60 ';
+    }
+    
+    if (isSelected) {
+      className += 'ring-2 ring-blue-500 bg-blue-50 ';
+    } else if (isHighlighted) {
+      className += 'ring-2 ring-orange-500 bg-orange-50 ';
+    }
+    
+    return className.trim();
+  };
+
   return (
-    <Card className={`${!rule.isActive ? 'opacity-60' : ''} ${isSelected ? 'ring-2 ring-blue-500 bg-blue-50' : ''}`}>
+    <Card className={getCardClassName()}>
       <CardHeader className="pb-3">
         <div className="flex justify-between items-start">
           <div className="flex items-start space-x-3">
@@ -45,6 +63,11 @@ const CommissionRuleCard = ({
             </div>
           </div>
           <div className="flex items-center space-x-2">
+            {isHighlighted && (
+              <Badge variant="outline" className="bg-orange-100 text-orange-800 border-orange-300">
+                Highlighted
+              </Badge>
+            )}
             <Badge variant={rule.isActive ? "default" : "secondary"}>
               {rule.isActive ? "Active" : "Inactive"}
             </Badge>
