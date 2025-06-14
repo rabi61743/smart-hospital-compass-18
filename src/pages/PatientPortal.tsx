@@ -1,10 +1,9 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Calendar, Heart, Hospital, Users, Bell, Settings } from "lucide-react";
+import { Calendar, Heart, Hospital, Users, Bell, Settings, FileText, UserPlus } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const PatientPortal = () => {
@@ -67,6 +66,18 @@ const PatientPortal = () => {
               <Badge variant="secondary">Patient Portal</Badge>
             </div>
             <div className="flex items-center space-x-4">
+              <Link to="/patient-history">
+                <Button variant="outline" size="sm">
+                  <FileText className="h-4 w-4 mr-2" />
+                  Medical History
+                </Button>
+              </Link>
+              <Link to="/patient-registration">
+                <Button variant="outline" size="sm">
+                  <UserPlus className="h-4 w-4 mr-2" />
+                  Register
+                </Button>
+              </Link>
               <Button variant="outline" size="sm">
                 <Bell className="h-4 w-4 mr-2" />
                 Notifications
@@ -101,24 +112,28 @@ const PatientPortal = () => {
               <CardTitle className="text-lg">Book Appointment</CardTitle>
             </CardHeader>
           </Card>
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-            <CardHeader className="text-center">
-              <Heart className="h-8 w-8 text-red-600 mx-auto mb-2" />
-              <CardTitle className="text-lg">View Reports</CardTitle>
-            </CardHeader>
-          </Card>
+          <Link to="/patient-history">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+              <CardHeader className="text-center">
+                <Heart className="h-8 w-8 text-red-600 mx-auto mb-2" />
+                <CardTitle className="text-lg">View Medical History</CardTitle>
+              </CardHeader>
+            </Card>
+          </Link>
           <Card className="hover:shadow-lg transition-shadow cursor-pointer">
             <CardHeader className="text-center">
               <Hospital className="h-8 w-8 text-green-600 mx-auto mb-2" />
               <CardTitle className="text-lg">Telemedicine</CardTitle>
             </CardHeader>
           </Card>
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-            <CardHeader className="text-center">
-              <Users className="h-8 w-8 text-purple-600 mx-auto mb-2" />
-              <CardTitle className="text-lg">Family Members</CardTitle>
-            </CardHeader>
-          </Card>
+          <Link to="/patient-registration">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+              <CardHeader className="text-center">
+                <Users className="h-8 w-8 text-purple-600 mx-auto mb-2" />
+                <CardTitle className="text-lg">Register Family</CardTitle>
+              </CardHeader>
+            </Card>
+          </Link>
         </div>
 
         {/* Main Content */}
@@ -207,6 +222,12 @@ const PatientPortal = () => {
                     </div>
                   ))}
                 </div>
+                <Link to="/patient-history">
+                  <Button className="w-full mt-4" variant="outline">
+                    <FileText className="h-4 w-4 mr-2" />
+                    View Complete Medical History
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           </TabsContent>
@@ -239,7 +260,9 @@ const PatientPortal = () => {
                   <Heart className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                   <h3 className="text-lg font-medium text-gray-900 mb-2">Electronic Health Records</h3>
                   <p className="text-gray-600 mb-4">Secure access to your complete medical history</p>
-                  <Button>View Records</Button>
+                  <Link to="/patient-history">
+                    <Button>View Records</Button>
+                  </Link>
                 </div>
               </CardContent>
             </Card>
