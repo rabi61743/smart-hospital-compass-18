@@ -204,6 +204,7 @@ const ProfitLossTab = () => {
                   <span>Total Expenses</span>
                   <span>₹33.5L</span>
                 </div>
+              </div>
             </div>
 
             {/* Profit Section */}
