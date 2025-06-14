@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Download, RefreshCw, AlertTriangle } from "lucide-react";
+import { Download, RefreshCw, AlertTriangle, CheckCircle } from "lucide-react";
 import { useCommissionReconciliation } from '@/hooks/useCommissionReconciliation';
 import ReconciliationSummaryCards from './reconciliation/ReconciliationSummaryCards';
 import DiscrepancyTable from './reconciliation/DiscrepancyTable';
