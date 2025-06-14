@@ -8,6 +8,7 @@ import DynamicLabCommissionCalculator from "./lab/DynamicLabCommissionCalculator
 import LabReferralTracking from "./lab/LabReferralTracking";
 import CommissionRateManagement from "./lab/CommissionRateManagement";
 import TechnicianCommissionTracking from "./lab/TechnicianCommissionTracking";
+import LabReportsTab from "./lab/LabReportsTab";
 import { labCommissionRules } from "@/data/labCommissionRules";
 import { initialCommissionRules } from "@/data/initialCommissionRules";
 
@@ -74,16 +75,17 @@ const LabCommissionsTable = () => {
             </div>
           </CardTitle>
           <CardDescription>
-            Comprehensive lab commission tracking, rate management, and referral analytics
+            Comprehensive lab commission tracking, rate management, and detailed reporting
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="calculator" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger value="calculator">Commission Calculator</TabsTrigger>
               <TabsTrigger value="technicians">Technician Tracking</TabsTrigger>
               <TabsTrigger value="rate-management">Rate Management</TabsTrigger>
               <TabsTrigger value="referral-tracking">Referral Tracking</TabsTrigger>
+              <TabsTrigger value="reports">Reports & Analytics</TabsTrigger>
             </TabsList>
 
             <TabsContent value="calculator">
@@ -110,6 +112,10 @@ const LabCommissionsTable = () => {
                 period={selectedPeriod}
                 selectedCategory={selectedCategory}
               />
+            </TabsContent>
+
+            <TabsContent value="reports">
+              <LabReportsTab />
             </TabsContent>
           </Tabs>
         </CardContent>
