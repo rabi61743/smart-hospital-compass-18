@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CommissionRule } from "@/types/commission";
 import { commissionRuleSchema, CommissionRuleFormData } from "@/schemas/commissionValidation";
-import { commissionRuleTemplates } from "@/data/commissionTemplates";
+import { extendedCommissionTemplates } from "@/data/extendedCommissionTemplates";
 
 export const useCommissionRulesForm = (
   createRule: (data: CommissionRuleFormData) => boolean,
@@ -23,7 +23,7 @@ export const useCommissionRulesForm = (
       minAmount: undefined,
       maxAmount: undefined,
       conditions: '',
-      category: '',
+      category: 'general-consultation',
       isActive: true,
       advancedConditions: {
         logic: 'AND',
@@ -75,7 +75,7 @@ export const useCommissionRulesForm = (
   };
 
   const handleTemplateSelect = (templateId: string) => {
-    const template = commissionRuleTemplates.find(t => t.id === templateId);
+    const template = extendedCommissionTemplates.find(t => t.id === templateId);
     if (template) {
       form.reset({
         name: template.name,

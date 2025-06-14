@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { commissionRuleTemplates } from "@/data/commissionTemplates";
+import { extendedCommissionTemplates } from "@/data/extendedCommissionTemplates";
 import { useCommissionRulesEngine } from "@/hooks/useCommissionRulesEngine";
 import ActiveRulesTab from "./ActiveRulesTab";
 import CreateRuleTab from "./CreateRuleTab";
@@ -84,7 +84,7 @@ const CommissionRulesEngineCore = () => {
 
         <TabsContent value="templates">
           <TemplatesTab
-            templates={commissionRuleTemplates}
+            templates={extendedCommissionTemplates}
             onTemplateSelect={handleTemplateSelect}
           />
         </TabsContent>
