@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -32,12 +31,12 @@ const ComplianceAuditTab = ({ auditData }: ComplianceAuditTabProps) => {
     }
   };
 
-  // Mock audit findings data with correct severity types
+  // Mock audit findings data with all severity types
   const recentFindings = [
     {
       id: 'AF001',
       category: 'Documentation',
-      severity: 'high' as const,
+      severity: 'critical' as const,
       description: 'Overtime register missing for November 2024',
       status: 'in_progress' as const,
       dueDate: '2025-01-15'
@@ -49,6 +48,22 @@ const ComplianceAuditTab = ({ auditData }: ComplianceAuditTabProps) => {
       description: 'Minor discrepancy in ESI calculation',
       status: 'resolved' as const,
       dueDate: '2024-12-31'
+    },
+    {
+      id: 'AF003',
+      category: 'PF Compliance',
+      severity: 'high' as const,
+      description: 'PF contribution calculation error',
+      status: 'open' as const,
+      dueDate: '2025-01-20'
+    },
+    {
+      id: 'AF004',
+      category: 'Tax Filing',
+      severity: 'medium' as const,
+      description: 'Late submission of monthly return',
+      status: 'in_progress' as const,
+      dueDate: '2025-01-10'
     }
   ];
 
