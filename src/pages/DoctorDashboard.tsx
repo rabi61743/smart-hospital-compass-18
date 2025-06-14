@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -25,6 +24,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import PatientManagement from "@/components/doctor/PatientManagement";
+import AppointmentManagement from "@/components/doctor/appointment/AppointmentManagement";
 
 const DoctorDashboard = () => {
   const [selectedDate] = useState(new Date().toISOString().split('T')[0]);
@@ -311,20 +311,7 @@ const DoctorDashboard = () => {
           </TabsContent>
 
           <TabsContent value="appointments" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Appointment Management</CardTitle>
-                <CardDescription>Manage your daily appointments and scheduling</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-12">
-                  <Calendar className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">Advanced Appointment Management</h3>
-                  <p className="text-gray-600 mb-4">Schedule, reschedule, and manage patient appointments</p>
-                  <Button>Manage Appointments</Button>
-                </div>
-              </CardContent>
-            </Card>
+            <AppointmentManagement />
           </TabsContent>
 
           <TabsContent value="tasks" className="space-y-6">
