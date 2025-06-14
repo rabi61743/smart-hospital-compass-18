@@ -51,7 +51,10 @@ const TransactionForm = ({ newTransaction, onTransactionChange, onAddTransaction
       </div>
       <div>
         <Label htmlFor="type">Type</Label>
-        <Select value={newTransaction.type} onValueChange={(value: 'doctor' | 'agent' | 'department') => onTransactionChange({...newTransaction, type: value})}>
+        <Select 
+          value={newTransaction.type || 'doctor'} 
+          onValueChange={(value: 'doctor' | 'agent' | 'department') => onTransactionChange({...newTransaction, type: value})}
+        >
           <SelectTrigger>
             <SelectValue />
           </SelectTrigger>

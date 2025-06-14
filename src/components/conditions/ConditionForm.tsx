@@ -48,7 +48,7 @@ const ConditionForm = ({ onAddCondition }: ConditionFormProps) => {
         <div>
           <Label className="text-xs">Field</Label>
           <Select
-            value={newCondition.field}
+            value={newCondition.field || 'amount'}
             onValueChange={(value) => setNewCondition({ ...newCondition, field: value as any })}
           >
             <SelectTrigger className="h-8">
@@ -66,7 +66,7 @@ const ConditionForm = ({ onAddCondition }: ConditionFormProps) => {
         <div>
           <Label className="text-xs">Operator</Label>
           <Select
-            value={newCondition.operator}
+            value={newCondition.operator || 'gt'}
             onValueChange={(value) => setNewCondition({ ...newCondition, operator: value as ConditionOperator })}
           >
             <SelectTrigger className="h-8">

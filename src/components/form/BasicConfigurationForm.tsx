@@ -53,7 +53,7 @@ const BasicConfigurationForm = ({ form }: BasicConfigurationFormProps) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Rule Type *</FormLabel>
-              <Select onValueChange={field.onChange} value={field.value}>
+              <Select onValueChange={field.onChange} value={field.value || 'doctor'}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select type" />
@@ -79,7 +79,7 @@ const BasicConfigurationForm = ({ form }: BasicConfigurationFormProps) => {
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}
-                  value={field.value}
+                  value={field.value || 'percentage'}
                   className="flex space-x-4"
                 >
                   <div className="flex items-center space-x-2">
