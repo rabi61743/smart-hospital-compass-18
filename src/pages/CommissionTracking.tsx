@@ -10,6 +10,7 @@ import LabCommissionsTable from "@/components/LabCommissionsTable";
 import PharmacyCommissionsTable from "@/components/PharmacyCommissionsTable";
 import SurgeryCommissionsPlaceholder from "@/components/SurgeryCommissionsPlaceholder";
 import CommissionRulesEngine from "@/components/CommissionRulesEngine";
+import RealtimeCommissionDashboard from "@/components/RealtimeCommissionDashboard";
 
 const CommissionTracking = () => {
   const commissionSummary = [
@@ -62,8 +63,9 @@ const CommissionTracking = () => {
         <CommissionSummaryCards summaryData={commissionSummary} />
 
         {/* Commission Tracking Tabs */}
-        <Tabs defaultValue="doctors" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
+        <Tabs defaultValue="dashboard" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-7">
+            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="doctors">Doctors</TabsTrigger>
             <TabsTrigger value="agents">Agents</TabsTrigger>
             <TabsTrigger value="laboratory">Laboratory</TabsTrigger>
@@ -71,6 +73,10 @@ const CommissionTracking = () => {
             <TabsTrigger value="surgery">Surgery</TabsTrigger>
             <TabsTrigger value="rules">Rules</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="dashboard" className="space-y-6">
+            <RealtimeCommissionDashboard />
+          </TabsContent>
 
           <TabsContent value="doctors" className="space-y-6">
             <DoctorCommissionsTable doctorCommissions={doctorCommissions} />
