@@ -6,14 +6,23 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Filter, Download, Receipt } from "lucide-react";
+import { Search, Filter, Download, Receipt, MapPin } from "lucide-react";
 import { PaymentTransaction } from "./types";
+import { usePatientLocations } from "@/hooks/usePatientLocations";
 
-const PaymentHistoryTab = () => {
-  const [transactions] = useState<PaymentTransaction[]>([
+interface PaymentHistoryTabProps {
+  locationFilter: string;
+}
+
+const PaymentHistoryTab = ({ locationFilter }: PaymentHistoryTabProps) => {
+  const { getLocationById } = usePatientLocations();
+  
+  // Enhanced mock data with location information
+  const [transactions] = useState<(PaymentTransaction & { locationId?: string })[]>([
     {
       id: '1',
       invoiceId: 'INV-2024-002',
+      locationId: 'downtown-branch',
       amount: 2950,
       paymentDate: '2024-01-21',
       paymentMethod: 'Visa •••• 4242',
@@ -23,6 +32,7 @@ const PaymentHistoryTab = () => {
     {
       id: '2',
       invoiceId: 'INV-2023-045',
+      locationId: 'main-hospital',
       amount: 1500,
       paymentDate: '2023-12-15',
       paymentMethod: 'Mastercard •••• 1234',
@@ -32,6 +42,7 @@ const PaymentHistoryTab = () => {
     {
       id: '3',
       invoiceId: 'INV-2023-044',
+      locationId: 'suburban-clinic',
       amount: 750,
       paymentDate: '2023-12-10',
       paymentMethod: 'Visa •••• 4242',
@@ -59,7 +70,8 @@ const PaymentHistoryTab = () => {
                          transaction.transactionId.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          transaction.paymentMethod.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || transaction.status === statusFilter;
-    return matchesSearch && matchesStatus;
+    const matchesLocation = locationFilter === 'all' || transaction.locationId === locationFilter;
+    return matchesSearch && matchesStatus && matchesLocation;
   });
 
   return (
@@ -111,7 +123,15 @@ const PaymentHistoryTab = () => {
       <Card>
         <CardHeader>
           <CardTitle>Transaction History</CardTitle>
-          <CardDescription>All your payment transactions and receipts</CardDescription>
+          <CardDescription>
+            All your payment transactions and receipts
+            {locationFilter !== 'all' && (
+              <span className="block mt-1 text-blue-600">
+                <MapPin className="inline h-3 w-3 mr-1" />
+                Filtered by: {getLocationById(locationFilter)?.name}
+              </span>
+            )}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
@@ -119,6 +139,7 @@ const PaymentHistoryTab = () => {
               <TableRow>
                 <TableHead>Transaction ID</TableHead>
                 <TableHead>Invoice</TableHead>
+                <TableHead>Location</TableHead>
                 <TableHead>Date</TableHead>
                 <TableHead>Amount</TableHead>
                 <TableHead>Payment Method</TableHead>
@@ -127,25 +148,34 @@ const PaymentHistoryTab = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredTransactions.map((transaction) => (
-                <TableRow key={transaction.id}>
-                  <TableCell className="font-medium">{transaction.transactionId}</TableCell>
-                  <TableCell>{transaction.invoiceId}</TableCell>
-                  <TableCell>{new Date(transaction.paymentDate).toLocaleDateString()}</TableCell>
-                  <TableCell>₹{transaction.amount.toLocaleString()}</TableCell>
-                  <TableCell>{transaction.paymentMethod}</TableCell>
-                  <TableCell>
-                    <Badge className={getStatusColor(transaction.status)}>
-                      {transaction.status.toUpperCase()}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <Button variant="ghost" size="sm">
-                      <Receipt className="w-4 h-4" />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {filteredTransactions.map((transaction) => {
+                const location = getLocationById(transaction.locationId || '');
+                return (
+                  <TableRow key={transaction.id}>
+                    <TableCell className="font-medium">{transaction.transactionId}</TableCell>
+                    <TableCell>{transaction.invoiceId}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        <MapPin className="h-3 w-3 text-gray-400" />
+                        <span className="text-sm">{location?.code || 'N/A'}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>{new Date(transaction.paymentDate).toLocaleDateString()}</TableCell>
+                    <TableCell>₹{transaction.amount.toLocaleString()}</TableCell>
+                    <TableCell>{transaction.paymentMethod}</TableCell>
+                    <TableCell>
+                      <Badge className={getStatusColor(transaction.status)}>
+                        {transaction.status.toUpperCase()}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <Button variant="ghost" size="sm">
+                        <Receipt className="w-4 h-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </CardContent>
@@ -157,7 +187,7 @@ const PaymentHistoryTab = () => {
           <CardContent className="p-4">
             <div className="text-center">
               <p className="text-2xl font-bold text-green-600">
-                ₹{transactions
+                ₹{filteredTransactions
                   .filter(t => t.status === 'completed')
                   .reduce((sum, t) => sum + t.amount, 0)
                   .toLocaleString()}
@@ -170,7 +200,7 @@ const PaymentHistoryTab = () => {
           <CardContent className="p-4">
             <div className="text-center">
               <p className="text-2xl font-bold text-blue-600">
-                {transactions.filter(t => t.status === 'completed').length}
+                {filteredTransactions.filter(t => t.status === 'completed').length}
               </p>
               <p className="text-sm text-muted-foreground">Completed Payments</p>
             </div>
@@ -180,7 +210,7 @@ const PaymentHistoryTab = () => {
           <CardContent className="p-4">
             <div className="text-center">
               <p className="text-2xl font-bold text-orange-600">
-                ₹{transactions
+                ₹{filteredTransactions
                   .filter(t => t.status === 'refunded')
                   .reduce((sum, t) => sum + t.amount, 0)
                   .toLocaleString()}

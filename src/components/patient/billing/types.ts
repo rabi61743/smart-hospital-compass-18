@@ -6,6 +6,7 @@ export interface Invoice {
   dueDate: string;
   serviceDate: string;
   provider: string;
+  locationId?: string; // Added for multi-location support
   services: InvoiceService[];
   subtotal: number;
   tax: number;

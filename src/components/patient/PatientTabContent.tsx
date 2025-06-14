@@ -13,6 +13,7 @@ import ImmunizationRecords from "./ImmunizationRecords";
 import FamilyMedicalHistory from "./FamilyMedicalHistory";
 import PatientMessaging from "./messaging/PatientMessaging";
 import InsuranceManagement from "./InsuranceManagement";
+import LocationManagement from "./LocationManagement";
 
 const PatientTabContent = () => {
   return (
@@ -67,6 +68,10 @@ const PatientTabContent = () => {
 
       <TabsContent value="insurance" className="space-y-6">
         <InsuranceManagement />
+      </TabsContent>
+
+      <TabsContent value="locations" className="space-y-6">
+        <LocationManagement />
       </TabsContent>
     </>
   );

@@ -6,11 +6,19 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { FileText, Search, Filter, Download, Eye, CreditCard } from "lucide-react";
+import { FileText, Search, Filter, Download, Eye, CreditCard, MapPin } from "lucide-react";
 import { Invoice } from "./types";
 import InvoicePaymentDialog from "./InvoicePaymentDialog";
+import { usePatientLocations } from "@/hooks/usePatientLocations";
 
-const InvoicesTab = () => {
+interface InvoicesTabProps {
+  locationFilter: string;
+}
+
+const InvoicesTab = ({ locationFilter }: InvoicesTabProps) => {
+  const { getLocationById } = usePatientLocations();
+  
+  // Enhanced mock data with location information
   const [invoices] = useState<Invoice[]>([
     {
       id: '1',
@@ -18,7 +26,8 @@ const InvoicesTab = () => {
       issueDate: '2024-01-15',
       dueDate: '2024-02-15',
       serviceDate: '2024-01-10',
-      provider: 'City General Hospital',
+      provider: 'Main Hospital Campus',
+      locationId: 'main-hospital',
       services: [
         { id: '1', description: 'Annual Physical Exam', quantity: 1, unitPrice: 3000, total: 3000, cptCode: '99213' }
       ],
@@ -36,7 +45,8 @@ const InvoicesTab = () => {
       issueDate: '2024-01-20',
       dueDate: '2024-02-20',
       serviceDate: '2024-01-18',
-      provider: 'Dr. Sarah Johnson - Cardiology',
+      provider: 'Downtown Medical Center',
+      locationId: 'downtown-branch',
       services: [
         { id: '2', description: 'Cardiac Consultation', quantity: 1, unitPrice: 2500, total: 2500, cptCode: '99243' }
       ],
@@ -47,6 +57,25 @@ const InvoicesTab = () => {
       amountDue: 0,
       status: 'paid',
       paymentMethod: 'Credit Card',
+      insuranceClaimed: false
+    },
+    {
+      id: '3',
+      invoiceNumber: 'INV-2024-003',
+      issueDate: '2024-01-25',
+      dueDate: '2024-02-25',
+      serviceDate: '2024-01-22',
+      provider: 'Suburban Family Clinic',
+      locationId: 'suburban-clinic',
+      services: [
+        { id: '3', description: 'Family Checkup', quantity: 1, unitPrice: 1500, total: 1500, cptCode: '99214' }
+      ],
+      subtotal: 1500,
+      tax: 270,
+      total: 1770,
+      amountPaid: 0,
+      amountDue: 1770,
+      status: 'pending',
       insuranceClaimed: false
     }
   ]);
@@ -70,7 +99,8 @@ const InvoicesTab = () => {
     const matchesSearch = invoice.invoiceNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          invoice.provider.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || invoice.status === statusFilter;
-    return matchesSearch && matchesStatus;
+    const matchesLocation = locationFilter === 'all' || invoice.locationId === locationFilter;
+    return matchesSearch && matchesStatus && matchesLocation;
   });
 
   const handlePayInvoice = (invoice: Invoice) => {
@@ -127,7 +157,15 @@ const InvoicesTab = () => {
       <Card>
         <CardHeader>
           <CardTitle>Your Invoices</CardTitle>
-          <CardDescription>View and pay your medical invoices</CardDescription>
+          <CardDescription>
+            View and pay your medical invoices
+            {locationFilter !== 'all' && (
+              <span className="block mt-1 text-blue-600">
+                <MapPin className="inline h-3 w-3 mr-1" />
+                Filtered by: {getLocationById(locationFilter)?.name}
+              </span>
+            )}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
@@ -137,6 +175,7 @@ const InvoicesTab = () => {
                 <TableHead>Issue Date</TableHead>
                 <TableHead>Due Date</TableHead>
                 <TableHead>Provider</TableHead>
+                <TableHead>Location</TableHead>
                 <TableHead>Total Amount</TableHead>
                 <TableHead>Amount Due</TableHead>
                 <TableHead>Status</TableHead>
@@ -144,38 +183,47 @@ const InvoicesTab = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredInvoices.map((invoice) => (
-                <TableRow key={invoice.id}>
-                  <TableCell className="font-medium">{invoice.invoiceNumber}</TableCell>
-                  <TableCell>{new Date(invoice.issueDate).toLocaleDateString()}</TableCell>
-                  <TableCell>{new Date(invoice.dueDate).toLocaleDateString()}</TableCell>
-                  <TableCell>{invoice.provider}</TableCell>
-                  <TableCell>₹{invoice.total.toLocaleString()}</TableCell>
-                  <TableCell>₹{invoice.amountDue.toLocaleString()}</TableCell>
-                  <TableCell>
-                    <Badge className={getStatusColor(invoice.status)}>
-                      {invoice.status.toUpperCase()}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex gap-2">
-                      <Button variant="ghost" size="sm">
-                        <Eye className="w-4 h-4" />
-                      </Button>
-                      {invoice.amountDue > 0 && (
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          onClick={() => handlePayInvoice(invoice)}
-                        >
-                          <CreditCard className="w-4 h-4 mr-1" />
-                          Pay
+              {filteredInvoices.map((invoice) => {
+                const location = getLocationById(invoice.locationId || '');
+                return (
+                  <TableRow key={invoice.id}>
+                    <TableCell className="font-medium">{invoice.invoiceNumber}</TableCell>
+                    <TableCell>{new Date(invoice.issueDate).toLocaleDateString()}</TableCell>
+                    <TableCell>{new Date(invoice.dueDate).toLocaleDateString()}</TableCell>
+                    <TableCell>{invoice.provider}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        <MapPin className="h-3 w-3 text-gray-400" />
+                        <span className="text-sm">{location?.code || 'N/A'}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>₹{invoice.total.toLocaleString()}</TableCell>
+                    <TableCell>₹{invoice.amountDue.toLocaleString()}</TableCell>
+                    <TableCell>
+                      <Badge className={getStatusColor(invoice.status)}>
+                        {invoice.status.toUpperCase()}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <Button variant="ghost" size="sm">
+                          <Eye className="w-4 h-4" />
                         </Button>
-                      )}
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
+                        {invoice.amountDue > 0 && (
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => handlePayInvoice(invoice)}
+                          >
+                            <CreditCard className="w-4 h-4 mr-1" />
+                            Pay
+                          </Button>
+                        )}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </CardContent>
