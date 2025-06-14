@@ -12,6 +12,7 @@ import DoctorReportsTab from "@/components/doctor/DoctorReportsTab";
 import DoctorAnalyticsTab from "@/components/doctor/DoctorAnalyticsTab";
 import MedicalRecordsTab from "@/components/doctor/medical-records/MedicalRecordsTab";
 import CommunicationHub from "@/components/doctor/communication/CommunicationHub";
+import IntegrationCapabilities from "@/components/doctor/IntegrationCapabilities";
 
 const DoctorDashboard = () => {
   const [selectedDate] = useState(new Date().toISOString().split('T')[0]);
@@ -26,12 +27,13 @@ const DoctorDashboard = () => {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-8">
+          <TabsList className="grid w-full grid-cols-9">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="patients">Patients</TabsTrigger>
             <TabsTrigger value="appointments">Appointments</TabsTrigger>
             <TabsTrigger value="medical-records">Medical Records</TabsTrigger>
             <TabsTrigger value="communication">Communication</TabsTrigger>
+            <TabsTrigger value="integrations">Integrations</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
             <TabsTrigger value="tasks">Tasks</TabsTrigger>
             <TabsTrigger value="reports">Reports</TabsTrigger>
@@ -55,6 +57,10 @@ const DoctorDashboard = () => {
 
           <TabsContent value="communication" className="space-y-6">
             <CommunicationHub />
+          </TabsContent>
+
+          <TabsContent value="integrations" className="space-y-6">
+            <IntegrationCapabilities />
           </TabsContent>
 
           <TabsContent value="analytics" className="space-y-6">
