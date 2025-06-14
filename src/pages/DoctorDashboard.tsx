@@ -9,6 +9,7 @@ import DoctorStatsCards from "@/components/doctor/DoctorStatsCards";
 import DoctorOverviewTab from "@/components/doctor/DoctorOverviewTab";
 import DoctorTasksTab from "@/components/doctor/DoctorTasksTab";
 import DoctorReportsTab from "@/components/doctor/DoctorReportsTab";
+import MedicalRecordsTab from "@/components/doctor/medical-records/MedicalRecordsTab";
 
 const DoctorDashboard = () => {
   const [selectedDate] = useState(new Date().toISOString().split('T')[0]);
@@ -27,6 +28,7 @@ const DoctorDashboard = () => {
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="patients">Patients</TabsTrigger>
             <TabsTrigger value="appointments">Appointments</TabsTrigger>
+            <TabsTrigger value="medical-records">Medical Records</TabsTrigger>
             <TabsTrigger value="tasks">Tasks</TabsTrigger>
             <TabsTrigger value="reports">Reports</TabsTrigger>
           </TabsList>
@@ -41,6 +43,10 @@ const DoctorDashboard = () => {
 
           <TabsContent value="appointments" className="space-y-6">
             <AppointmentManagement />
+          </TabsContent>
+
+          <TabsContent value="medical-records" className="space-y-6">
+            <MedicalRecordsTab />
           </TabsContent>
 
           <TabsContent value="tasks" className="space-y-6">
