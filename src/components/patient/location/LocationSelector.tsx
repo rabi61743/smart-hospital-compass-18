@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -26,7 +25,7 @@ const LocationSelector = ({
   };
 
   const getCurrentDayHours = (operatingHours: PatientLocation['operatingHours']) => {
-    const today = new Date().toLocaleLowerCase().slice(0, 3); // Get first 3 letters of day
+    const today = new Date().toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase().slice(0, 3);
     const todayHours = operatingHours[today];
     if (!todayHours || !todayHours.isOpen) return "Closed";
     return `${todayHours.open} - ${todayHours.close}`;
