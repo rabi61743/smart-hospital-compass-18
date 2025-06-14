@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -15,6 +14,8 @@ import PayrollReportsTab from "@/components/payroll/PayrollReportsTab";
 import PayrollSettingsTab from "@/components/payroll/PayrollSettingsTab";
 import TimeTrackingTab from "@/components/payroll/TimeTrackingTab";
 import LeaveManagementTab from "@/components/payroll/LeaveManagementTab";
+import SalaryCalculatorTab from "@/components/payroll/SalaryCalculatorTab";
+import PayrollProcessingEngineTab from "@/components/payroll/PayrollProcessingEngineTab";
 
 const PayrollDashboard = () => {
   return (
@@ -38,6 +39,8 @@ const PayrollDashboard = () => {
               <TabsTrigger value="processing">Payroll Processing</TabsTrigger>
               <TabsTrigger value="reports">Reports & History</TabsTrigger>
               <TabsTrigger value="settings">Settings</TabsTrigger>
+              <TabsTrigger value="salary-calculator">Salary Calculator</TabsTrigger>
+              <TabsTrigger value="processing-engine">Payroll Processing Engine</TabsTrigger>
             </TabsList>
             <ScrollBar orientation="horizontal" />
           </ScrollArea>
@@ -84,6 +87,14 @@ const PayrollDashboard = () => {
 
           <TabsContent value="settings">
             <PayrollSettingsTab />
+          </TabsContent>
+
+          <TabsContent value="salary-calculator">
+            <SalaryCalculatorTab />
+          </TabsContent>
+
+          <TabsContent value="processing-engine">
+            <PayrollProcessingEngineTab />
           </TabsContent>
         </Tabs>
       </div>
