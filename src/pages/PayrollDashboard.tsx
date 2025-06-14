@@ -16,6 +16,7 @@ import TimeTrackingTab from "@/components/payroll/TimeTrackingTab";
 import LeaveManagementTab from "@/components/payroll/LeaveManagementTab";
 import SalaryCalculatorTab from "@/components/payroll/SalaryCalculatorTab";
 import PayrollProcessingEngineTab from "@/components/payroll/PayrollProcessingEngineTab";
+import PayslipGenerationTab from "@/components/payroll/PayslipGenerationTab";
 
 const PayrollDashboard = () => {
   return (
@@ -41,6 +42,7 @@ const PayrollDashboard = () => {
               <TabsTrigger value="settings">Settings</TabsTrigger>
               <TabsTrigger value="salary-calculator">Salary Calculator</TabsTrigger>
               <TabsTrigger value="processing-engine">Payroll Processing Engine</TabsTrigger>
+              <TabsTrigger value="payslip-generation">Payslip Generation</TabsTrigger>
             </TabsList>
             <ScrollBar orientation="horizontal" />
           </ScrollArea>
@@ -95,6 +97,10 @@ const PayrollDashboard = () => {
 
           <TabsContent value="processing-engine">
             <PayrollProcessingEngineTab />
+          </TabsContent>
+
+          <TabsContent value="payslip-generation">
+            <PayslipGenerationTab />
           </TabsContent>
         </Tabs>
       </div>
