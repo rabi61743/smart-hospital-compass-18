@@ -5,15 +5,17 @@ import ElectronicHealthRecords from './ElectronicHealthRecords';
 import PrescriptionWriter from './PrescriptionWriter';
 import MedicalImagingViewer from './MedicalImagingViewer';
 import ClinicalNotesTemplates from './ClinicalNotesTemplates';
+import ClinicalDecisionSupport from './ClinicalDecisionSupport';
 
 const MedicalRecordsTab = () => {
   return (
     <Tabs defaultValue="ehr" className="space-y-6">
-      <TabsList className="grid w-full grid-cols-4">
+      <TabsList className="grid w-full grid-cols-5">
         <TabsTrigger value="ehr">EHR</TabsTrigger>
         <TabsTrigger value="prescriptions">Prescriptions</TabsTrigger>
         <TabsTrigger value="imaging">Medical Imaging</TabsTrigger>
         <TabsTrigger value="notes">Clinical Notes</TabsTrigger>
+        <TabsTrigger value="decision-support">Clinical Support</TabsTrigger>
       </TabsList>
 
       <TabsContent value="ehr" className="space-y-6">
@@ -30,6 +32,10 @@ const MedicalRecordsTab = () => {
 
       <TabsContent value="notes" className="space-y-6">
         <ClinicalNotesTemplates />
+      </TabsContent>
+
+      <TabsContent value="decision-support" className="space-y-6">
+        <ClinicalDecisionSupport />
       </TabsContent>
     </Tabs>
   );
