@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -6,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UseFormReturn } from "react-hook-form";
 import { CommissionRule } from "@/types/commission";
 import { CommissionRuleFormData } from "@/schemas/commissionValidation";
-import { AdvancedConditions, ConditionRule } from "@/types/conditions";
+import { AdvancedConditions, ConditionRule, TimeBasedRate } from "@/types/conditions";
 import AdvancedConditionsBuilder from "./AdvancedConditionsBuilder";
 import RealtimeCommissionPreview from "./RealtimeCommissionPreview";
 import BasicConfigurationForm from "./form/BasicConfigurationForm";
@@ -42,7 +43,7 @@ const CommissionRuleForm = ({ form, editingRule, onSubmit, onCancel }: Commissio
     form.setValue("advancedConditions", conditions);
   };
 
-  const handleTimeBasedRatesChange = (rates: any[]) => {
+  const handleTimeBasedRatesChange = (rates: TimeBasedRate[]) => {
     form.setValue("timeBasedRates", rates);
   };
 
@@ -72,6 +73,17 @@ const CommissionRuleForm = ({ form, editingRule, onSubmit, onCancel }: Commissio
       logic: formConditions?.logic || 'AND',
       conditions: normalizedConditions
     };
+  };
+
+  // Ensure we always have valid TimeBasedRate objects
+  const getTimeBasedRates = (): TimeBasedRate[] => {
+    const formRates = watchTimeBasedRates || [];
+    return formRates.map((rate, index) => ({
+      id: rate.id || `time-rate-${Date.now()}-${index}`,
+      name: rate.name || `Time Rate ${index + 1}`,
+      rateMultiplier: rate.rateMultiplier || 1.0,
+      conditions: rate.conditions || {}
+    }));
   };
 
   return (
@@ -132,7 +144,7 @@ const CommissionRuleForm = ({ form, editingRule, onSubmit, onCancel }: Commissio
                         <FormItem>
                           <FormControl>
                             <TimeBasedRatesBuilder
-                              timeBasedRates={watchTimeBasedRates || []}
+                              timeBasedRates={getTimeBasedRates()}
                               onChange={handleTimeBasedRatesChange}
                             />
                           </FormControl>
