@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +6,7 @@ import CommissionSummaryCards from "@/components/CommissionSummaryCards";
 import DoctorCommissionsTable from "@/components/DoctorCommissionsTable";
 import AgentCommissionsTable from "@/components/AgentCommissionsTable";
 import LabCommissionsTable from "@/components/LabCommissionsTable";
-import PharmacyCommissionsTable from "@/components/PharmacyCommissionsTable";
+import PharmacyReportsTab from "@/components/pharmacy/PharmacyReportsTab";
 import SurgeryCommissionsPlaceholder from "@/components/SurgeryCommissionsPlaceholder";
 import CommissionRulesEngine from "@/components/CommissionRulesEngine";
 import RealtimeCommissionDashboard from "@/components/RealtimeCommissionDashboard";
@@ -124,7 +123,7 @@ const CommissionTracking = () => {
           </TabsContent>
 
           <TabsContent value="pharmacy" className="space-y-6">
-            <PharmacyCommissionsTable pharmacyCommissions={pharmacyCommissions} />
+            <PharmacyReportsTab />
           </TabsContent>
 
           <TabsContent value="surgery" className="space-y-6">
