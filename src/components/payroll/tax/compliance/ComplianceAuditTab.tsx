@@ -32,12 +32,12 @@ const ComplianceAuditTab = ({ auditData }: ComplianceAuditTabProps) => {
     }
   };
 
-  // Mock audit findings data
+  // Mock audit findings data with correct severity types
   const recentFindings = [
     {
       id: 'AF001',
       category: 'Documentation',
-      severity: 'medium' as const,
+      severity: 'high' as const,
       description: 'Overtime register missing for November 2024',
       status: 'in_progress' as const,
       dueDate: '2025-01-15'
