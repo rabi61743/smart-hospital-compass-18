@@ -9,6 +9,7 @@ import { Download, FileText, BarChart3 } from "lucide-react";
 import LabTestCategoryBreakdown from './LabTestCategoryBreakdown';
 import LabCommissionSummary from './LabCommissionSummary';
 import LabPerformanceTrends from './LabPerformanceTrends';
+import LabReferralTracking from './LabReferralTracking';
 
 const LabReportsTab = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('2024-01');
@@ -80,10 +81,11 @@ const LabReportsTab = () => {
 
       {/* Report Tabs */}
       <Tabs defaultValue="breakdown" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="breakdown">Category Breakdown</TabsTrigger>
           <TabsTrigger value="summary">Commission Summary</TabsTrigger>
           <TabsTrigger value="trends">Performance Trends</TabsTrigger>
+          <TabsTrigger value="referrals">Referral Tracking</TabsTrigger>
         </TabsList>
 
         <TabsContent value="breakdown">
@@ -102,6 +104,13 @@ const LabReportsTab = () => {
 
         <TabsContent value="trends">
           <LabPerformanceTrends 
+            period={selectedPeriod} 
+            selectedCategory={selectedCategory} 
+          />
+        </TabsContent>
+
+        <TabsContent value="referrals">
+          <LabReferralTracking 
             period={selectedPeriod} 
             selectedCategory={selectedCategory} 
           />
