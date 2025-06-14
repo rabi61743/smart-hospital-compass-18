@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -5,7 +6,7 @@ import CommissionTrackingHeader from "@/components/CommissionTrackingHeader";
 import CommissionSummaryCards from "@/components/CommissionSummaryCards";
 import DoctorCommissionsTable from "@/components/DoctorCommissionsTable";
 import AgentCommissionsTable from "@/components/AgentCommissionsTable";
-import LabCommissionsTable from "@/components/LabCommissionsTable";
+import LabCommissionsTable from "@/components/Lab";
 import PharmacyCommissionsTable from "@/components/PharmacyCommissionsTable";
 import SurgeryCommissionsPlaceholder from "@/components/SurgeryCommissionsPlaceholder";
 import CommissionRulesEngine from "@/components/CommissionRulesEngine";
@@ -13,6 +14,7 @@ import RealtimeCommissionDashboard from "@/components/RealtimeCommissionDashboar
 import CommissionApprovalWorkflow from "@/components/CommissionApprovalWorkflow";
 import PatientTransactionsTab from "@/components/PatientTransactionsTab";
 import CommissionReconciliationTab from "@/components/CommissionReconciliationTab";
+import CommissionReportsTab from "@/components/CommissionReportsTab";
 import MultiLocationDashboard from "@/components/location/MultiLocationDashboard";
 import LocationCommissionRulesTab from "@/components/location/LocationCommissionRulesTab";
 import { calculateDoctorCommissions, getCommissionSummary } from "@/utils/mockCommissionCalculator";
@@ -72,8 +74,9 @@ const CommissionTracking = () => {
 
         {/* Commission Tracking Tabs */}
         <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-12">
+          <TabsList className="grid w-full grid-cols-13">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+            <TabsTrigger value="reports">Reports</TabsTrigger>
             <TabsTrigger value="locations">Locations</TabsTrigger>
             <TabsTrigger value="approval">Approval</TabsTrigger>
             <TabsTrigger value="reconciliation">Reconciliation</TabsTrigger>
@@ -89,6 +92,10 @@ const CommissionTracking = () => {
 
           <TabsContent value="dashboard" className="space-y-6">
             <RealtimeCommissionDashboard />
+          </TabsContent>
+
+          <TabsContent value="reports" className="space-y-6">
+            <CommissionReportsTab />
           </TabsContent>
 
           <TabsContent value="locations" className="space-y-6">
