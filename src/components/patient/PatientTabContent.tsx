@@ -8,6 +8,7 @@ import PrescriptionManagement from "./PrescriptionManagement";
 import PatientBillingSummary from "./PatientBillingSummary";
 import HealthMetricsTracking from "./HealthMetricsTracking";
 import ImmunizationRecords from "./ImmunizationRecords";
+import FamilyMedicalHistory from "./FamilyMedicalHistory";
 
 const PatientTabContent = () => {
   return (
@@ -42,6 +43,10 @@ const PatientTabContent = () => {
 
       <TabsContent value="immunizations" className="space-y-6">
         <ImmunizationRecords />
+      </TabsContent>
+
+      <TabsContent value="family-history" className="space-y-6">
+        <FamilyMedicalHistory />
       </TabsContent>
     </>
   );

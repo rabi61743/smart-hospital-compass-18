@@ -18,7 +18,7 @@ const PatientPortal = () => {
         <PatientQuickActions />
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-9">
+          <TabsList className="grid w-full grid-cols-10">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="appointments">Appointments</TabsTrigger>
             <TabsTrigger value="book-appointment">Book Appointment</TabsTrigger>
@@ -27,6 +27,7 @@ const PatientPortal = () => {
             <TabsTrigger value="prescriptions">Prescriptions</TabsTrigger>
             <TabsTrigger value="health-metrics">Health Metrics</TabsTrigger>
             <TabsTrigger value="immunizations">Immunizations</TabsTrigger>
+            <TabsTrigger value="family-history">Family History</TabsTrigger>
             <TabsTrigger value="billing">Billing</TabsTrigger>
           </TabsList>
 
