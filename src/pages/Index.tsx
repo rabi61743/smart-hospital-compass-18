@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -67,6 +66,9 @@ const Index = () => {
               <Link to="/pharmacy-dashboard">
                 <Button variant="outline">Pharmacy Portal</Button>
               </Link>
+              <Link to="/finance-dashboard">
+                <Button variant="outline">Finance Portal</Button>
+              </Link>
               <Link to="/commission-tracking">
                 <Button variant="outline">Commissions</Button>
               </Link>
@@ -106,6 +108,11 @@ const Index = () => {
             <Link to="/pharmacy-dashboard">
               <Button variant="outline" size="lg" className="w-full sm:w-auto">
                 Pharmacy Portal
+              </Button>
+            </Link>
+            <Link to="/finance-dashboard">
+              <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                Finance Portal
               </Button>
             </Link>
             <Link to="/commission-tracking">

@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import PatientPortal from "./pages/PatientPortal";
 import DoctorDashboard from "./pages/DoctorDashboard";
 import PharmacyDashboard from "./pages/PharmacyDashboard";
+import FinanceDashboard from "./pages/FinanceDashboard";
 import PatientRegistration from "./pages/PatientRegistration";
 import PatientHistory from "./pages/PatientHistory";
 import LabResults from "./pages/LabResults";
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/patient-portal" element={<PatientPortal />} />
           <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
           <Route path="/pharmacy-dashboard" element={<PharmacyDashboard />} />
+          <Route path="/finance-dashboard" element={<FinanceDashboard />} />
           <Route path="/patient-registration" element={<PatientRegistration />} />
           <Route path="/patient-history" element={<PatientHistory />} />
           <Route path="/lab-results" element={<LabResults />} />
