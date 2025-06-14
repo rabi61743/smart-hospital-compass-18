@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Users, Heart, AlertTriangle, Plus, Edit, Trash2, DNA, Shield } from "lucide-react";
+import { Users, Heart, AlertTriangle, Plus, Edit, Trash2, Dna, Shield } from "lucide-react";
 
 interface FamilyMember {
   id: string;
@@ -199,7 +198,7 @@ const FamilyMedicalHistory = () => {
                 <p className="text-sm text-muted-foreground">Genetic Risks</p>
                 <p className="text-2xl font-bold">{geneticRisks.length}</p>
               </div>
-              <DNA className="h-8 w-8 text-purple-600" />
+              <Dna className="h-8 w-8 text-purple-600" />
             </div>
           </CardContent>
         </Card>
