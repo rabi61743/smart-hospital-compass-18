@@ -1,6 +1,6 @@
-
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import PayrollHeader from "@/components/payroll/PayrollHeader";
 import PayrollStatsCards from "@/components/payroll/PayrollStatsCards";
 import EmployeeManagementTab from "@/components/payroll/EmployeeManagementTab";
@@ -22,17 +22,20 @@ const PayrollDashboard = () => {
         <PayrollStatsCards />
 
         <Tabs defaultValue="employees" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-9">
-            <TabsTrigger value="employees">Employee Management</TabsTrigger>
-            <TabsTrigger value="departments">Department Management</TabsTrigger>
-            <TabsTrigger value="positions">Position Management</TabsTrigger>
-            <TabsTrigger value="cost-centers">Cost Centers</TabsTrigger>
-            <TabsTrigger value="org-chart">Organizational Chart</TabsTrigger>
-            <TabsTrigger value="onboarding">Onboarding/Offboarding</TabsTrigger>
-            <TabsTrigger value="processing">Payroll Processing</TabsTrigger>
-            <TabsTrigger value="reports">Reports & History</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
-          </TabsList>
+          <ScrollArea className="w-full whitespace-nowrap">
+            <TabsList className="inline-flex w-max min-w-full">
+              <TabsTrigger value="employees">Employee Management</TabsTrigger>
+              <TabsTrigger value="departments">Department Management</TabsTrigger>
+              <TabsTrigger value="positions">Position Management</TabsTrigger>
+              <TabsTrigger value="cost-centers">Cost Centers</TabsTrigger>
+              <TabsTrigger value="org-chart">Organizational Chart</TabsTrigger>
+              <TabsTrigger value="onboarding">Onboarding/Offboarding</TabsTrigger>
+              <TabsTrigger value="processing">Payroll Processing</TabsTrigger>
+              <TabsTrigger value="reports">Reports & History</TabsTrigger>
+              <TabsTrigger value="settings">Settings</TabsTrigger>
+            </TabsList>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
 
           <TabsContent value="employees">
             <EmployeeManagementTab />
