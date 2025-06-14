@@ -74,7 +74,7 @@ const CommissionTracking = () => {
 
         {/* Commission Tracking Tabs */}
         <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-13">
+          <TabsList className="w-full justify-start overflow-x-auto">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="reports">Reports</TabsTrigger>
             <TabsTrigger value="locations">Locations</TabsTrigger>
