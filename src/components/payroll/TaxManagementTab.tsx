@@ -2,12 +2,13 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calculator, FileText, AlertTriangle, CheckCircle } from "lucide-react";
+import { Calculator, FileText, AlertTriangle, CheckCircle, Shield } from "lucide-react";
 import TaxCalculationsTab from './tax/TaxCalculationsTab';
 import TaxFilingTab from './tax/TaxFilingTab';
 import TaxReportsTab from './tax/TaxReportsTab';
 import TaxComplianceTab from './tax/TaxComplianceTab';
 import TaxConfigurationTab from './tax/TaxConfigurationTab';
+import StatutoryComplianceTab from './tax/StatutoryComplianceTab';
 import { TaxFiling, TaxCompliance } from '@/types/taxManagement';
 
 const TaxManagementTab = () => {
@@ -54,7 +55,7 @@ const TaxManagementTab = () => {
             Tax Management
           </h3>
           <p className="text-sm text-muted-foreground">
-            Manage income tax, PF, ESI, and professional tax calculations and compliance
+            Manage income tax, PF, ESI, professional tax calculations, compliance, and statutory requirements
           </p>
         </div>
       </div>
@@ -108,11 +109,12 @@ const TaxManagementTab = () => {
 
       {/* Main Tabs */}
       <Tabs defaultValue="calculations" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="calculations">Tax Calculations</TabsTrigger>
           <TabsTrigger value="filing">Tax Filing</TabsTrigger>
           <TabsTrigger value="reports">Reports</TabsTrigger>
           <TabsTrigger value="compliance">Compliance</TabsTrigger>
+          <TabsTrigger value="statutory">Statutory</TabsTrigger>
           <TabsTrigger value="configuration">Configuration</TabsTrigger>
         </TabsList>
 
@@ -130,6 +132,10 @@ const TaxManagementTab = () => {
 
         <TabsContent value="compliance">
           <TaxComplianceTab complianceItems={complianceItems} />
+        </TabsContent>
+
+        <TabsContent value="statutory">
+          <StatutoryComplianceTab />
         </TabsContent>
 
         <TabsContent value="configuration">
