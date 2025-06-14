@@ -153,7 +153,7 @@ FOLLOW-UP:
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center">
-            <FileTemplate className="h-5 w-5 mr-2" />
+            <FileText className="h-5 w-5 mr-2" />
             Clinical Notes Templates
           </CardTitle>
           <CardDescription>Create clinical notes using standardized templates</CardDescription>
@@ -167,7 +167,7 @@ FOLLOW-UP:
             </TabsList>
 
             <TabsContent value="templates" className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="flex flex-col gap-4">
                 {templates.map((template) => (
                   <Card key={template.id} className="hover:shadow-md transition-shadow">
                     <CardHeader className="pb-3">
@@ -222,7 +222,7 @@ FOLLOW-UP:
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="patient">Patient</Label>
                       <Input
@@ -261,7 +261,7 @@ FOLLOW-UP:
             </TabsContent>
 
             <TabsContent value="recent" className="space-y-4">
-              <div className="space-y-4">
+              <div className="flex flex-col gap-4">
                 {recentNotes.map((note) => (
                   <Card key={note.id} className="hover:shadow-md transition-shadow">
                     <CardContent className="p-4">

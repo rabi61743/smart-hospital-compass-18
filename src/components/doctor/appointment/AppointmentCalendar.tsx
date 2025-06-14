@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -208,7 +207,7 @@ const AppointmentCalendar = ({ onScheduleAppointment, onViewAppointment }: Appoi
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="flex flex-col gap-6">
         {/* Mini Calendar */}
         <Card>
           <CardHeader className="pb-3">
@@ -225,7 +224,7 @@ const AppointmentCalendar = ({ onScheduleAppointment, onViewAppointment }: Appoi
         </Card>
 
         {/* Main Calendar View */}
-        <Card className="lg:col-span-3">
+        <Card>
           <CardHeader>
             <CardTitle>Schedule</CardTitle>
             <CardDescription>
