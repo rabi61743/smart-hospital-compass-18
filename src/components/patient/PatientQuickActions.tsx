@@ -28,11 +28,11 @@ const PatientQuickActions = () => {
           </CardHeader>
         </Card>
       </Link>
-      <Link to="/patient-registration">
+      <Link to="/prescription-management">
         <Card className="hover:shadow-lg transition-shadow cursor-pointer">
           <CardHeader className="text-center">
             <Users className="h-8 w-8 text-purple-600 mx-auto mb-2" />
-            <CardTitle className="text-lg">Register Family</CardTitle>
+            <CardTitle className="text-lg">Prescriptions</CardTitle>
           </CardHeader>
         </Card>
       </Link>

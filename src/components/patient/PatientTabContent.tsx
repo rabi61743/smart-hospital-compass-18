@@ -2,7 +2,7 @@
 import { TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Heart, FlaskConical, FileText } from "lucide-react";
+import { Heart, FlaskConical, FileText, Pill } from "lucide-react";
 import { Link } from "react-router-dom";
 import AppointmentManagement from "./AppointmentManagement";
 import AppointmentBooking from "./AppointmentBooking";
@@ -51,6 +51,25 @@ const PatientTabContent = () => {
               <p className="text-gray-600 mb-4">Instant access to test results and imaging reports</p>
               <Link to="/lab-results">
                 <Button>View Lab Results</Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+      </TabsContent>
+
+      <TabsContent value="prescriptions" className="space-y-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Prescription Management</CardTitle>
+            <CardDescription>Track medications and manage refill requests</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="text-center py-12">
+              <Pill className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">Prescription Management</h3>
+              <p className="text-gray-600 mb-4">Manage your medications and request refills easily</p>
+              <Link to="/prescription-management">
+                <Button>Manage Prescriptions</Button>
               </Link>
             </div>
           </CardContent>

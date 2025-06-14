@@ -1,7 +1,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Hospital, Bell, Settings, FileText, UserPlus, FlaskConical } from "lucide-react";
+import { Hospital, Bell, Settings, FileText, UserPlus, FlaskConical, Pill } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const PatientPortalHeader = () => {
@@ -27,6 +27,12 @@ const PatientPortalHeader = () => {
               <Button variant="outline" size="sm">
                 <FlaskConical className="h-4 w-4 mr-2" />
                 Lab Results
+              </Button>
+            </Link>
+            <Link to="/prescription-management">
+              <Button variant="outline" size="sm">
+                <Pill className="h-4 w-4 mr-2" />
+                Prescriptions
               </Button>
             </Link>
             <Link to="/patient-registration">
