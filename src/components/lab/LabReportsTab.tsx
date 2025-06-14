@@ -5,15 +5,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon, Download, FileText, BarChart3, TrendingUp, Calendar as CalendarIcon2 } from "lucide-react";
+import { Download, FileText, BarChart3, Filter } from "lucide-react";
 import { format } from "date-fns";
-import { cn } from "@/lib/utils";
 import LabTestCategoryBreakdown from './LabTestCategoryBreakdown';
 import LabCommissionSummary from './LabCommissionSummary';
 import LabPerformanceTrends from './LabPerformanceTrends';
 import ComparativeAnalysisChart from './ComparativeAnalysisChart';
+import CustomDateRangeFilter from './CustomDateRangeFilter';
 import { useCommissionRules } from '@/hooks/useCommissionRules';
 
 const LabReportsTab = () => {
@@ -22,6 +20,7 @@ const LabReportsTab = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [comparisonType, setComparisonType] = useState('month-over-month');
   const [reportType, setReportType] = useState('summary');
+  const [showCustomDateRange, setShowCustomDateRange] = useState(false);
   const { activeRules } = useCommissionRules();
 
   const categories = [
@@ -80,6 +79,11 @@ Microbiology,156,"₹7,80,000","₹93,600",12%
 Biochemistry,98,"₹4,90,000","₹58,800",12%`;
   };
 
+  const resetDateRange = () => {
+    setDateFrom(undefined);
+    setDateTo(undefined);
+  };
+
   return (
     <div className="space-y-6">
       {/* Header and Filters */}
@@ -94,124 +98,102 @@ Biochemistry,98,"₹4,90,000","₹58,800",12%`;
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-            {/* Date From */}
-            <div className="space-y-2">
-              <Label>From Date</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !dateFrom && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {dateFrom ? format(dateFrom, "PPP") : "Select date"}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={dateFrom}
-                    onSelect={setDateFrom}
-                    initialFocus
-                    className="pointer-events-auto"
-                  />
-                </PopoverContent>
-              </Popover>
+          <div className="space-y-4">
+            {/* Basic Filters */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {/* Category Filter */}
+              <div className="space-y-2">
+                <Label>Test Category</Label>
+                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map(category => (
+                      <SelectItem key={category.value} value={category.value}>
+                        {category.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Comparison Type */}
+              <div className="space-y-2">
+                <Label>Comparison Type</Label>
+                <Select value={comparisonType} onValueChange={setComparisonType}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {comparisonTypes.map(type => (
+                      <SelectItem key={type.value} value={type.value}>
+                        {type.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Custom Date Range Toggle */}
+              <div className="space-y-2">
+                <Label>Date Filter</Label>
+                <Button
+                  variant={showCustomDateRange ? "default" : "outline"}
+                  onClick={() => setShowCustomDateRange(!showCustomDateRange)}
+                  className="w-full"
+                >
+                  <Filter className="h-4 w-4 mr-2" />
+                  Custom Date Range
+                </Button>
+              </div>
             </div>
 
-            {/* Date To */}
-            <div className="space-y-2">
-              <Label>To Date</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !dateTo && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {dateTo ? format(dateTo, "PPP") : "Select date"}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={dateTo}
-                    onSelect={setDateTo}
-                    initialFocus
-                    className="pointer-events-auto"
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
+            {/* Custom Date Range Filter */}
+            {showCustomDateRange && (
+              <div className="border rounded-lg p-4 bg-muted/20">
+                <CustomDateRangeFilter
+                  dateFrom={dateFrom}
+                  dateTo={dateTo}
+                  onDateFromChange={setDateFrom}
+                  onDateToChange={setDateTo}
+                  onReset={resetDateRange}
+                />
+              </div>
+            )}
 
-            {/* Category Filter */}
-            <div className="space-y-2">
-              <Label>Test Category</Label>
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {categories.map(category => (
-                    <SelectItem key={category.value} value={category.value}>
-                      {category.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Comparison Type */}
-            <div className="space-y-2">
-              <Label>Comparison Type</Label>
-              <Select value={comparisonType} onValueChange={setComparisonType}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {comparisonTypes.map(type => (
-                    <SelectItem key={type.value} value={type.value}>
-                      {type.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <div className="flex justify-between items-center">
-            <div className="flex gap-2">
-              <Button 
-                variant="outline" 
-                onClick={handleExportPDF}
-                className="flex items-center gap-2"
-              >
-                <FileText className="h-4 w-4" />
-                Export PDF
-              </Button>
-              <Button 
-                variant="outline" 
-                onClick={handleExportExcel}
-                className="flex items-center gap-2"
-              >
-                <Download className="h-4 w-4" />
-                Export Excel
-              </Button>
-            </div>
-            
-            <div className="text-sm text-muted-foreground">
-              {dateFrom && dateTo ? (
-                `${format(dateFrom, "MMM dd")} - ${format(dateTo, "MMM dd, yyyy")}`
-              ) : (
-                "Select date range for detailed analysis"
-              )}
+            {/* Export Buttons and Date Display */}
+            <div className="flex justify-between items-center">
+              <div className="flex gap-2">
+                <Button 
+                  variant="outline" 
+                  onClick={handleExportPDF}
+                  className="flex items-center gap-2"
+                >
+                  <FileText className="h-4 w-4" />
+                  Export PDF
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={handleExportExcel}
+                  className="flex items-center gap-2"
+                >
+                  <Download className="h-4 w-4" />
+                  Export Excel
+                </Button>
+              </div>
+              
+              <div className="text-sm text-muted-foreground">
+                {dateFrom && dateTo ? (
+                  `${format(dateFrom, "MMM dd")} - ${format(dateTo, "MMM dd, yyyy")}`
+                ) : dateFrom ? (
+                  `From ${format(dateFrom, "MMM dd, yyyy")}`
+                ) : dateTo ? (
+                  `Until ${format(dateTo, "MMM dd, yyyy")}`
+                ) : (
+                  "All time data"
+                )}
+              </div>
             </div>
           </div>
         </CardContent>
