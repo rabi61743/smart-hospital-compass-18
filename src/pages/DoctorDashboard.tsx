@@ -9,6 +9,7 @@ import DoctorStatsCards from "@/components/doctor/DoctorStatsCards";
 import DoctorOverviewTab from "@/components/doctor/DoctorOverviewTab";
 import DoctorTasksTab from "@/components/doctor/DoctorTasksTab";
 import DoctorReportsTab from "@/components/doctor/DoctorReportsTab";
+import DoctorAnalyticsTab from "@/components/doctor/DoctorAnalyticsTab";
 import MedicalRecordsTab from "@/components/doctor/medical-records/MedicalRecordsTab";
 import CommunicationHub from "@/components/doctor/communication/CommunicationHub";
 
@@ -25,12 +26,13 @@ const DoctorDashboard = () => {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-7">
+          <TabsList className="grid w-full grid-cols-8">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="patients">Patients</TabsTrigger>
             <TabsTrigger value="appointments">Appointments</TabsTrigger>
             <TabsTrigger value="medical-records">Medical Records</TabsTrigger>
             <TabsTrigger value="communication">Communication</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
             <TabsTrigger value="tasks">Tasks</TabsTrigger>
             <TabsTrigger value="reports">Reports</TabsTrigger>
           </TabsList>
@@ -53,6 +55,10 @@ const DoctorDashboard = () => {
 
           <TabsContent value="communication" className="space-y-6">
             <CommunicationHub />
+          </TabsContent>
+
+          <TabsContent value="analytics" className="space-y-6">
+            <DoctorAnalyticsTab />
           </TabsContent>
 
           <TabsContent value="tasks" className="space-y-6">
