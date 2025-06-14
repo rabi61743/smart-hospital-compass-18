@@ -60,6 +60,9 @@ const Index = () => {
               <Link to="/dashboard">
                 <Button variant="outline">Dashboard</Button>
               </Link>
+              <Link to="/doctor-dashboard">
+                <Button variant="outline">Doctor Portal</Button>
+              </Link>
               <Link to="/commission-tracking">
                 <Button variant="outline">Commissions</Button>
               </Link>
@@ -89,6 +92,11 @@ const Index = () => {
             <Link to="/dashboard">
               <Button size="lg" className="w-full sm:w-auto">
                 Explore Dashboard
+              </Button>
+            </Link>
+            <Link to="/doctor-dashboard">
+              <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                Doctor Portal
               </Button>
             </Link>
             <Link to="/commission-tracking">
