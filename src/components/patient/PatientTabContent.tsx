@@ -12,6 +12,7 @@ import HealthMetricsTracking from "./HealthMetricsTracking";
 import ImmunizationRecords from "./ImmunizationRecords";
 import FamilyMedicalHistory from "./FamilyMedicalHistory";
 import PatientMessaging from "./messaging/PatientMessaging";
+import InsuranceManagement from "./InsuranceManagement";
 
 const PatientTabContent = () => {
   return (
@@ -62,6 +63,10 @@ const PatientTabContent = () => {
 
       <TabsContent value="messaging" className="space-y-6">
         <PatientMessaging />
+      </TabsContent>
+
+      <TabsContent value="insurance" className="space-y-6">
+        <InsuranceManagement />
       </TabsContent>
     </>
   );

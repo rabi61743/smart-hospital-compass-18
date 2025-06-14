@@ -1,5 +1,3 @@
-
-
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import PatientPortalHeader from "@/components/patient/PatientPortalHeader";
@@ -34,6 +32,7 @@ const PatientPortal = () => {
               <TabsTrigger value="immunizations" className="text-xs px-3 py-2 whitespace-nowrap">Immunizations</TabsTrigger>
               <TabsTrigger value="family-history" className="text-xs px-3 py-2 whitespace-nowrap">Family History</TabsTrigger>
               <TabsTrigger value="messaging" className="text-xs px-3 py-2 whitespace-nowrap">Messages</TabsTrigger>
+              <TabsTrigger value="insurance" className="text-xs px-3 py-2 whitespace-nowrap">Insurance</TabsTrigger>
               <TabsTrigger value="billing" className="text-xs px-3 py-2 whitespace-nowrap">Billing</TabsTrigger>
             </TabsList>
             <ScrollBar orientation="horizontal" />
@@ -55,4 +54,3 @@ const PatientPortal = () => {
 };
 
 export default PatientPortal;
-
