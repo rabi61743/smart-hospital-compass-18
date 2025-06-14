@@ -71,48 +71,48 @@ const HealthMetricsTracking = () => {
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto space-y-4 px-2 sm:px-4">
+    <div className="w-full max-w-5xl mx-auto space-y-3 px-1 sm:px-3">
       {/* Header Section */}
       <Card className="bg-gradient-to-r from-blue-50 to-green-50 border-0 shadow-sm">
-        <CardHeader className="pb-3 px-3 sm:px-6">
-          <CardTitle className="text-lg sm:text-xl font-bold text-gray-900">Health Metrics Dashboard</CardTitle>
-          <CardDescription className="text-sm text-gray-600">
-            Track and monitor your vital health measurements over time
+        <CardHeader className="pb-2 px-2 sm:px-4">
+          <CardTitle className="text-base sm:text-lg font-bold text-gray-900">Health Metrics Dashboard</CardTitle>
+          <CardDescription className="text-xs sm:text-sm text-gray-600">
+            Track and monitor your vital health measurements
           </CardDescription>
         </CardHeader>
       </Card>
 
       {/* Overview Cards */}
-      <div className="w-full">
+      <div className="w-full min-w-0">
         <HealthMetricsOverview healthMetrics={healthMetrics} />
       </div>
 
       {/* Tabs Section */}
-      <Card className="shadow-sm w-full">
-        <CardContent className="p-2 sm:p-4">
-          <Tabs defaultValue="overview" className="space-y-3 sm:space-y-4">
-            <div className="overflow-x-auto">
-              <TabsList className="grid w-full grid-cols-4 bg-gray-50 min-w-max">
-                <TabsTrigger value="overview" className="text-xs font-medium whitespace-nowrap px-2 py-1">Charts</TabsTrigger>
-                <TabsTrigger value="add-metric" className="text-xs font-medium whitespace-nowrap px-2 py-1">Add Reading</TabsTrigger>
-                <TabsTrigger value="history" className="text-xs font-medium whitespace-nowrap px-2 py-1">History</TabsTrigger>
-                <TabsTrigger value="trends" className="text-xs font-medium whitespace-nowrap px-2 py-1">Trends</TabsTrigger>
+      <Card className="shadow-sm w-full min-w-0">
+        <CardContent className="p-1 sm:p-3">
+          <Tabs defaultValue="overview" className="space-y-2 sm:space-y-3">
+            <div className="w-full overflow-x-auto">
+              <TabsList className="grid w-full grid-cols-4 bg-gray-50 h-8">
+                <TabsTrigger value="overview" className="text-xs font-medium px-1 py-1">Charts</TabsTrigger>
+                <TabsTrigger value="add-metric" className="text-xs font-medium px-1 py-1">Add</TabsTrigger>
+                <TabsTrigger value="history" className="text-xs font-medium px-1 py-1">History</TabsTrigger>
+                <TabsTrigger value="trends" className="text-xs font-medium px-1 py-1">Trends</TabsTrigger>
               </TabsList>
             </div>
 
-            <TabsContent value="overview" className="space-y-3 sm:space-y-4 mt-3 sm:mt-4">
+            <TabsContent value="overview" className="space-y-2 sm:space-y-3 mt-2 sm:mt-3">
               <HealthMetricsCharts healthMetrics={healthMetrics} />
             </TabsContent>
 
-            <TabsContent value="add-metric" className="space-y-3 sm:space-y-4 mt-3 sm:mt-4">
+            <TabsContent value="add-metric" className="space-y-2 sm:space-y-3 mt-2 sm:mt-3">
               <AddMetricForm onAddMetric={handleAddMetric} />
             </TabsContent>
 
-            <TabsContent value="history" className="space-y-3 sm:space-y-4 mt-3 sm:mt-4">
+            <TabsContent value="history" className="space-y-2 sm:space-y-3 mt-2 sm:mt-3">
               <HealthMetricsHistory healthMetrics={healthMetrics} />
             </TabsContent>
 
-            <TabsContent value="trends" className="space-y-3 sm:space-y-4 mt-3 sm:mt-4">
+            <TabsContent value="trends" className="space-y-2 sm:space-y-3 mt-2 sm:mt-3">
               <HealthMetricsCharts healthMetrics={healthMetrics} showTrends={true} />
             </TabsContent>
           </Tabs>
