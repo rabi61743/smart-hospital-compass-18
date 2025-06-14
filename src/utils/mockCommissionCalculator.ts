@@ -1,4 +1,3 @@
-
 import { mockTransactions, MockTransaction } from '@/data/mockPatientData';
 
 export interface CalculatedCommission {
@@ -16,14 +15,30 @@ export interface CalculatedCommission {
   transactions: MockTransaction[];
 }
 
-// Commission rates by department
+// Commission rates by department with proper typing
+interface DoctorCommissionRates {
+  consultation: number;
+  surgery: number;
+  base: number;
+}
+
+interface LabCommissionRates {
+  test: number;
+  base: number;
+}
+
+interface PharmacyCommissionRates {
+  sale: number;
+  base: number;
+}
+
 const COMMISSION_RATES = {
-  'Cardiology': { consultation: 15, surgery: 18, base: 15 },
-  'Neurology': { consultation: 12, surgery: 15, base: 12 },
-  'General Medicine': { consultation: 10, surgery: 12, base: 10 },
-  'Orthopedics': { consultation: 15, surgery: 20, base: 18 },
-  'Laboratory': { test: 15, base: 15 },
-  'Pharmacy': { sale: 10, base: 10 }
+  'Cardiology': { consultation: 15, surgery: 18, base: 15 } as DoctorCommissionRates,
+  'Neurology': { consultation: 12, surgery: 15, base: 12 } as DoctorCommissionRates,
+  'General Medicine': { consultation: 10, surgery: 12, base: 10 } as DoctorCommissionRates,
+  'Orthopedics': { consultation: 15, surgery: 20, base: 18 } as DoctorCommissionRates,
+  'Laboratory': { test: 15, base: 15 } as LabCommissionRates,
+  'Pharmacy': { sale: 10, base: 10 } as PharmacyCommissionRates
 };
 
 export const calculateDoctorCommissions = (period: string = '2024-01'): CalculatedCommission[] => {
@@ -57,16 +72,16 @@ export const calculateDoctorCommissions = (period: string = '2024-01'): Calculat
     let effectiveRate = 0;
     
     if (department === 'Laboratory') {
-      const rate = COMMISSION_RATES.Laboratory.test;
-      commissionAmount = totalRevenue * (rate / 100);
-      effectiveRate = rate;
+      const rates = COMMISSION_RATES.Laboratory;
+      commissionAmount = totalRevenue * (rates.test / 100);
+      effectiveRate = rates.test;
     } else if (department === 'Pharmacy') {
-      const rate = COMMISSION_RATES.Pharmacy.sale;
-      commissionAmount = totalRevenue * (rate / 100);
-      effectiveRate = rate;
+      const rates = COMMISSION_RATES.Pharmacy;
+      commissionAmount = totalRevenue * (rates.sale / 100);
+      effectiveRate = rates.sale;
     } else {
       // For doctors - calculate based on service mix
-      const rates = COMMISSION_RATES[department as keyof typeof COMMISSION_RATES] || COMMISSION_RATES['General Medicine'];
+      const rates = COMMISSION_RATES[department as keyof typeof COMMISSION_RATES] as DoctorCommissionRates || COMMISSION_RATES['General Medicine'];
       
       transactions.forEach(t => {
         if (t.type === 'consultation') {
