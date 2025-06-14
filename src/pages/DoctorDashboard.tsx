@@ -10,6 +10,7 @@ import DoctorOverviewTab from "@/components/doctor/DoctorOverviewTab";
 import DoctorTasksTab from "@/components/doctor/DoctorTasksTab";
 import DoctorReportsTab from "@/components/doctor/DoctorReportsTab";
 import MedicalRecordsTab from "@/components/doctor/medical-records/MedicalRecordsTab";
+import CommunicationHub from "@/components/doctor/communication/CommunicationHub";
 
 const DoctorDashboard = () => {
   const [selectedDate] = useState(new Date().toISOString().split('T')[0]);
@@ -24,11 +25,12 @@ const DoctorDashboard = () => {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="patients">Patients</TabsTrigger>
             <TabsTrigger value="appointments">Appointments</TabsTrigger>
             <TabsTrigger value="medical-records">Medical Records</TabsTrigger>
+            <TabsTrigger value="communication">Communication</TabsTrigger>
             <TabsTrigger value="tasks">Tasks</TabsTrigger>
             <TabsTrigger value="reports">Reports</TabsTrigger>
           </TabsList>
@@ -47,6 +49,10 @@ const DoctorDashboard = () => {
 
           <TabsContent value="medical-records" className="space-y-6">
             <MedicalRecordsTab />
+          </TabsContent>
+
+          <TabsContent value="communication" className="space-y-6">
+            <CommunicationHub />
           </TabsContent>
 
           <TabsContent value="tasks" className="space-y-6">
