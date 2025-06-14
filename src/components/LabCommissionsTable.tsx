@@ -1,144 +1,111 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, Activity } from "lucide-react";
-import LabReportsTab from './lab/LabReportsTab';
+import DynamicLabCommissionCalculator from "./lab/DynamicLabCommissionCalculator";
+import LabReferralTracking from "./lab/LabReferralTracking";
+import CommissionRateManagement from "./lab/CommissionRateManagement";
+import { labCommissionRules } from "@/data/labCommissionRules";
+import { initialCommissionRules } from "@/data/initialCommissionRules";
 
-interface LabCommission {
-  test: string;
-  count: number;
-  revenue: string;
-  commission: string;
-  rate: string;
-}
+const LabCommissionsTable = () => {
+  const [selectedPeriod, setSelectedPeriod] = useState("current-month");
+  const [selectedCategory, setSelectedCategory] = useState("all");
 
-interface LabCommissionsTableProps {
-  labCommissions: LabCommission[];
-}
+  // Combine lab-specific rules with general rules
+  const allRules = [...labCommissionRules, ...initialCommissionRules];
 
-const LabCommissionsTable = ({ labCommissions }: LabCommissionsTableProps) => {
-  const totalRevenue = labCommissions.reduce((sum, lab) => {
-    return sum + parseFloat(lab.revenue.replace(/[₹,]/g, ''));
-  }, 0);
+  const periods = [
+    { value: "current-month", label: "Current Month" },
+    { value: "last-month", label: "Last Month" },
+    { value: "last-3-months", label: "Last 3 Months" },
+    { value: "current-year", label: "Current Year" }
+  ];
 
-  const totalCommission = labCommissions.reduce((sum, lab) => {
-    return sum + parseFloat(lab.commission.replace(/[₹,]/g, ''));
-  }, 0);
-
-  const totalTests = labCommissions.reduce((sum, lab) => sum + lab.count, 0);
+  const categories = [
+    { value: "all", label: "All Categories" },
+    { value: "blood-tests", label: "Blood Tests" },
+    { value: "imaging", label: "Imaging" },
+    { value: "microbiology", label: "Microbiology" },
+    { value: "pathology", label: "Pathology" }
+  ];
 
   return (
-    <Tabs defaultValue="overview" className="space-y-6">
-      <TabsList className="grid w-full grid-cols-3">
-        <TabsTrigger value="overview">Commission Overview</TabsTrigger>
-        <TabsTrigger value="dynamic">Dynamic Calculator</TabsTrigger>
-        <TabsTrigger value="reports">Detailed Reports</TabsTrigger>
-      </TabsList>
-
-      <TabsContent value="overview">
-        {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">Total Tests</p>
-                  <p className="text-2xl font-bold">{totalTests}</p>
-                </div>
-                <Activity className="h-8 w-8 text-blue-600" />
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center justify-between">
+            Lab Commission Management
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-normal">Period:</span>
+                <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
+                  <SelectTrigger className="w-48">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {periods.map(period => (
+                      <SelectItem key={period.value} value={period.value}>
+                        {period.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
-              <p className="text-sm text-muted-foreground mt-2">Across all categories</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">Total Revenue</p>
-                  <p className="text-2xl font-bold">₹{totalRevenue.toLocaleString()}</p>
-                </div>
-                <TrendingUp className="h-8 w-8 text-green-600" />
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-normal">Category:</span>
+                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                  <SelectTrigger className="w-48">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map(category => (
+                      <SelectItem key={category.value} value={category.value}>
+                        {category.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
-              <p className="text-sm text-muted-foreground mt-2">From lab services</p>
-            </CardContent>
-          </Card>
+              <Badge variant="outline">{allRules.length} rules active</Badge>
+            </div>
+          </CardTitle>
+          <CardDescription>
+            Comprehensive lab commission tracking, rate management, and referral analytics
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Tabs defaultValue="calculator" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="calculator">Commission Calculator</TabsTrigger>
+              <TabsTrigger value="rate-management">Rate Management</TabsTrigger>
+              <TabsTrigger value="referral-tracking">Referral Tracking</TabsTrigger>
+            </TabsList>
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">Total Commission</p>
-                  <p className="text-2xl font-bold text-green-600">₹{totalCommission.toLocaleString()}</p>
-                </div>
-                <TrendingUp className="h-8 w-8 text-purple-600" />
-              </div>
-              <p className="text-sm text-muted-foreground mt-2">
-                {((totalCommission / totalRevenue) * 100).toFixed(1)}% of revenue
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+            <TabsContent value="calculator">
+              <DynamicLabCommissionCalculator
+                rules={allRules}
+                period={selectedPeriod}
+                selectedCategory={selectedCategory}
+              />
+            </TabsContent>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Laboratory Commission Tracking</CardTitle>
-            <CardDescription>Track commissions from lab tests and diagnostic procedures</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Test Type</TableHead>
-                  <TableHead>Count</TableHead>
-                  <TableHead>Revenue</TableHead>
-                  <TableHead>Commission Rate</TableHead>
-                  <TableHead>Commission Amount</TableHead>
-                  <TableHead>Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {labCommissions.map((lab, index) => (
-                  <TableRow key={index}>
-                    <TableCell className="font-medium">{lab.test}</TableCell>
-                    <TableCell>{lab.count}</TableCell>
-                    <TableCell>{lab.revenue}</TableCell>
-                    <TableCell>
-                      <Badge variant="outline">{lab.rate}</Badge>
-                    </TableCell>
-                    <TableCell className="font-bold text-green-600">{lab.commission}</TableCell>
-                    <TableCell>
-                      <Badge variant="default">Active</Badge>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-      </TabsContent>
+            <TabsContent value="rate-management">
+              <CommissionRateManagement />
+            </TabsContent>
 
-      <TabsContent value="dynamic">
-        <Card>
-          <CardHeader>
-            <CardTitle>Dynamic Commission Calculator</CardTitle>
-            <CardDescription>
-              Real-time commission calculation based on actual lab test transactions
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <LabReportsTab />
-          </CardContent>
-        </Card>
-      </TabsContent>
-
-      <TabsContent value="reports">
-        <LabReportsTab />
-      </TabsContent>
-    </Tabs>
+            <TabsContent value="referral-tracking">
+              <LabReferralTracking
+                period={selectedPeriod}
+                selectedCategory={selectedCategory}
+              />
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 
