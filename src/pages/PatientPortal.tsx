@@ -24,6 +24,7 @@ const PatientPortal = () => {
               <TabsTrigger value="appointments" className="text-xs px-3 py-2 whitespace-nowrap">Appointments</TabsTrigger>
               <TabsTrigger value="book-appointment" className="text-xs px-3 py-2 whitespace-nowrap">Book Appointment</TabsTrigger>
               <TabsTrigger value="reminders" className="text-xs px-3 py-2 whitespace-nowrap">Reminders</TabsTrigger>
+              <TabsTrigger value="health-alerts" className="text-xs px-3 py-2 whitespace-nowrap">Health Alerts</TabsTrigger>
               <TabsTrigger value="records" className="text-xs px-3 py-2 whitespace-nowrap">Medical Records</TabsTrigger>
               <TabsTrigger value="reports" className="text-xs px-3 py-2 whitespace-nowrap">Lab Reports</TabsTrigger>
               <TabsTrigger value="prescriptions" className="text-xs px-3 py-2 whitespace-nowrap">Prescriptions</TabsTrigger>

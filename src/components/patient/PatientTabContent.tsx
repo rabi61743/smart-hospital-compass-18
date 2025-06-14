@@ -3,6 +3,7 @@ import { TabsContent } from "@/components/ui/tabs";
 import AppointmentManagement from "./AppointmentManagement";
 import AppointmentBooking from "./AppointmentBooking";
 import AppointmentReminders from "./AppointmentReminders";
+import HealthAlerts from "./HealthAlerts";
 import PatientMedicalHistory from "./PatientMedicalHistory";
 import LabResultsPortal from "./LabResultsPortal";
 import PrescriptionManagement from "./PrescriptionManagement";
@@ -25,6 +26,10 @@ const PatientTabContent = () => {
 
       <TabsContent value="reminders" className="space-y-6">
         <AppointmentReminders />
+      </TabsContent>
+
+      <TabsContent value="health-alerts" className="space-y-6">
+        <HealthAlerts />
       </TabsContent>
 
       <TabsContent value="records" className="space-y-6">
