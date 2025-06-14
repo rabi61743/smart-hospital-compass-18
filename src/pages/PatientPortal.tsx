@@ -41,11 +41,11 @@ const PatientPortal = () => {
           </ScrollArea>
 
           <TabsContent value="overview" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="flex flex-col space-y-6">
               <PatientUpcomingAppointments />
               <PatientHealthMetrics />
+              <PatientRecentVisits />
             </div>
-            <PatientRecentVisits />
           </TabsContent>
 
           <PatientTabContent />
