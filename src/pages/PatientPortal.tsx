@@ -1,3 +1,4 @@
+
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import PatientPortalHeader from "@/components/patient/PatientPortalHeader";
@@ -18,8 +19,8 @@ const PatientPortal = () => {
         <PatientQuickActions />
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <ScrollArea className="w-full">
-            <TabsList className="flex w-max gap-1 p-1">
+          <ScrollArea className="w-full whitespace-nowrap">
+            <TabsList className="inline-flex w-max gap-1 p-1">
               <TabsTrigger value="overview" className="text-xs px-3 py-2 whitespace-nowrap">Overview</TabsTrigger>
               <TabsTrigger value="appointments" className="text-xs px-3 py-2 whitespace-nowrap">Appointments</TabsTrigger>
               <TabsTrigger value="book-appointment" className="text-xs px-3 py-2 whitespace-nowrap">Book Appointment</TabsTrigger>
