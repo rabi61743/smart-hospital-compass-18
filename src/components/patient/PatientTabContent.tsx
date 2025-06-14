@@ -7,6 +7,7 @@ import LabResultsPortal from "./LabResultsPortal";
 import PrescriptionManagement from "./PrescriptionManagement";
 import PatientBillingSummary from "./PatientBillingSummary";
 import HealthMetricsTracking from "./HealthMetricsTracking";
+import ImmunizationRecords from "./ImmunizationRecords";
 
 const PatientTabContent = () => {
   return (
@@ -37,6 +38,10 @@ const PatientTabContent = () => {
 
       <TabsContent value="health-metrics" className="space-y-6">
         <HealthMetricsTracking />
+      </TabsContent>
+
+      <TabsContent value="immunizations" className="space-y-6">
+        <ImmunizationRecords />
       </TabsContent>
     </>
   );
