@@ -14,6 +14,7 @@ import FamilyMedicalHistory from "./FamilyMedicalHistory";
 import PatientMessaging from "./messaging/PatientMessaging";
 import InsuranceManagement from "./InsuranceManagement";
 import LocationManagement from "./LocationManagement";
+import EmergencyContacts from "./EmergencyContacts";
 
 const PatientTabContent = () => {
   return (
@@ -72,6 +73,10 @@ const PatientTabContent = () => {
 
       <TabsContent value="locations" className="space-y-6">
         <LocationManagement />
+      </TabsContent>
+
+      <TabsContent value="emergency-contacts" className="space-y-6">
+        <EmergencyContacts />
       </TabsContent>
     </>
   );
