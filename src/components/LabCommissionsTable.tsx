@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import DynamicLabCommissionCalculator from "./lab/DynamicLabCommissionCalculator";
 import LabReferralTracking from "./lab/LabReferralTracking";
 import CommissionRateManagement from "./lab/CommissionRateManagement";
+import TechnicianCommissionTracking from "./lab/TechnicianCommissionTracking";
 import { labCommissionRules } from "@/data/labCommissionRules";
 import { initialCommissionRules } from "@/data/initialCommissionRules";
 
@@ -78,8 +79,9 @@ const LabCommissionsTable = () => {
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="calculator" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="calculator">Commission Calculator</TabsTrigger>
+              <TabsTrigger value="technicians">Technician Tracking</TabsTrigger>
               <TabsTrigger value="rate-management">Rate Management</TabsTrigger>
               <TabsTrigger value="referral-tracking">Referral Tracking</TabsTrigger>
             </TabsList>
@@ -87,6 +89,13 @@ const LabCommissionsTable = () => {
             <TabsContent value="calculator">
               <DynamicLabCommissionCalculator
                 rules={allRules}
+                period={selectedPeriod}
+                selectedCategory={selectedCategory}
+              />
+            </TabsContent>
+
+            <TabsContent value="technicians">
+              <TechnicianCommissionTracking
                 period={selectedPeriod}
                 selectedCategory={selectedCategory}
               />
