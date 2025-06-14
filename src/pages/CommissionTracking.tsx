@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,6 +13,8 @@ import RealtimeCommissionDashboard from "@/components/RealtimeCommissionDashboar
 import CommissionApprovalWorkflow from "@/components/CommissionApprovalWorkflow";
 import PatientTransactionsTab from "@/components/PatientTransactionsTab";
 import CommissionReconciliationTab from "@/components/CommissionReconciliationTab";
+import MultiLocationDashboard from "@/components/location/MultiLocationDashboard";
+import LocationCommissionRulesTab from "@/components/location/LocationCommissionRulesTab";
 import { calculateDoctorCommissions, getCommissionSummary } from "@/utils/mockCommissionCalculator";
 
 const CommissionTracking = () => {
@@ -71,8 +72,9 @@ const CommissionTracking = () => {
 
         {/* Commission Tracking Tabs */}
         <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-10">
+          <TabsList className="grid w-full grid-cols-12">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+            <TabsTrigger value="locations">Locations</TabsTrigger>
             <TabsTrigger value="approval">Approval</TabsTrigger>
             <TabsTrigger value="reconciliation">Reconciliation</TabsTrigger>
             <TabsTrigger value="patients">Patients</TabsTrigger>
@@ -81,11 +83,20 @@ const CommissionTracking = () => {
             <TabsTrigger value="laboratory">Laboratory</TabsTrigger>
             <TabsTrigger value="pharmacy">Pharmacy</TabsTrigger>
             <TabsTrigger value="surgery">Surgery</TabsTrigger>
+            <TabsTrigger value="location-rules">Location Rules</TabsTrigger>
             <TabsTrigger value="rules">Rules</TabsTrigger>
           </TabsList>
 
           <TabsContent value="dashboard" className="space-y-6">
             <RealtimeCommissionDashboard />
+          </TabsContent>
+
+          <TabsContent value="locations" className="space-y-6">
+            <MultiLocationDashboard />
+          </TabsContent>
+
+          <TabsContent value="location-rules" className="space-y-6">
+            <LocationCommissionRulesTab />
           </TabsContent>
 
           <TabsContent value="approval" className="space-y-6">
