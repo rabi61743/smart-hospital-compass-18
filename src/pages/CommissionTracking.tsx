@@ -44,13 +44,6 @@ const CommissionTracking = () => {
     { id: 4, name: "Lisa Wong", type: "Medical Tourism", patients: 7, revenue: "₹3,50,000", commission: "₹22,200", rate: "6.5%" }
   ];
 
-  const labCommissions = [
-    { test: "Blood Tests", count: 245, revenue: "₹73,500", commission: "₹11,025", rate: "15%" },
-    { test: "X-Ray", count: 128, revenue: "₹38,400", commission: "₹5,760", rate: "15%" },
-    { test: "MRI Scans", count: 18, revenue: "₹54,000", commission: "₹8,100", rate: "15%" },
-    { test: "CT Scans", count: 24, revenue: "₹72,000", commission: "₹10,800", rate: "15%" }
-  ];
-
   const pharmacyCommissions = [
     { category: "Prescription Medicines", sales: "₹1,25,000", commission: "₹12,500", rate: "10%" },
     { category: "OTC Medicines", sales: "₹78,000", commission: "₹7,800", rate: "10%" },
@@ -127,7 +120,7 @@ const CommissionTracking = () => {
           </TabsContent>
 
           <TabsContent value="laboratory" className="space-y-6">
-            <LabCommissionsTable labCommissions={labCommissions} />
+            <LabCommissionsTable />
           </TabsContent>
 
           <TabsContent value="pharmacy" className="space-y-6">
