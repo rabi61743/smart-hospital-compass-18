@@ -11,6 +11,7 @@ import DoctorDashboard from "./pages/DoctorDashboard";
 import PharmacyDashboard from "./pages/PharmacyDashboard";
 import FinanceDashboard from "./pages/FinanceDashboard";
 import BillingDashboard from "./pages/BillingDashboard";
+import AccountsReceivable from "./pages/AccountsReceivable";
 import PatientRegistration from "./pages/PatientRegistration";
 import PatientHistory from "./pages/PatientHistory";
 import LabResults from "./pages/LabResults";
@@ -34,6 +35,7 @@ const App = () => (
           <Route path="/pharmacy-dashboard" element={<PharmacyDashboard />} />
           <Route path="/finance-dashboard" element={<FinanceDashboard />} />
           <Route path="/billing-dashboard" element={<BillingDashboard />} />
+          <Route path="/accounts-receivable" element={<AccountsReceivable />} />
           <Route path="/patient-registration" element={<PatientRegistration />} />
           <Route path="/patient-history" element={<PatientHistory />} />
           <Route path="/lab-results" element={<LabResults />} />
