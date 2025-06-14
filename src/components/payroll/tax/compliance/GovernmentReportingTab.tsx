@@ -32,7 +32,7 @@ const GovernmentReportingTab = ({ complianceItems }: GovernmentReportingTabProps
       reportType: 'Monthly Contribution',
       period: '2024-12',
       dueDate: '2025-01-15',
-      status: 'pending',
+      status: 'pending' as const,
       amount: 89000
     },
     {
@@ -41,7 +41,7 @@ const GovernmentReportingTab = ({ complianceItems }: GovernmentReportingTabProps
       reportType: 'Monthly Return',
       period: '2024-12',
       dueDate: '2025-01-15',
-      status: 'completed',
+      status: 'completed' as const,
       amount: 125000
     },
     {
@@ -50,7 +50,7 @@ const GovernmentReportingTab = ({ complianceItems }: GovernmentReportingTabProps
       reportType: 'Annual Return',
       period: '2024',
       dueDate: '2025-01-31',
-      status: 'pending',
+      status: 'pending' as const,
       amount: 0
     }
   ];

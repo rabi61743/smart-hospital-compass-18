@@ -209,6 +209,7 @@ const ComplianceAuditTab = ({ auditData }: ComplianceAuditTabProps) => {
               <div key={finding.id} className="flex items-center justify-between p-4 border rounded-lg">
                 <div className="flex items-center gap-3">
                   <AlertTriangle className={`h-4 w-4 ${
+                    finding.severity === 'critical' ? 'text-red-500' :
                     finding.severity === 'high' ? 'text-red-500' :
                     finding.severity === 'medium' ? 'text-yellow-500' : 'text-blue-500'
                   }`} />
@@ -221,6 +222,7 @@ const ComplianceAuditTab = ({ auditData }: ComplianceAuditTabProps) => {
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge className={
+                    finding.severity === 'critical' ? 'bg-red-100 text-red-800' :
                     finding.severity === 'high' ? 'bg-red-100 text-red-800' :
                     finding.severity === 'medium' ? 'bg-yellow-100 text-yellow-800' : 'bg-blue-100 text-blue-800'
                   }>
