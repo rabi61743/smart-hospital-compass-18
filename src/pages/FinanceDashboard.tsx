@@ -1,12 +1,14 @@
 
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import FinanceHeader from "@/components/finance/FinanceHeader";
 import FinanceStatsCards from "@/components/finance/FinanceStatsCards";
 import RevenueTrackingTab from "@/components/finance/RevenueTrackingTab";
 import ExpenseMonitoringTab from "@/components/finance/ExpenseMonitoringTab";
 import ProfitLossTab from "@/components/finance/ProfitLossTab";
 import FinancialReportsTab from "@/components/finance/FinancialReportsTab";
+import FinancialReportingTab from "@/components/finance/FinancialReportingTab";
 
 const FinanceDashboard = () => {
   return (
@@ -17,12 +19,16 @@ const FinanceDashboard = () => {
         <FinanceStatsCards />
 
         <Tabs defaultValue="revenue" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="revenue">Revenue Tracking</TabsTrigger>
-            <TabsTrigger value="expenses">Expense Monitoring</TabsTrigger>
-            <TabsTrigger value="profitloss">Profit & Loss</TabsTrigger>
-            <TabsTrigger value="reports">Financial Reports</TabsTrigger>
-          </TabsList>
+          <ScrollArea className="w-full whitespace-nowrap">
+            <TabsList className="grid w-full grid-cols-5">
+              <TabsTrigger value="revenue">Revenue Tracking</TabsTrigger>
+              <TabsTrigger value="expenses">Expense Monitoring</TabsTrigger>
+              <TabsTrigger value="profitloss">Profit & Loss</TabsTrigger>
+              <TabsTrigger value="reporting">Financial Reporting</TabsTrigger>
+              <TabsTrigger value="reports">Report Library</TabsTrigger>
+            </TabsList>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
 
           <TabsContent value="revenue">
             <RevenueTrackingTab />
@@ -34,6 +40,10 @@ const FinanceDashboard = () => {
 
           <TabsContent value="profitloss">
             <ProfitLossTab />
+          </TabsContent>
+
+          <TabsContent value="reporting">
+            <FinancialReportingTab />
           </TabsContent>
 
           <TabsContent value="reports">
