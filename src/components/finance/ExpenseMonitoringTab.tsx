@@ -47,10 +47,10 @@ const ExpenseMonitoringTab = () => {
                 <AreaChart data={monthlyExpenses}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="month" />
-                  <YAxis tickFormatter={(value) => `₹${(value / 100000).toFixed(0)}L`} />
+                  <YAxis tickFormatter={(value) => `₹${(Number(value) / 100000).toFixed(0)}L`} />
                   <ChartTooltip 
                     content={<ChartTooltipContent />}
-                    formatter={(value) => [`₹${(value / 100000).toFixed(1)}L`, '']}
+                    formatter={(value) => [`₹${(Number(value) / 100000).toFixed(1)}L`, '']}
                   />
                   <Area 
                     type="monotone" 

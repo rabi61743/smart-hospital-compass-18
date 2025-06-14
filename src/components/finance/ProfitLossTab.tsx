@@ -87,11 +87,11 @@ const ProfitLossTab = () => {
                 <ComposedChart data={profitLossData}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="month" />
-                  <YAxis tickFormatter={(value) => `₹${(value / 100000).toFixed(0)}L`} />
+                  <YAxis tickFormatter={(value) => `₹${(Number(value) / 100000).toFixed(0)}L`} />
                   <ChartTooltip 
                     content={<ChartTooltipContent />}
                     formatter={(value, name) => [
-                      name === 'margin' ? `${value}%` : `₹${(value / 100000).toFixed(1)}L`,
+                      name === 'margin' ? `${value}%` : `₹${(Number(value) / 100000).toFixed(1)}L`,
                       name === 'margin' ? 'Profit Margin' : name
                     ]}
                   />

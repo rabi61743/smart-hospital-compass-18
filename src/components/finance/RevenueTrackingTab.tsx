@@ -53,10 +53,10 @@ const RevenueTrackingTab = () => {
                 <BarChart data={monthlyRevenue}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="month" />
-                  <YAxis tickFormatter={(value) => `₹${(value / 100000).toFixed(0)}L`} />
+                  <YAxis tickFormatter={(value) => `₹${(Number(value) / 100000).toFixed(0)}L`} />
                   <ChartTooltip 
                     content={<ChartTooltipContent />}
-                    formatter={(value) => [`₹${(value / 100000).toFixed(1)}L`, '']}
+                    formatter={(value) => [`₹${(Number(value) / 100000).toFixed(1)}L`, '']}
                   />
                   <Bar dataKey="revenue" fill="var(--color-revenue)" name="Revenue" />
                   <Bar dataKey="target" fill="var(--color-target)" name="Target" />
@@ -91,7 +91,7 @@ const RevenueTrackingTab = () => {
                       ))}
                     </Pie>
                     <ChartTooltip 
-                      formatter={(value) => [`₹${(value / 100000).toFixed(1)}L`, 'Revenue']}
+                      formatter={(value) => [`₹${(Number(value) / 100000).toFixed(1)}L`, 'Revenue']}
                     />
                   </PieChart>
                 </ResponsiveContainer>
