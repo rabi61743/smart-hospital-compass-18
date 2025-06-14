@@ -24,6 +24,7 @@ import {
   Activity
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import PatientManagement from "@/components/doctor/PatientManagement";
 
 const DoctorDashboard = () => {
   const [selectedDate] = useState(new Date().toISOString().split('T')[0]);
@@ -201,10 +202,10 @@ const DoctorDashboard = () => {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="appointments">Appointments</TabsTrigger>
             <TabsTrigger value="patients">Patients</TabsTrigger>
+            <TabsTrigger value="appointments">Appointments</TabsTrigger>
             <TabsTrigger value="tasks">Tasks</TabsTrigger>
             <TabsTrigger value="reports">Reports</TabsTrigger>
           </TabsList>
@@ -305,6 +306,10 @@ const DoctorDashboard = () => {
             </div>
           </TabsContent>
 
+          <TabsContent value="patients" className="space-y-6">
+            <PatientManagement />
+          </TabsContent>
+
           <TabsContent value="appointments" className="space-y-6">
             <Card>
               <CardHeader>
@@ -317,41 +322,6 @@ const DoctorDashboard = () => {
                   <h3 className="text-lg font-medium text-gray-900 mb-2">Advanced Appointment Management</h3>
                   <p className="text-gray-600 mb-4">Schedule, reschedule, and manage patient appointments</p>
                   <Button>Manage Appointments</Button>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="patients" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Patient Management</CardTitle>
-                <CardDescription>Access patient records and medical history</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {recentPatients.map((patient) => (
-                    <div key={patient.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
-                      <div className="flex items-center space-x-4">
-                        <Avatar>
-                          <AvatarFallback>{patient.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="font-semibold">{patient.name}</div>
-                          <div className="text-sm text-gray-600">Age: {patient.age} • Last visit: {patient.lastVisit}</div>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Badge className={getUrgencyColor(patient.urgency)}>
-                          {patient.condition}
-                        </Badge>
-                        <Button size="sm" variant="outline">
-                          <FileText className="h-4 w-4 mr-1" />
-                          View Records
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
                 </div>
               </CardContent>
             </Card>
