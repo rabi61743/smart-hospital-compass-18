@@ -53,6 +53,10 @@ const NewMessageDialog = () => {
     setIsUrgent(false);
   };
 
+  const handleUrgentChange = (checked: boolean | "indeterminate") => {
+    setIsUrgent(checked === true);
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -108,7 +112,7 @@ const NewMessageDialog = () => {
           <Checkbox
             id="urgent"
             checked={isUrgent}
-            onCheckedChange={setIsUrgent}
+            onCheckedChange={handleUrgentChange}
           />
           <Label htmlFor="urgent" className="text-sm">
             Mark as urgent (requires immediate attention)
