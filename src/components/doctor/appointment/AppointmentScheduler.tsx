@@ -61,7 +61,7 @@ const mockPatients: Patient[] = [
 const AppointmentScheduler = ({ isOpen, onClose, onSchedule }: AppointmentSchedulerProps) => {
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [appointmentDate, setAppointmentDate] = useState<Date>();
+  const [appointmentDate, setAppointmentDate] = useState<Date | undefined>(undefined);
   const [appointmentTime, setAppointmentTime] = useState('');
   const [duration, setDuration] = useState('30');
   const [appointmentType, setAppointmentType] = useState('');

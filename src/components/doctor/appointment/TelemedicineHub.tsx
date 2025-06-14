@@ -11,7 +11,7 @@ import {
   MicOff,
   Phone,
   PhoneOff,
-  Screen,
+  Monitor,
   ScreenShare,
   MessageSquare,
   FileText,
@@ -197,7 +197,7 @@ const TelemedicineHub = () => {
                 onClick={() => setIsScreenSharing(!isScreenSharing)}
                 className="rounded-full w-12 h-12"
               >
-                {isScreenSharing ? <Screen className="h-5 w-5" /> : <ScreenShare className="h-5 w-5" />}
+                {isScreenSharing ? <Monitor className="h-5 w-5" /> : <ScreenShare className="h-5 w-5" />}
               </Button>
               <Button
                 variant="destructive"
