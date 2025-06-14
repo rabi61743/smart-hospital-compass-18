@@ -14,7 +14,6 @@ import {
   Copy, 
   Edit, 
   Trash2,
-  FileTemplate,
   Clock,
   User
 } from "lucide-react";
