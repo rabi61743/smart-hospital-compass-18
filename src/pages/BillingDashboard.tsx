@@ -9,6 +9,7 @@ import PaymentProcessingTab from "@/components/billing/PaymentProcessingTab";
 import BillingReportsTab from "@/components/billing/BillingReportsTab";
 import AccountsReceivableTab from "@/components/billing/AccountsReceivableTab";
 import AccountsPayableTab from "@/components/billing/AccountsPayableTab";
+import BudgetManagementTab from "@/components/billing/BudgetManagementTab";
 
 const BillingDashboard = () => {
   return (
@@ -19,12 +20,13 @@ const BillingDashboard = () => {
         <BillingStatsCards />
 
         <Tabs defaultValue="patient-billing" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="patient-billing">Patient Billing</TabsTrigger>
             <TabsTrigger value="insurance-claims">Insurance Claims</TabsTrigger>
             <TabsTrigger value="payment-processing">Payment Processing</TabsTrigger>
             <TabsTrigger value="accounts-receivable">Accounts Receivable</TabsTrigger>
             <TabsTrigger value="accounts-payable">Accounts Payable</TabsTrigger>
+            <TabsTrigger value="budget-management">Budget Management</TabsTrigger>
             <TabsTrigger value="reports">Billing Reports</TabsTrigger>
           </TabsList>
 
@@ -46,6 +48,10 @@ const BillingDashboard = () => {
 
           <TabsContent value="accounts-payable">
             <AccountsPayableTab />
+          </TabsContent>
+
+          <TabsContent value="budget-management">
+            <BudgetManagementTab />
           </TabsContent>
 
           <TabsContent value="reports">
