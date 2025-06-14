@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -6,13 +5,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Plus, Edit, UserPlus } from "lucide-react";
+import { Search, Plus, Edit, UserPlus, Eye } from "lucide-react";
 import AddEmployeeDialog from "./AddEmployeeDialog";
+import EmployeeProfileDialog from "./EmployeeProfileDialog";
 
 const EmployeeManagementTab = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [departmentFilter, setDepartmentFilter] = useState('all');
   const [showAddDialog, setShowAddDialog] = useState(false);
+  const [showProfileDialog, setShowProfileDialog] = useState(false);
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState('');
 
   const employees = [
     {
@@ -75,6 +77,11 @@ const EmployeeManagementTab = () => {
     
     return matchesSearch && matchesDepartment;
   });
+
+  const handleViewProfile = (employeeId: string) => {
+    setSelectedEmployeeId(employeeId);
+    setShowProfileDialog(true);
+  };
 
   return (
     <div className="space-y-6">
@@ -156,9 +163,18 @@ const EmployeeManagementTab = () => {
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <Button variant="ghost" size="sm">
-                      <Edit className="h-4 w-4" />
-                    </Button>
+                    <div className="flex gap-1">
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        onClick={() => handleViewProfile(employee.id)}
+                      >
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                      <Button variant="ghost" size="sm">
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
@@ -170,6 +186,12 @@ const EmployeeManagementTab = () => {
       <AddEmployeeDialog 
         open={showAddDialog} 
         onOpenChange={setShowAddDialog} 
+      />
+
+      <EmployeeProfileDialog
+        open={showProfileDialog}
+        onOpenChange={setShowProfileDialog}
+        employeeId={selectedEmployeeId}
       />
     </div>
   );
