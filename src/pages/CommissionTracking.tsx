@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,6 +10,7 @@ import PharmacyCommissionsTable from "@/components/PharmacyCommissionsTable";
 import SurgeryCommissionsPlaceholder from "@/components/SurgeryCommissionsPlaceholder";
 import CommissionRulesEngine from "@/components/CommissionRulesEngine";
 import RealtimeCommissionDashboard from "@/components/RealtimeCommissionDashboard";
+import CommissionApprovalWorkflow from "@/components/CommissionApprovalWorkflow";
 
 const CommissionTracking = () => {
   const commissionSummary = [
@@ -64,8 +64,9 @@ const CommissionTracking = () => {
 
         {/* Commission Tracking Tabs */}
         <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-7">
+          <TabsList className="grid w-full grid-cols-8">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+            <TabsTrigger value="approval">Approval</TabsTrigger>
             <TabsTrigger value="doctors">Doctors</TabsTrigger>
             <TabsTrigger value="agents">Agents</TabsTrigger>
             <TabsTrigger value="laboratory">Laboratory</TabsTrigger>
@@ -76,6 +77,10 @@ const CommissionTracking = () => {
 
           <TabsContent value="dashboard" className="space-y-6">
             <RealtimeCommissionDashboard />
+          </TabsContent>
+
+          <TabsContent value="approval" className="space-y-6">
+            <CommissionApprovalWorkflow />
           </TabsContent>
 
           <TabsContent value="doctors" className="space-y-6">
