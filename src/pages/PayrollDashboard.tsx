@@ -12,6 +12,7 @@ import OnboardingOffboardingTab from "@/components/payroll/OnboardingOffboarding
 import PayrollProcessingTab from "@/components/payroll/PayrollProcessingTab";
 import PayrollReportsTab from "@/components/payroll/PayrollReportsTab";
 import PayrollSettingsTab from "@/components/payroll/PayrollSettingsTab";
+import TimeTrackingTab from "@/components/payroll/TimeTrackingTab";
 
 const PayrollDashboard = () => {
   return (
@@ -30,6 +31,7 @@ const PayrollDashboard = () => {
               <TabsTrigger value="cost-centers">Cost Centers</TabsTrigger>
               <TabsTrigger value="org-chart">Organizational Chart</TabsTrigger>
               <TabsTrigger value="onboarding">Onboarding/Offboarding</TabsTrigger>
+              <TabsTrigger value="time-tracking">Time & Attendance</TabsTrigger>
               <TabsTrigger value="processing">Payroll Processing</TabsTrigger>
               <TabsTrigger value="reports">Reports & History</TabsTrigger>
               <TabsTrigger value="settings">Settings</TabsTrigger>
@@ -59,6 +61,10 @@ const PayrollDashboard = () => {
 
           <TabsContent value="onboarding">
             <OnboardingOffboardingTab />
+          </TabsContent>
+
+          <TabsContent value="time-tracking">
+            <TimeTrackingTab />
           </TabsContent>
 
           <TabsContent value="processing">
