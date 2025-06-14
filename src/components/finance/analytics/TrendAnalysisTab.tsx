@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -185,8 +184,9 @@ const TrendAnalysisTab = () => {
               <YAxis yAxisId="right" orientation="right" tickFormatter={(value) => `${value}%`} />
               <Tooltip 
                 formatter={(value, name) => {
-                  if (name === 'margin') return [`${value}%`, 'Profit Margin'];
-                  return [`₹${(Number(value) / 1000000).toFixed(1)}M`, name.charAt(0).toUpperCase() + name.slice(1)];
+                  const nameStr = String(name);
+                  if (nameStr === 'margin') return [`${value}%`, 'Profit Margin'];
+                  return [`₹${(Number(value) / 1000000).toFixed(1)}M`, nameStr.charAt(0).toUpperCase() + nameStr.slice(1)];
                 }}
               />
               <Bar yAxisId="left" dataKey="revenue" fill="#3B82F6" name="revenue" />
