@@ -183,7 +183,11 @@ const OnboardingOffboardingTab = () => {
                         <div>
                           <p className="text-sm">
                             {case_.type === 'onboarding' ? 'Start' : 'Last Working'}: {' '}
-                            {new Date(case_.type === 'onboarding' ? case_.startDate : case_.lastWorkingDay).toLocaleDateString()}
+                            {new Date(
+                              case_.type === 'onboarding' 
+                                ? (case_ as any).startDate 
+                                : (case_ as any).lastWorkingDay
+                            ).toLocaleDateString()}
                           </p>
                           <p className="text-sm text-muted-foreground">Assigned: {case_.assignedTo}</p>
                         </div>
