@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar, FileText, Pill, Activity, Download, Search, Filter } from "lucide-react";
 import { mockTransactions, getTransactionsByPatient } from "@/data/mockPatientData";
+import MedicalDocumentUpload from "./MedicalDocumentUpload";
 
 interface MedicalRecord {
   id: string;
@@ -331,20 +331,7 @@ const PatientMedicalHistory = ({ patientId = 'p1' }: { patientId?: string }) => 
         </TabsContent>
 
         <TabsContent value="documents" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Medical Documents</CardTitle>
-              <CardDescription>All your medical reports and documents</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-12">
-                <FileText className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Document Management</h3>
-                <p className="text-gray-600 mb-4">Access all your medical documents in one place</p>
-                <Button>View All Documents</Button>
-              </div>
-            </CardContent>
-          </Card>
+          <MedicalDocumentUpload />
         </TabsContent>
 
         <TabsContent value="medications" className="space-y-4">
