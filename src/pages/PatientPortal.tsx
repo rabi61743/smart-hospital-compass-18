@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Calendar, Heart, Hospital, Users, Bell, Settings, FileText, UserPlus } from "lucide-react";
+import { Calendar, Heart, Hospital, Users, Bell, Settings, FileText, UserPlus, FlaskConical } from "lucide-react";
 import { Link } from "react-router-dom";
 import AppointmentBooking from "@/components/patient/AppointmentBooking";
 import AppointmentManagement from "@/components/patient/AppointmentManagement";
@@ -74,6 +74,12 @@ const PatientPortal = () => {
                   Medical History
                 </Button>
               </Link>
+              <Link to="/lab-results">
+                <Button variant="outline" size="sm">
+                  <FlaskConical className="h-4 w-4 mr-2" />
+                  Lab Results
+                </Button>
+              </Link>
               <Link to="/patient-registration">
                 <Button variant="outline" size="sm">
                   <UserPlus className="h-4 w-4 mr-2" />
@@ -122,12 +128,14 @@ const PatientPortal = () => {
               </CardHeader>
             </Card>
           </Link>
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-            <CardHeader className="text-center">
-              <Hospital className="h-8 w-8 text-green-600 mx-auto mb-2" />
-              <CardTitle className="text-lg">Telemedicine</CardTitle>
-            </CardHeader>
-          </Card>
+          <Link to="/lab-results">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+              <CardHeader className="text-center">
+                <FlaskConical className="h-8 w-8 text-green-600 mx-auto mb-2" />
+                <CardTitle className="text-lg">Lab Results</CardTitle>
+              </CardHeader>
+            </Card>
+          </Link>
           <Link to="/patient-registration">
             <Card className="hover:shadow-lg transition-shadow cursor-pointer">
               <CardHeader className="text-center">
@@ -270,10 +278,12 @@ const PatientPortal = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-center py-12">
-                  <Hospital className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                  <FlaskConical className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                   <h3 className="text-lg font-medium text-gray-900 mb-2">Digital Lab Reports</h3>
                   <p className="text-gray-600 mb-4">Instant access to test results and imaging reports</p>
-                  <Button>View Reports</Button>
+                  <Link to="/lab-results">
+                    <Button>View Lab Results</Button>
+                  </Link>
                 </div>
               </CardContent>
             </Card>
