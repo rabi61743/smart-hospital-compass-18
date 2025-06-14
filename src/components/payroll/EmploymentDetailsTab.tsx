@@ -30,6 +30,19 @@ const EmploymentDetailsTab = ({ employmentData, onEmploymentDataChange, isEditin
     });
   };
 
+  // Available positions based on departments
+  const positionsByDepartment = {
+    'Cardiology': ['Senior Cardiologist', 'Cardiologist', 'Cardiac Nurse', 'Cardiac Technician'],
+    'General Medicine': ['Head Nurse', 'Staff Nurse', 'General Physician', 'Medical Assistant'],
+    'Emergency': ['Emergency Physician', 'Emergency Nurse', 'Trauma Specialist', 'Emergency Technician'],
+    'Laboratory': ['Lab Technician', 'Laboratory Supervisor', 'Pathologist', 'Lab Assistant'],
+    'Pharmacy': ['Pharmacist', 'Pharmacy Manager', 'Pharmacy Technician', 'Pharmacy Assistant']
+  };
+
+  const availablePositions = employmentData.department ? 
+    positionsByDepartment[employmentData.department as keyof typeof positionsByDepartment] || [] : 
+    [];
+
   return (
     <Card>
       <CardHeader>
@@ -53,7 +66,11 @@ const EmploymentDetailsTab = ({ employmentData, onEmploymentDataChange, isEditin
             <Label htmlFor="department">Department</Label>
             <Select
               value={employmentData.department}
-              onValueChange={(value) => handleFieldChange('department', value)}
+              onValueChange={(value) => {
+                handleFieldChange('department', value);
+                // Reset position when department changes
+                handleFieldChange('position', '');
+              }}
               disabled={!isEditing}
             >
               <SelectTrigger>
@@ -70,12 +87,20 @@ const EmploymentDetailsTab = ({ employmentData, onEmploymentDataChange, isEditin
           </div>
           <div>
             <Label htmlFor="position">Position</Label>
-            <Input
-              id="position"
+            <Select
               value={employmentData.position}
-              onChange={(e) => handleFieldChange('position', e.target.value)}
-              disabled={!isEditing}
-            />
+              onValueChange={(value) => handleFieldChange('position', value)}
+              disabled={!isEditing || !employmentData.department}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder={!employmentData.department ? "Select department first" : "Select position"} />
+              </SelectTrigger>
+              <SelectContent>
+                {availablePositions.map(position => (
+                  <SelectItem key={position} value={position}>{position}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
