@@ -6,7 +6,7 @@ import CommissionTrackingHeader from "@/components/CommissionTrackingHeader";
 import CommissionSummaryCards from "@/components/CommissionSummaryCards";
 import DoctorCommissionsTable from "@/components/DoctorCommissionsTable";
 import AgentCommissionsTable from "@/components/AgentCommissionsTable";
-import LabCommissionsTable from "@/components/Lab";
+import LabCommissionsTable from "@/components/LabCommissionsTable";
 import PharmacyCommissionsTable from "@/components/PharmacyCommissionsTable";
 import SurgeryCommissionsPlaceholder from "@/components/SurgeryCommissionsPlaceholder";
 import CommissionRulesEngine from "@/components/CommissionRulesEngine";
