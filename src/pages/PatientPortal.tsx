@@ -15,42 +15,43 @@ const PatientPortal = () => {
       <PatientPortalHeader />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <PatientWelcomeSection />
-        <PatientQuickActions />
+        <div className="flex flex-col space-y-6">
+          <PatientWelcomeSection />
+          <PatientQuickActions />
 
-        <Tabs defaultValue="overview" className="space-y-6">
-          <ScrollArea className="w-full">
-            <TabsList className="inline-flex w-max gap-1 p-1">
-              <TabsTrigger value="overview" className="text-xs px-3 py-2 whitespace-nowrap">Overview</TabsTrigger>
-              <TabsTrigger value="appointments" className="text-xs px-3 py-2 whitespace-nowrap">Appointments</TabsTrigger>
-              <TabsTrigger value="book-appointment" className="text-xs px-3 py-2 whitespace-nowrap">Book Appointment</TabsTrigger>
-              <TabsTrigger value="reminders" className="text-xs px-3 py-2 whitespace-nowrap">Reminders</TabsTrigger>
-              <TabsTrigger value="health-alerts" className="text-xs px-3 py-2 whitespace-nowrap">Health Alerts</TabsTrigger>
-              <TabsTrigger value="emergency-contacts" className="text-xs px-3 py-2 whitespace-nowrap">Emergency Contacts</TabsTrigger>
-              <TabsTrigger value="records" className="text-xs px-3 py-2 whitespace-nowrap">Medical Records</TabsTrigger>
-              <TabsTrigger value="reports" className="text-xs px-3 py-2 whitespace-nowrap">Lab Reports</TabsTrigger>
-              <TabsTrigger value="prescriptions" className="text-xs px-3 py-2 whitespace-nowrap">Prescriptions</TabsTrigger>
-              <TabsTrigger value="health-metrics" className="text-xs px-3 py-2 whitespace-nowrap">Health Metrics</TabsTrigger>
-              <TabsTrigger value="immunizations" className="text-xs px-3 py-2 whitespace-nowrap">Immunizations</TabsTrigger>
-              <TabsTrigger value="family-history" className="text-xs px-3 py-2 whitespace-nowrap">Family History</TabsTrigger>
-              <TabsTrigger value="messaging" className="text-xs px-3 py-2 whitespace-nowrap">Messages</TabsTrigger>
-              <TabsTrigger value="insurance" className="text-xs px-3 py-2 whitespace-nowrap">Insurance</TabsTrigger>
-              <TabsTrigger value="billing" className="text-xs px-3 py-2 whitespace-nowrap">Billing</TabsTrigger>
-              <TabsTrigger value="locations" className="text-xs px-3 py-2 whitespace-nowrap">Locations</TabsTrigger>
-            </TabsList>
-            <ScrollBar orientation="horizontal" />
-          </ScrollArea>
+          <Tabs defaultValue="overview" className="space-y-6">
+            <ScrollArea className="w-full">
+              <TabsList className="inline-flex w-max gap-1 p-1">
+                <TabsTrigger value="overview" className="text-xs px-3 py-2 whitespace-nowrap">Overview</TabsTrigger>
+                <TabsTrigger value="appointments" className="text-xs px-3 py-2 whitespace-nowrap">Appointments</TabsTrigger>
+                <TabsTrigger value="book-appointment" className="text-xs px-3 py-2 whitespace-nowrap">Book Appointment</TabsTrigger>
+                <TabsTrigger value="reminders" className="text-xs px-3 py-2 whitespace-nowrap">Reminders</TabsTrigger>
+                <TabsTrigger value="health-alerts" className="text-xs px-3 py-2 whitespace-nowrap">Health Alerts</TabsTrigger>
+                <TabsTrigger value="emergency-contacts" className="text-xs px-3 py-2 whitespace-nowrap">Emergency Contacts</TabsTrigger>
+                <TabsTrigger value="care-team" className="text-xs px-3 py-2 whitespace-nowrap">Care Team</TabsTrigger>
+                <TabsTrigger value="records" className="text-xs px-3 py-2 whitespace-nowrap">Medical Records</TabsTrigger>
+                <TabsTrigger value="reports" className="text-xs px-3 py-2 whitespace-nowrap">Lab Reports</TabsTrigger>
+                <TabsTrigger value="prescriptions" className="text-xs px-3 py-2 whitespace-nowrap">Prescriptions</TabsTrigger>
+                <TabsTrigger value="health-metrics" className="text-xs px-3 py-2 whitespace-nowrap">Health Metrics</TabsTrigger>
+                <TabsTrigger value="immunizations" className="text-xs px-3 py-2 whitespace-nowrap">Immunizations</TabsTrigger>
+                <TabsTrigger value="family-history" className="text-xs px-3 py-2 whitespace-nowrap">Family History</TabsTrigger>
+                <TabsTrigger value="messaging" className="text-xs px-3 py-2 whitespace-nowrap">Messages</TabsTrigger>
+                <TabsTrigger value="insurance" className="text-xs px-3 py-2 whitespace-nowrap">Insurance</TabsTrigger>
+                <TabsTrigger value="billing" className="text-xs px-3 py-2 whitespace-nowrap">Billing</TabsTrigger>
+                <TabsTrigger value="locations" className="text-xs px-3 py-2 whitespace-nowrap">Locations</TabsTrigger>
+              </TabsList>
+              <ScrollBar orientation="horizontal" />
+            </ScrollArea>
 
-          <TabsContent value="overview" className="space-y-6">
-            <div className="flex flex-col space-y-6">
+            <TabsContent value="overview" className="space-y-6">
               <PatientUpcomingAppointments />
               <PatientHealthMetrics />
               <PatientRecentVisits />
-            </div>
-          </TabsContent>
+            </TabsContent>
 
-          <PatientTabContent />
-        </Tabs>
+            <PatientTabContent />
+          </Tabs>
+        </div>
       </div>
     </div>
   );

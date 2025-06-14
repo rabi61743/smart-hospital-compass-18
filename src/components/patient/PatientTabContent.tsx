@@ -15,6 +15,7 @@ import PatientMessaging from "./messaging/PatientMessaging";
 import InsuranceManagement from "./InsuranceManagement";
 import LocationManagement from "./LocationManagement";
 import EmergencyContacts from "./EmergencyContacts";
+import CareTeamManagement from "./CareTeamManagement";
 
 const PatientTabContent = () => {
   return (
@@ -77,6 +78,10 @@ const PatientTabContent = () => {
 
       <TabsContent value="emergency-contacts" className="space-y-6">
         <EmergencyContacts />
+      </TabsContent>
+
+      <TabsContent value="care-team" className="space-y-6">
+        <CareTeamManagement />
       </TabsContent>
     </>
   );
