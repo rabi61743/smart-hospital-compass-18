@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Clock, Calendar, TrendingUp, Users } from "lucide-react";
 import ClockInOutCard from './ClockInOutCard';
 import AttendanceOverview from './AttendanceOverview';
-import ShiftManagement from './ShiftManagement';
+import ShiftScheduleManagement from './ShiftScheduleManagement';
 import OvertimeTracking from './OvertimeTracking';
 import AttendanceReports from './AttendanceReports';
 
@@ -86,13 +86,13 @@ const TimeTrackingTab = () => {
             <Clock className="h-5 w-5" />
             Time Tracking & Attendance Management
           </CardTitle>
-          <CardDescription>Manage employee attendance, shifts, and overtime</CardDescription>
+          <CardDescription>Manage employee attendance, shifts, schedules, and overtime</CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="overview" className="space-y-4">
             <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="shifts">Shift Management</TabsTrigger>
+              <TabsTrigger value="schedules">Shift & Schedules</TabsTrigger>
               <TabsTrigger value="overtime">Overtime</TabsTrigger>
               <TabsTrigger value="reports">Reports</TabsTrigger>
               <TabsTrigger value="settings">Settings</TabsTrigger>
@@ -102,8 +102,8 @@ const TimeTrackingTab = () => {
               <AttendanceOverview />
             </TabsContent>
 
-            <TabsContent value="shifts">
-              <ShiftManagement />
+            <TabsContent value="schedules">
+              <ShiftScheduleManagement />
             </TabsContent>
 
             <TabsContent value="overtime">
