@@ -1,6 +1,7 @@
 
+
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import PatientPortalHeader from "@/components/patient/PatientPortalHeader";
 import PatientWelcomeSection from "@/components/patient/PatientWelcomeSection";
 import PatientQuickActions from "@/components/patient/PatientQuickActions";
@@ -19,7 +20,7 @@ const PatientPortal = () => {
         <PatientQuickActions />
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <ScrollArea className="w-full whitespace-nowrap">
+          <ScrollArea className="w-full">
             <TabsList className="inline-flex w-max gap-1 p-1">
               <TabsTrigger value="overview" className="text-xs px-3 py-2 whitespace-nowrap">Overview</TabsTrigger>
               <TabsTrigger value="appointments" className="text-xs px-3 py-2 whitespace-nowrap">Appointments</TabsTrigger>
@@ -35,6 +36,7 @@ const PatientPortal = () => {
               <TabsTrigger value="messaging" className="text-xs px-3 py-2 whitespace-nowrap">Messages</TabsTrigger>
               <TabsTrigger value="billing" className="text-xs px-3 py-2 whitespace-nowrap">Billing</TabsTrigger>
             </TabsList>
+            <ScrollBar orientation="horizontal" />
           </ScrollArea>
 
           <TabsContent value="overview" className="space-y-6">
@@ -53,3 +55,4 @@ const PatientPortal = () => {
 };
 
 export default PatientPortal;
+
