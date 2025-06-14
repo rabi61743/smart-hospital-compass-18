@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,21 +12,26 @@ import SurgeryCommissionsPlaceholder from "@/components/SurgeryCommissionsPlaceh
 import CommissionRulesEngine from "@/components/CommissionRulesEngine";
 import RealtimeCommissionDashboard from "@/components/RealtimeCommissionDashboard";
 import CommissionApprovalWorkflow from "@/components/CommissionApprovalWorkflow";
+import PatientTransactionsTab from "@/components/PatientTransactionsTab";
+import { calculateDoctorCommissions, getCommissionSummary } from "@/utils/mockCommissionCalculator";
 
 const CommissionTracking = () => {
-  const commissionSummary = [
-    { type: "Doctor Commissions", amount: "₹2,45,600", change: "+18%", color: "text-green-600" },
-    { type: "Agent Commissions", amount: "₹78,900", change: "+12%", color: "text-blue-600" },
-    { type: "Lab Commissions", amount: "₹45,200", change: "+8%", color: "text-purple-600" },
-    { type: "Pharmacy Commissions", amount: "₹32,100", change: "+15%", color: "text-orange-600" }
-  ];
-
-  const doctorCommissions = [
-    { id: 1, name: "Dr. Sarah Johnson", department: "Cardiology", consultations: 45, surgeries: 8, commission: "₹38,500", rate: "15%" },
-    { id: 2, name: "Dr. Michael Chen", department: "Neurology", consultations: 38, surgeries: 5, commission: "₹32,200", rate: "12%" },
-    { id: 3, name: "Dr. Emily Davis", department: "General Medicine", consultations: 52, surgeries: 0, commission: "₹26,000", rate: "10%" },
-    { id: 4, name: "Dr. Robert Wilson", department: "Orthopedics", consultations: 29, surgeries: 12, commission: "₹45,800", rate: "18%" }
-  ];
+  // Use mock data for commission calculations
+  const commissionSummary = getCommissionSummary();
+  const calculatedCommissions = calculateDoctorCommissions();
+  
+  // Transform calculated commissions to match existing table format
+  const doctorCommissions = calculatedCommissions
+    .filter(c => !['Laboratory', 'Pharmacy'].includes(c.department))
+    .map(c => ({
+      id: parseInt(c.doctorId.replace('doc', '') || '1'),
+      name: c.doctorName,
+      department: c.department,
+      consultations: c.consultations,
+      surgeries: c.surgeries,
+      commission: `₹${c.commissionAmount.toLocaleString()}`,
+      rate: c.commissionRate
+    }));
 
   const agentCommissions = [
     { id: 1, name: "John Smith", type: "External Referral", referrals: 28, converted: 22, commission: "₹18,700", rate: "₹850/referral" },
@@ -64,9 +70,10 @@ const CommissionTracking = () => {
 
         {/* Commission Tracking Tabs */}
         <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-8">
+          <TabsList className="grid w-full grid-cols-9">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="approval">Approval</TabsTrigger>
+            <TabsTrigger value="patients">Patients</TabsTrigger>
             <TabsTrigger value="doctors">Doctors</TabsTrigger>
             <TabsTrigger value="agents">Agents</TabsTrigger>
             <TabsTrigger value="laboratory">Laboratory</TabsTrigger>
@@ -81,6 +88,10 @@ const CommissionTracking = () => {
 
           <TabsContent value="approval" className="space-y-6">
             <CommissionApprovalWorkflow />
+          </TabsContent>
+
+          <TabsContent value="patients" className="space-y-6">
+            <PatientTransactionsTab />
           </TabsContent>
 
           <TabsContent value="doctors" className="space-y-6">
