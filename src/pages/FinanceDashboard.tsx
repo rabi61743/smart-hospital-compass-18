@@ -12,6 +12,7 @@ import FinancialReportingTab from "@/components/finance/FinancialReportingTab";
 import FinancialAnalyticsTab from "@/components/finance/FinancialAnalyticsTab";
 import AuditTrailTab from "@/components/finance/AuditTrailTab";
 import TaxManagementTab from "@/components/finance/TaxManagementTab";
+import InsuranceIntegrationTab from "@/components/finance/InsuranceIntegrationTab";
 
 const FinanceDashboard = () => {
   return (
@@ -23,7 +24,7 @@ const FinanceDashboard = () => {
 
         <Tabs defaultValue="revenue" className="space-y-6">
           <ScrollArea className="w-full whitespace-nowrap">
-            <TabsList className="grid w-full grid-cols-8">
+            <TabsList className="grid w-full grid-cols-9">
               <TabsTrigger value="revenue">Revenue Tracking</TabsTrigger>
               <TabsTrigger value="expenses">Expense Monitoring</TabsTrigger>
               <TabsTrigger value="profitloss">Profit & Loss</TabsTrigger>
@@ -31,6 +32,7 @@ const FinanceDashboard = () => {
               <TabsTrigger value="reporting">Financial Reporting</TabsTrigger>
               <TabsTrigger value="reports">Report Library</TabsTrigger>
               <TabsTrigger value="tax">Tax Management</TabsTrigger>
+              <TabsTrigger value="insurance">Insurance Integration</TabsTrigger>
               <TabsTrigger value="audit">Audit Trail</TabsTrigger>
             </TabsList>
             <ScrollBar orientation="horizontal" />
@@ -62,6 +64,10 @@ const FinanceDashboard = () => {
 
           <TabsContent value="tax">
             <TaxManagementTab />
+          </TabsContent>
+
+          <TabsContent value="insurance">
+            <InsuranceIntegrationTab />
           </TabsContent>
 
           <TabsContent value="audit">
