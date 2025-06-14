@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -9,11 +8,12 @@ import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, 
 interface LabTestCategoryBreakdownProps {
   period: string;
   selectedCategory: string;
+  dateRange?: { from?: Date; to?: Date };
 }
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82ca9d'];
 
-const LabTestCategoryBreakdown = ({ period, selectedCategory }: LabTestCategoryBreakdownProps) => {
+const LabTestCategoryBreakdown = ({ period, selectedCategory, dateRange }: LabTestCategoryBreakdownProps) => {
   // Mock data for demonstration
   const categoryData = [
     {

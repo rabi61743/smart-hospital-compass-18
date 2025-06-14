@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, AreaChart, Area } from 'recharts';
@@ -6,9 +5,10 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 interface LabPerformanceTrendsProps {
   period: string;
   selectedCategory: string;
+  dateRange?: { from?: Date; to?: Date };
 }
 
-const LabPerformanceTrends = ({ period, selectedCategory }: LabPerformanceTrendsProps) => {
+const LabPerformanceTrends = ({ period, selectedCategory, dateRange }: LabPerformanceTrendsProps) => {
   // Mock trend data
   const trendData = [
     {

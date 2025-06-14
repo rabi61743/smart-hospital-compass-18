@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,9 +6,10 @@ import { TrendingUp, TrendingDown, Activity, DollarSign } from "lucide-react";
 interface LabCommissionSummaryProps {
   period: string;
   selectedCategory: string;
+  dateRange?: { from?: Date; to?: Date };
 }
 
-const LabCommissionSummary = ({ period, selectedCategory }: LabCommissionSummaryProps) => {
+const LabCommissionSummary = ({ period, selectedCategory, dateRange }: LabCommissionSummaryProps) => {
   // Mock summary data
   const summaryData = {
     totalCommission: 73110,
