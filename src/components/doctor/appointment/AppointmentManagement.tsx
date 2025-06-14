@@ -30,7 +30,7 @@ const AppointmentManagement = () => {
 
   const handleAppointmentScheduled = (appointment: any) => {
     console.log('New appointment scheduled:', appointment);
-    // Handle the new appointment
+    setShowScheduler(false);
   };
 
   const stats = [
@@ -91,12 +91,22 @@ const AppointmentManagement = () => {
         </TabsContent>
       </Tabs>
 
-      {/* Appointment Scheduler Dialog */}
-      <AppointmentScheduler
-        isOpen={showScheduler}
-        onClose={() => setShowScheduler(false)}
-        onSchedule={handleAppointmentScheduled}
-      />
+      {/* Appointment Scheduler */}
+      {showScheduler && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-lg font-semibold">Schedule New Appointment</h2>
+                <Button variant="outline" onClick={() => setShowScheduler(false)}>
+                  Close
+                </Button>
+              </div>
+              <AppointmentScheduler />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,7 +14,7 @@ import {
   Copy, 
   Edit, 
   Trash2,
-  Template,
+  FileTemplate,
   Clock,
   User
 } from "lucide-react";
@@ -154,7 +153,7 @@ FOLLOW-UP:
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center">
-            <Template className="h-5 w-5 mr-2" />
+            <FileTemplate className="h-5 w-5 mr-2" />
             Clinical Notes Templates
           </CardTitle>
           <CardDescription>Create clinical notes using standardized templates</CardDescription>
