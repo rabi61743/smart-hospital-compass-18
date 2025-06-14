@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -13,6 +14,7 @@ import PayrollProcessingTab from "@/components/payroll/PayrollProcessingTab";
 import PayrollReportsTab from "@/components/payroll/PayrollReportsTab";
 import PayrollSettingsTab from "@/components/payroll/PayrollSettingsTab";
 import TimeTrackingTab from "@/components/payroll/TimeTrackingTab";
+import LeaveManagementTab from "@/components/payroll/LeaveManagementTab";
 
 const PayrollDashboard = () => {
   return (
@@ -32,6 +34,7 @@ const PayrollDashboard = () => {
               <TabsTrigger value="org-chart">Organizational Chart</TabsTrigger>
               <TabsTrigger value="onboarding">Onboarding/Offboarding</TabsTrigger>
               <TabsTrigger value="time-tracking">Time & Attendance</TabsTrigger>
+              <TabsTrigger value="leave-management">Leave Management</TabsTrigger>
               <TabsTrigger value="processing">Payroll Processing</TabsTrigger>
               <TabsTrigger value="reports">Reports & History</TabsTrigger>
               <TabsTrigger value="settings">Settings</TabsTrigger>
@@ -65,6 +68,10 @@ const PayrollDashboard = () => {
 
           <TabsContent value="time-tracking">
             <TimeTrackingTab />
+          </TabsContent>
+
+          <TabsContent value="leave-management">
+            <LeaveManagementTab />
           </TabsContent>
 
           <TabsContent value="processing">
