@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -5,9 +6,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Filter, Plus, Eye, Edit, Send } from "lucide-react";
+import { Search, Filter, Eye, Edit, Send } from "lucide-react";
+import NewBillDialog from "./NewBillDialog";
+
 const PatientBillingTab = () => {
-  const [bills] = useState([{
+  const [bills, setBills] = useState([{
     id: '1',
     patientName: 'Rajesh Kumar',
     patientId: 'P001',
@@ -46,6 +49,11 @@ const PatientBillingTab = () => {
   }]);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+
+  const handleBillCreated = (newBill: any) => {
+    setBills(prevBills => [newBill, ...prevBills]);
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending':
@@ -60,21 +68,21 @@ const PatientBillingTab = () => {
         return 'bg-gray-100 text-gray-800';
     }
   };
+
   const filteredBills = bills.filter(bill => {
     const matchesSearch = bill.patientName.toLowerCase().includes(searchTerm.toLowerCase()) || bill.billNumber.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || bill.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
-  return <div className="space-y-6">
+
+  return (
+    <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
           <h3 className="text-lg font-semibold">Patient Billing</h3>
           <p className="text-sm text-muted-foreground">Manage patient bills and invoices</p>
         </div>
-        <Button className="implement functionality ">
-          <Plus className="w-4 h-4 mr-2" />
-          New Bill
-        </Button>
+        <NewBillDialog onBillCreated={handleBillCreated} />
       </div>
 
       {/* Filters */}
@@ -127,7 +135,8 @@ const PatientBillingTab = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredBills.map(bill => <TableRow key={bill.id}>
+              {filteredBills.map(bill => (
+                <TableRow key={bill.id}>
                   <TableCell className="font-medium">{bill.billNumber}</TableCell>
                   <TableCell>
                     <div>
@@ -159,11 +168,14 @@ const PatientBillingTab = () => {
                       </Button>
                     </div>
                   </TableCell>
-                </TableRow>)}
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </CardContent>
       </Card>
-    </div>;
+    </div>
+  );
 };
+
 export default PatientBillingTab;
