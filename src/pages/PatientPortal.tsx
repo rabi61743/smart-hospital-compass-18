@@ -5,6 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Calendar, Heart, Hospital, Users, Bell, Settings, FileText, UserPlus } from "lucide-react";
 import { Link } from "react-router-dom";
+import AppointmentBooking from "@/components/patient/AppointmentBooking";
+import AppointmentManagement from "@/components/patient/AppointmentManagement";
 
 const PatientPortal = () => {
   const upcomingAppointments = [
@@ -138,9 +140,10 @@ const PatientPortal = () => {
 
         {/* Main Content */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="appointments">Appointments</TabsTrigger>
+            <TabsTrigger value="book-appointment">Book Appointment</TabsTrigger>
             <TabsTrigger value="records">Medical Records</TabsTrigger>
             <TabsTrigger value="reports">Lab Reports</TabsTrigger>
             <TabsTrigger value="billing">Billing</TabsTrigger>
@@ -233,20 +236,11 @@ const PatientPortal = () => {
           </TabsContent>
 
           <TabsContent value="appointments" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Appointment Management</CardTitle>
-                <CardDescription>Schedule, reschedule, or cancel your appointments</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-12">
-                  <Calendar className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">Advanced Appointment System</h3>
-                  <p className="text-gray-600 mb-4">Smart scheduling with doctor availability and conflict detection</p>
-                  <Button>Book New Appointment</Button>
-                </div>
-              </CardContent>
-            </Card>
+            <AppointmentManagement />
+          </TabsContent>
+
+          <TabsContent value="book-appointment" className="space-y-6">
+            <AppointmentBooking />
           </TabsContent>
 
           <TabsContent value="records" className="space-y-6">
