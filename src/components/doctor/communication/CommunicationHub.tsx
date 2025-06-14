@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -9,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
   MessageCircle, 
   Users, 
-  Flask, 
+  TestTube, 
   AlertTriangle,
   Search,
   Send,
@@ -207,7 +206,7 @@ const CommunicationHub = () => {
                 <p className="text-sm text-muted-foreground">Lab Results</p>
                 <p className="text-2xl font-bold">{pendingLabResults}</p>
               </div>
-              <Flask className="h-8 w-8 text-purple-600" />
+              <TestTube className="h-8 w-8 text-purple-600" />
             </div>
           </CardContent>
         </Card>
@@ -245,7 +244,7 @@ const CommunicationHub = () => {
             )}
           </TabsTrigger>
           <TabsTrigger value="lab-notifications" className="flex items-center gap-2">
-            <Flask className="h-4 w-4" />
+            <TestTube className="h-4 w-4" />
             Lab Results
             {pendingLabResults > 0 && (
               <Badge variant="secondary" className="ml-1 px-1 py-0 text-xs">
