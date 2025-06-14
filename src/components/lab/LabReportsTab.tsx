@@ -5,15 +5,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Download, FileText, BarChart3 } from "lucide-react";
+import { Download, FileText, BarChart3, Calculator } from "lucide-react";
 import LabTestCategoryBreakdown from './LabTestCategoryBreakdown';
 import LabCommissionSummary from './LabCommissionSummary';
 import LabPerformanceTrends from './LabPerformanceTrends';
 import LabReferralTracking from './LabReferralTracking';
+import DynamicLabCommissionCalculator from './DynamicLabCommissionCalculator';
+import { useCommissionRules } from '@/hooks/useCommissionRules';
 
 const LabReportsTab = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('2024-01');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const { activeRules } = useCommissionRules();
 
   const handleExportReport = (format: 'pdf' | 'excel') => {
     console.log(`Exporting lab report in ${format} format for period:`, selectedPeriod);
@@ -80,13 +83,22 @@ const LabReportsTab = () => {
       </Card>
 
       {/* Report Tabs */}
-      <Tabs defaultValue="breakdown" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
+      <Tabs defaultValue="dynamic-calculator" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="dynamic-calculator">Live Calculator</TabsTrigger>
           <TabsTrigger value="breakdown">Category Breakdown</TabsTrigger>
           <TabsTrigger value="summary">Commission Summary</TabsTrigger>
           <TabsTrigger value="trends">Performance Trends</TabsTrigger>
           <TabsTrigger value="referrals">Referral Tracking</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="dynamic-calculator">
+          <DynamicLabCommissionCalculator
+            rules={activeRules}
+            period={selectedPeriod}
+            selectedCategory={selectedCategory}
+          />
+        </TabsContent>
 
         <TabsContent value="breakdown">
           <LabTestCategoryBreakdown 
