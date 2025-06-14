@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import HealthMetricsOverview from './health-metrics/HealthMetricsOverview';
 import AddMetricForm from './health-metrics/AddMetricForm';
 import HealthMetricsHistory from './health-metrics/HealthMetricsHistory';
@@ -70,33 +71,49 @@ const HealthMetricsTracking = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
+      {/* Header Section */}
+      <Card className="bg-gradient-to-r from-blue-50 to-green-50 border-0 shadow-sm">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-2xl font-bold text-gray-900">Health Metrics Dashboard</CardTitle>
+          <CardDescription className="text-base text-gray-600">
+            Track and monitor your vital health measurements over time
+          </CardDescription>
+        </CardHeader>
+      </Card>
+
+      {/* Overview Cards */}
       <HealthMetricsOverview healthMetrics={healthMetrics} />
 
-      <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="add-metric">Add Reading</TabsTrigger>
-          <TabsTrigger value="history">History</TabsTrigger>
-          <TabsTrigger value="trends">Trends</TabsTrigger>
-        </TabsList>
+      {/* Tabs Section */}
+      <Card className="shadow-sm">
+        <CardContent className="p-6">
+          <Tabs defaultValue="overview" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-4 bg-gray-50">
+              <TabsTrigger value="overview" className="text-sm font-medium">Charts</TabsTrigger>
+              <TabsTrigger value="add-metric" className="text-sm font-medium">Add Reading</TabsTrigger>
+              <TabsTrigger value="history" className="text-sm font-medium">History</TabsTrigger>
+              <TabsTrigger value="trends" className="text-sm font-medium">Trends</TabsTrigger>
+            </TabsList>
 
-        <TabsContent value="overview" className="space-y-4">
-          <HealthMetricsCharts healthMetrics={healthMetrics} />
-        </TabsContent>
+            <TabsContent value="overview" className="space-y-6 mt-6">
+              <HealthMetricsCharts healthMetrics={healthMetrics} />
+            </TabsContent>
 
-        <TabsContent value="add-metric" className="space-y-4">
-          <AddMetricForm onAddMetric={handleAddMetric} />
-        </TabsContent>
+            <TabsContent value="add-metric" className="space-y-6 mt-6">
+              <AddMetricForm onAddMetric={handleAddMetric} />
+            </TabsContent>
 
-        <TabsContent value="history" className="space-y-4">
-          <HealthMetricsHistory healthMetrics={healthMetrics} />
-        </TabsContent>
+            <TabsContent value="history" className="space-y-6 mt-6">
+              <HealthMetricsHistory healthMetrics={healthMetrics} />
+            </TabsContent>
 
-        <TabsContent value="trends" className="space-y-4">
-          <HealthMetricsCharts healthMetrics={healthMetrics} showTrends={true} />
-        </TabsContent>
-      </Tabs>
+            <TabsContent value="trends" className="space-y-6 mt-6">
+              <HealthMetricsCharts healthMetrics={healthMetrics} showTrends={true} />
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
     </div>
   );
 };
