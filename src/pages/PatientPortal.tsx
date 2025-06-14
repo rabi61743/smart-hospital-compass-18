@@ -18,13 +18,14 @@ const PatientPortal = () => {
         <PatientQuickActions />
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-7">
+          <TabsList className="grid w-full grid-cols-8">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="appointments">Appointments</TabsTrigger>
             <TabsTrigger value="book-appointment">Book Appointment</TabsTrigger>
             <TabsTrigger value="records">Medical Records</TabsTrigger>
             <TabsTrigger value="reports">Lab Reports</TabsTrigger>
             <TabsTrigger value="prescriptions">Prescriptions</TabsTrigger>
+            <TabsTrigger value="health-metrics">Health Metrics</TabsTrigger>
             <TabsTrigger value="billing">Billing</TabsTrigger>
           </TabsList>
 
