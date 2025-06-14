@@ -1,5 +1,5 @@
 
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import PatientPortalHeader from "@/components/patient/PatientPortalHeader";
 import PatientWelcomeSection from "@/components/patient/PatientWelcomeSection";
 import PatientQuickActions from "@/components/patient/PatientQuickActions";
@@ -27,26 +27,15 @@ const PatientPortal = () => {
             <TabsTrigger value="billing">Billing</TabsTrigger>
           </TabsList>
 
-          <Tabs defaultValue="overview" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-6">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="appointments">Appointments</TabsTrigger>
-              <TabsTrigger value="book-appointment">Book Appointment</TabsTrigger>
-              <TabsTrigger value="records">Medical Records</TabsTrigger>
-              <TabsTrigger value="reports">Lab Reports</TabsTrigger>
-              <TabsTrigger value="billing">Billing</TabsTrigger>
-            </TabsList>
+          <TabsContent value="overview" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <PatientUpcomingAppointments />
+              <PatientHealthMetrics />
+            </div>
+            <PatientRecentVisits />
+          </TabsContent>
 
-            <TabsContent value="overview" className="space-y-6">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <PatientUpcomingAppointments />
-                <PatientHealthMetrics />
-              </div>
-              <PatientRecentVisits />
-            </TabsContent>
-
-            <PatientTabContent />
-          </Tabs>
+          <PatientTabContent />
         </Tabs>
       </div>
     </div>
