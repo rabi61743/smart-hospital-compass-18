@@ -1,6 +1,6 @@
 import { CommissionRule } from '@/types/commission';
 import { Transaction, CommissionCalculation } from '@/types/transaction';
-import { evaluateAdvancedConditions, calculateConditionalRate, EvaluationContext } from '../conditionEvaluator';
+import { evaluateAdvancedConditions, calculateConditionalRate, calculateTimeBasedMultiplier, EvaluationContext } from '../conditionEvaluator';
 import { TieredCommissionCalculator } from './tieredCommissionCalculator';
 
 export const isRuleApplicable = (rule: CommissionRule, transaction: Transaction): boolean => {
@@ -11,28 +11,29 @@ export const isRuleApplicable = (rule: CommissionRule, transaction: Transaction)
 
   // Check advanced conditions
   if (rule.advancedConditions && rule.advancedConditions.conditions.length > 0) {
-    const context: EvaluationContext = {
-      amount: transaction.amount,
-      quantity: transaction.quantity,
-      category: transaction.category,
-      type: transaction.type,
-      date: transaction.date
-    };
-    
+    const context = createEvaluationContext(transaction);
     return evaluateAdvancedConditions(rule.advancedConditions, context);
   }
 
   return true;
 };
 
-export const calculateRuleCommission = (rule: CommissionRule, transaction: Transaction): CommissionCalculation | null => {
-  const context: EvaluationContext = {
+const createEvaluationContext = (transaction: Transaction): EvaluationContext => {
+  const date = transaction.date;
+  return {
     amount: transaction.amount,
     quantity: transaction.quantity,
     category: transaction.category,
     type: transaction.type,
-    date: transaction.date
+    date: date,
+    time: date.toTimeString().slice(0, 5), // "HH:MM" format
+    dayOfWeek: date.getDay(),
+    hour: date.getHours()
   };
+};
+
+export const calculateRuleCommission = (rule: CommissionRule, transaction: Transaction): CommissionCalculation | null => {
+  const context = createEvaluationContext(transaction);
 
   // Get the effective rate (considering conditional rates)
   let effectiveRate = { rateType: rule.rateType as 'percentage' | 'fixed' | 'tiered', rate: rule.rate };
@@ -49,33 +50,46 @@ export const calculateRuleCommission = (rule: CommissionRule, transaction: Trans
     };
   }
 
+  // Calculate time-based multiplier
+  const timeMultiplier = calculateTimeBasedMultiplier(rule.timeBasedRates || [], context);
+
   let commission = 0;
   let details = '';
 
   switch (effectiveRate.rateType) {
     case 'percentage':
-      commission = (transaction.amount * effectiveRate.rate) / 100;
+      commission = (transaction.amount * effectiveRate.rate * timeMultiplier) / 100;
       details = `${effectiveRate.rate}% of ₹${transaction.amount}`;
+      if (timeMultiplier !== 1) {
+        details += ` × ${timeMultiplier} (time-based)`;
+      }
       break;
     
     case 'fixed':
-      commission = effectiveRate.rate * transaction.quantity;
+      commission = effectiveRate.rate * transaction.quantity * timeMultiplier;
       details = `₹${effectiveRate.rate} × ${transaction.quantity} units`;
+      if (timeMultiplier !== 1) {
+        details += ` × ${timeMultiplier} (time-based)`;
+      }
       break;
     
     case 'tiered':
       if (rule.tieredConfig) {
-        // Use complex tiered configuration
         const tieredResult = TieredCommissionCalculator.calculateTieredCommission(
           transaction.amount,
           rule.tieredConfig
         );
-        commission = tieredResult.totalCommission;
+        commission = tieredResult.totalCommission * timeMultiplier;
         details = `Tiered calculation (${tieredResult.effectiveRate}% effective rate) on ₹${transaction.amount}`;
+        if (timeMultiplier !== 1) {
+          details += ` × ${timeMultiplier} (time-based)`;
+        }
       } else {
-        // Fallback to simple tiered calculation
-        commission = calculateTieredCommission(transaction.amount, effectiveRate.rate);
+        commission = calculateTieredCommission(transaction.amount, effectiveRate.rate) * timeMultiplier;
         details = `Simple tiered calculation on ₹${transaction.amount}`;
+        if (timeMultiplier !== 1) {
+          details += ` × ${timeMultiplier} (time-based)`;
+        }
       }
       break;
   }
@@ -87,7 +101,7 @@ export const calculateRuleCommission = (rule: CommissionRule, transaction: Trans
     amount: transaction.amount,
     rate: effectiveRate.rate,
     rateType: effectiveRate.rateType,
-    commission: Math.round(commission * 100) / 100, // Round to 2 decimal places
+    commission: Math.round(commission * 100) / 100,
     details
   };
 };
@@ -103,7 +117,6 @@ export const calculateTieredCommission = (amount: number, baseRate: number): num
   }
 };
 
-// New function to get detailed tiered breakdown
 export const getTieredCommissionBreakdown = (rule: CommissionRule, transaction: Transaction) => {
   if (rule.rateType === 'tiered' && rule.tieredConfig) {
     return TieredCommissionCalculator.calculateTieredCommission(

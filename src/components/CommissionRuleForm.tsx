@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -13,6 +12,7 @@ import RealtimeCommissionPreview from "./RealtimeCommissionPreview";
 import BasicConfigurationForm from "./form/BasicConfigurationForm";
 import RateConfiguration from "./form/RateConfiguration";
 import FormActions from "./form/FormActions";
+import TimeBasedRatesBuilder from "./form/TimeBasedRatesBuilder";
 
 interface CommissionRuleFormProps {
   form: UseFormReturn<CommissionRuleFormData>;
@@ -25,6 +25,7 @@ const CommissionRuleForm = ({ form, editingRule, onSubmit, onCancel }: Commissio
   const watchRateType = form.watch("rateType");
   const watchRate = form.watch("rate");
   const watchAdvancedConditions = form.watch("advancedConditions");
+  const watchTimeBasedRates = form.watch("timeBasedRates");
   const watchName = form.watch("name");
   const watchType = form.watch("type");
   const watchCategory = form.watch("category");
@@ -41,6 +42,10 @@ const CommissionRuleForm = ({ form, editingRule, onSubmit, onCancel }: Commissio
     form.setValue("advancedConditions", conditions);
   };
 
+  const handleTimeBasedRatesChange = (rates: any[]) => {
+    form.setValue("timeBasedRates", rates);
+  };
+
   // Ensure we always have a valid AdvancedConditions object with proper ConditionRule objects
   const getAdvancedConditions = (): AdvancedConditions => {
     const formConditions = watchAdvancedConditions;
@@ -53,7 +58,6 @@ const CommissionRuleForm = ({ form, editingRule, onSubmit, onCancel }: Commissio
         secondValue: condition.secondValue,
       };
 
-      // Only add rateOverride if it has the required properties
       if (condition.rateOverride && condition.rateOverride.rateType && typeof condition.rateOverride.rate === 'number') {
         conditionRule.rateOverride = {
           rateType: condition.rateOverride.rateType,
@@ -80,16 +84,17 @@ const CommissionRuleForm = ({ form, editingRule, onSubmit, onCancel }: Commissio
               {editingRule ? `Edit Rule: ${editingRule.name}` : 'Create New Commission Rule'}
             </CardTitle>
             <CardDescription>
-              {editingRule ? 'Modify the existing commission rule' : 'Define a new commission structure with advanced conditional logic'}
+              {editingRule ? 'Modify the existing commission rule' : 'Define a new commission structure with advanced conditional logic and time-based rates'}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-6">
                 <Tabs defaultValue="basic" className="space-y-4">
-                  <TabsList className="grid w-full grid-cols-2">
+                  <TabsList className="grid w-full grid-cols-3">
                     <TabsTrigger value="basic">Basic Configuration</TabsTrigger>
                     <TabsTrigger value="advanced">Advanced Conditions</TabsTrigger>
+                    <TabsTrigger value="time-based">Time-Based Rates</TabsTrigger>
                   </TabsList>
 
                   <TabsContent value="basic" className="space-y-4">
@@ -112,6 +117,23 @@ const CommissionRuleForm = ({ form, editingRule, onSubmit, onCancel }: Commissio
                             <AdvancedConditionsBuilder
                               conditions={getAdvancedConditions()}
                               onChange={handleAdvancedConditionsChange}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </TabsContent>
+
+                  <TabsContent value="time-based" className="space-y-4">
+                    <FormField
+                      control={form.control}
+                      name="timeBasedRates"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <TimeBasedRatesBuilder
+                              timeBasedRates={watchTimeBasedRates || []}
+                              onChange={handleTimeBasedRatesChange}
                             />
                           </FormControl>
                         </FormItem>

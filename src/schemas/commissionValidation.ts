@@ -20,8 +20,8 @@ const tieredCommissionConfigSchema = z.object({
 
 const conditionRuleSchema = z.object({
   id: z.string(),
-  field: z.enum(['amount', 'quantity', 'category', 'type', 'date']),
-  operator: z.enum(['gt', 'gte', 'lt', 'lte', 'eq', 'neq', 'between', 'in']),
+  field: z.enum(['amount', 'quantity', 'category', 'type', 'date', 'time', 'day_of_week', 'hour']),
+  operator: z.enum(['gt', 'gte', 'lt', 'lte', 'eq', 'neq', 'between', 'in', 'time_between', 'day_of_week', 'is_weekend', 'is_peak_hour']),
   value: z.any(),
   secondValue: z.any().optional(),
   rateOverride: z.object({
@@ -33,6 +33,19 @@ const conditionRuleSchema = z.object({
 const advancedConditionsSchema = z.object({
   logic: z.enum(['AND', 'OR']),
   conditions: z.array(conditionRuleSchema)
+});
+
+const timeBasedRateSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  rateMultiplier: z.number().min(0.1).max(10),
+  conditions: z.object({
+    startTime: z.string().optional(),
+    endTime: z.string().optional(),
+    daysOfWeek: z.array(z.number().min(0).max(6)).optional(),
+    isWeekend: z.boolean().optional(),
+    isPeakHour: z.boolean().optional()
+  })
 });
 
 export const commissionRuleSchema = z.object({
@@ -74,7 +87,9 @@ export const commissionRuleSchema = z.object({
   
   advancedConditions: advancedConditionsSchema.optional(),
   
-  tieredConfig: tieredCommissionConfigSchema.optional()
+  tieredConfig: tieredCommissionConfigSchema.optional(),
+  
+  timeBasedRates: z.array(timeBasedRateSchema).optional()
 }).superRefine((data, ctx) => {
   // Cross-field validation
   if (data.minAmount && data.maxAmount && data.minAmount >= data.maxAmount) {

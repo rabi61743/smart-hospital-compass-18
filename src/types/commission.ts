@@ -1,5 +1,5 @@
 
-import { AdvancedConditions } from './conditions';
+import { AdvancedConditions, TimeBasedRate } from './conditions';
 import { TieredCommissionConfig } from './tieredCommission';
 
 export interface CommissionRule {
@@ -14,7 +14,8 @@ export interface CommissionRule {
   isActive: boolean;
   category: string;
   advancedConditions?: AdvancedConditions;
-  tieredConfig?: TieredCommissionConfig; // New field for complex tiered configurations
+  tieredConfig?: TieredCommissionConfig;
+  timeBasedRates?: TimeBasedRate[]; // New field for time-based rates
 }
 
 export interface CommissionRuleTemplate {
@@ -27,4 +28,5 @@ export interface CommissionRuleTemplate {
   category: string;
   advancedConditions?: AdvancedConditions;
   tieredConfig?: TieredCommissionConfig;
+  timeBasedRates?: TimeBasedRate[];
 }

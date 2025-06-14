@@ -28,7 +28,8 @@ export const useCommissionRulesForm = (
       advancedConditions: {
         logic: 'AND',
         conditions: []
-      }
+      },
+      timeBasedRates: []
     }
   });
 
@@ -63,7 +64,8 @@ export const useCommissionRulesForm = (
       advancedConditions: rule.advancedConditions || {
         logic: 'AND',
         conditions: []
-      }
+      },
+      timeBasedRates: rule.timeBasedRates || []
     });
     setActiveTab('create-rule');
   };
@@ -90,7 +92,8 @@ export const useCommissionRulesForm = (
         advancedConditions: template.advancedConditions || {
           logic: 'AND',
           conditions: []
-        }
+        },
+        timeBasedRates: template.timeBasedRates || []
       });
     }
     setEditingRule(null);
