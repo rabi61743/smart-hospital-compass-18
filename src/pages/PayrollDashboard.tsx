@@ -6,6 +6,7 @@ import PayrollStatsCards from "@/components/payroll/PayrollStatsCards";
 import EmployeeManagementTab from "@/components/payroll/EmployeeManagementTab";
 import DepartmentManagementTab from "@/components/payroll/DepartmentManagementTab";
 import PositionManagementTab from "@/components/payroll/PositionManagementTab";
+import CostCenterManagementTab from "@/components/payroll/CostCenterManagementTab";
 import OrganizationalChartTab from "@/components/payroll/OrganizationalChartTab";
 import OnboardingOffboardingTab from "@/components/payroll/OnboardingOffboardingTab";
 import PayrollProcessingTab from "@/components/payroll/PayrollProcessingTab";
@@ -21,10 +22,11 @@ const PayrollDashboard = () => {
         <PayrollStatsCards />
 
         <Tabs defaultValue="employees" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-8">
+          <TabsList className="grid w-full grid-cols-9">
             <TabsTrigger value="employees">Employee Management</TabsTrigger>
             <TabsTrigger value="departments">Department Management</TabsTrigger>
             <TabsTrigger value="positions">Position Management</TabsTrigger>
+            <TabsTrigger value="cost-centers">Cost Centers</TabsTrigger>
             <TabsTrigger value="org-chart">Organizational Chart</TabsTrigger>
             <TabsTrigger value="onboarding">Onboarding/Offboarding</TabsTrigger>
             <TabsTrigger value="processing">Payroll Processing</TabsTrigger>
@@ -42,6 +44,10 @@ const PayrollDashboard = () => {
 
           <TabsContent value="positions">
             <PositionManagementTab />
+          </TabsContent>
+
+          <TabsContent value="cost-centers">
+            <CostCenterManagementTab />
           </TabsContent>
 
           <TabsContent value="org-chart">
