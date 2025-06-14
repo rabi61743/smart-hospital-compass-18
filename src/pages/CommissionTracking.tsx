@@ -13,6 +13,7 @@ import CommissionRulesEngine from "@/components/CommissionRulesEngine";
 import RealtimeCommissionDashboard from "@/components/RealtimeCommissionDashboard";
 import CommissionApprovalWorkflow from "@/components/CommissionApprovalWorkflow";
 import PatientTransactionsTab from "@/components/PatientTransactionsTab";
+import CommissionReconciliationTab from "@/components/CommissionReconciliationTab";
 import { calculateDoctorCommissions, getCommissionSummary } from "@/utils/mockCommissionCalculator";
 
 const CommissionTracking = () => {
@@ -70,9 +71,10 @@ const CommissionTracking = () => {
 
         {/* Commission Tracking Tabs */}
         <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-9">
+          <TabsList className="grid w-full grid-cols-10">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="approval">Approval</TabsTrigger>
+            <TabsTrigger value="reconciliation">Reconciliation</TabsTrigger>
             <TabsTrigger value="patients">Patients</TabsTrigger>
             <TabsTrigger value="doctors">Doctors</TabsTrigger>
             <TabsTrigger value="agents">Agents</TabsTrigger>
@@ -88,6 +90,10 @@ const CommissionTracking = () => {
 
           <TabsContent value="approval" className="space-y-6">
             <CommissionApprovalWorkflow />
+          </TabsContent>
+
+          <TabsContent value="reconciliation" className="space-y-6">
+            <CommissionReconciliationTab />
           </TabsContent>
 
           <TabsContent value="patients" className="space-y-6">
