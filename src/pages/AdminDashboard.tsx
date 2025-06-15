@@ -78,7 +78,7 @@ const AdminDashboard = () => {
   return (
     <div className="flex h-screen bg-gray-50">
       {/* Enhanced Left Vertical Navigation */}
-      <div className="w-72 bg-white border-r border-gray-200 shadow-xl">
+      <div className="w-72 bg-white border-r border-gray-200 shadow-xl relative">
         {/* Header with gradient */}
         <div className="p-6 bg-gradient-to-br from-blue-600 to-blue-700 text-white">
           <div className="flex items-center space-x-3">
@@ -124,7 +124,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Navigation with enhanced styling */}
-        <nav className="p-4 space-y-2">
+        <nav className="p-4 space-y-2 pb-32">
           <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4 px-3">
             Navigation
           </div>
@@ -157,14 +157,46 @@ const AdminDashboard = () => {
           })}
         </nav>
 
-        {/* Footer section */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100 bg-gray-50/50">
-          <div className="text-xs text-gray-500 text-center">
-            <div className="flex items-center justify-center space-x-1 mb-1">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span>System Online</span>
+        {/* Enhanced Footer section */}
+        <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-gray-100 to-gray-50 border-t border-gray-200">
+          <div className="space-y-3">
+            {/* System Status */}
+            <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm border border-gray-200">
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                <span className="text-sm font-medium text-gray-700">System Online</span>
+              </div>
+              <div className="text-xs text-gray-500 bg-green-50 px-2 py-1 rounded-full">
+                99.9%
+              </div>
             </div>
-            <div>MediFlow Admin v2.1</div>
+            
+            {/* Version and Quick Stats */}
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-gray-700">MediFlow Admin</span>
+                <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium">
+                  v2.1
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-2 text-xs text-gray-500">
+                <div className="flex items-center space-x-1">
+                  <Activity className="h-3 w-3" />
+                  <span>15 Active</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <Users className="h-3 w-3" />
+                  <span>1,247 Users</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Support Link */}
+            <div className="text-center">
+              <button className="text-xs text-gray-500 hover:text-blue-600 transition-colors">
+                Need Help? Contact Support
+              </button>
+            </div>
           </div>
         </div>
       </div>
