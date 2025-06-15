@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Users, Heart, Calendar, Settings, Bell, Hospital, ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { HorizontalLayout } from "@/components/layout/HorizontalLayout";
+import ConsultationSchedulingDialog from "@/components/consultation/ConsultationSchedulingDialog";
 
 const Index = () => {
   const features = [{
@@ -232,9 +233,11 @@ const Index = () => {
                   View Live Demo
                 </Button>
               </Link>
-              <Button size="lg" variant="outline" className="w-full sm:w-auto text-white border-white hover:bg-white hover:text-blue-600">
-                Schedule Consultation
-              </Button>
+              <ConsultationSchedulingDialog>
+                <Button size="lg" variant="outline" className="w-full sm:w-auto text-white border-white hover:bg-white hover:text-blue-600">
+                  Schedule Consultation
+                </Button>
+              </ConsultationSchedulingDialog>
             </div>
           </div>
         </section>
