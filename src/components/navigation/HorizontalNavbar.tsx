@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -44,6 +43,12 @@ const navigationSections = [
         url: "/",
         icon: Hospital,
         description: "Hospital home page"
+      },
+      {
+        title: "Admin Portal",
+        url: "/admin-dashboard",
+        icon: Shield,
+        description: "Super admin control center"
       },
     ]
   },

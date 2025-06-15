@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HorizontalLayout } from "./components/layout/HorizontalLayout";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 import PatientPortal from "./pages/PatientPortal";
 import DoctorDashboard from "./pages/DoctorDashboard";
 import PharmacyDashboard from "./pages/PharmacyDashboard";
@@ -33,6 +34,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<HorizontalLayout><Dashboard /></HorizontalLayout>} />
+          <Route path="/admin-dashboard" element={<HorizontalLayout><AdminDashboard /></HorizontalLayout>} />
           <Route path="/patient-portal" element={<HorizontalLayout><PatientPortal /></HorizontalLayout>} />
           <Route path="/doctor-dashboard" element={<HorizontalLayout><DoctorDashboard /></HorizontalLayout>} />
           <Route path="/pharmacy-dashboard" element={<HorizontalLayout><PharmacyDashboard /></HorizontalLayout>} />
