@@ -1,10 +1,8 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { DialogTrigger } from "@/components/ui/dialog";
 import { 
   UserPlus, 
   Search, 
@@ -15,7 +13,7 @@ import BulkUserOperationsBar from './BulkUserOperationsBar';
 import BulkRoleAssignmentDialog from './BulkRoleAssignmentDialog';
 import UserStatsCards from './UserStatsCards';
 import UserTable from './UserTable';
-import AddUserDialog from './AddUserDialog';
+import EnhancedAddUserDialog from './EnhancedAddUserDialog';
 
 const UserManagementTab = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -221,8 +219,8 @@ const UserManagementTab = () => {
         </CardContent>
       </Card>
 
-      {/* Add User Dialog */}
-      <AddUserDialog
+      {/* Enhanced Add User Dialog */}
+      <EnhancedAddUserDialog
         isOpen={isAddUserOpen}
         onClose={() => setIsAddUserOpen(false)}
       />
