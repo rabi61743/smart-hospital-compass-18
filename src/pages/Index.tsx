@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Users, Heart, Calendar, Settings, Bell, Hospital, ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
-import { HorizontalLayout } from "@/components/layout/HorizontalLayout";
+import { AppLayout } from "@/components/layout/AppLayout";
 import ConsultationSchedulingDialog from "@/components/consultation/ConsultationSchedulingDialog";
 
 const Index = () => {
@@ -65,7 +65,7 @@ const Index = () => {
   ];
 
   return (
-    <HorizontalLayout>
+    <AppLayout>
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
         {/* Hero Section */}
         <section className="py-20 px-4 sm:px-6 lg:px-8">
@@ -255,7 +255,7 @@ const Index = () => {
           </div>
         </footer>
       </div>
-    </HorizontalLayout>
+    </AppLayout>
   );
 };
 
