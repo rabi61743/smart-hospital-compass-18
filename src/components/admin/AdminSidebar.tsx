@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Shield, Users, Settings, Database, Activity, AlertTriangle } from "lucide-react";
+import { Shield, Users, Settings, Database, Activity, AlertTriangle, Monitor } from "lucide-react";
 
 interface AdminSidebarProps {
   currentUserRole: string;
@@ -20,6 +20,7 @@ const AdminSidebar = ({
   // Define navigation items with access control
   const allNavigationItems = [
     { id: "overview", label: "Overview", icon: Activity, requiredRole: ["super-admin", "department-admin"] },
+    { id: "control-panel", label: "Control Panel", icon: Monitor, requiredRole: ["super-admin"] },
     { id: "users", label: "Users", icon: Users, requiredRole: ["super-admin", "department-admin"] },
     { id: "roles", label: "Roles", icon: Shield, requiredRole: ["super-admin"] },
     { id: "rbac", label: "RBAC", icon: Shield, requiredRole: ["super-admin", "department-admin"] },

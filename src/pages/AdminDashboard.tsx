@@ -1,8 +1,9 @@
+
 import React from 'react';
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminHeader from "@/components/admin/AdminHeader";
 import AdminContentWrapper from "@/components/admin/AdminContentWrapper";
-import { Activity, Users, Shield, Database, Settings, AlertTriangle } from "lucide-react";
+import { Activity, Users, Shield, Database, Settings, AlertTriangle, Monitor } from "lucide-react";
 import AdminOverviewTab from "@/components/admin/AdminOverviewTab";
 import UserManagementTab from "@/components/admin/UserManagementTab";
 import SystemConfigurationTab from "@/components/admin/SystemConfigurationTab";
@@ -15,6 +16,7 @@ import ComplianceManagementTab from "@/components/admin/ComplianceManagementTab"
 import DepartmentAdminTab from "@/components/admin/DepartmentAdminTab";
 import ModuleAdminTab from "@/components/admin/ModuleAdminTab";
 import RBACTab from "@/components/admin/RBACTab";
+import CentralizedControlPanel from "@/components/admin/CentralizedControlPanel";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = React.useState("overview");
@@ -26,6 +28,7 @@ const AdminDashboard = () => {
   // Define navigation items with access control
   const allNavigationItems = [
     { id: "overview", label: "Overview", icon: Activity, requiredRole: ["super-admin", "department-admin"] },
+    { id: "control-panel", label: "Control Panel", icon: Monitor, requiredRole: ["super-admin"] },
     { id: "users", label: "Users", icon: Users, requiredRole: ["super-admin", "department-admin"] },
     { id: "roles", label: "Roles", icon: Shield, requiredRole: ["super-admin"] },
     { id: "rbac", label: "RBAC", icon: Shield, requiredRole: ["super-admin", "department-admin"] },
@@ -48,6 +51,8 @@ const AdminDashboard = () => {
     switch (activeTab) {
       case "overview":
         return <AdminOverviewTab />;
+      case "control-panel":
+        return <CentralizedControlPanel />;
       case "users":
         return <UserManagementTab />;
       case "roles":
