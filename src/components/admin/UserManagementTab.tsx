@@ -6,11 +6,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { 
   UserPlus, 
   Search, 
-  Download
+  Download,
+  Upload
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import BulkUserOperationsBar from './BulkUserOperationsBar';
 import BulkRoleAssignmentDialog from './BulkRoleAssignmentDialog';
+import BulkUserImportExportDialog from './BulkUserImportExportDialog';
 import UserStatsCards from './UserStatsCards';
 import UserTable from './UserTable';
 import EnhancedAddUserDialog from './EnhancedAddUserDialog';
@@ -21,6 +23,7 @@ const UserManagementTab = () => {
   const [isAddUserOpen, setIsAddUserOpen] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
   const [isRoleAssignmentOpen, setIsRoleAssignmentOpen] = useState(false);
+  const [isBulkImportExportOpen, setIsBulkImportExportOpen] = useState(false);
   const { toast } = useToast();
 
   const users = [
@@ -174,6 +177,14 @@ const UserManagementTab = () => {
               </CardDescription>
             </div>
             <div className="flex gap-3">
+              <Button 
+                variant="outline" 
+                onClick={() => setIsBulkImportExportOpen(true)}
+                className="border-gray-300 hover:bg-gray-50"
+              >
+                <Upload className="h-4 w-4 mr-2" />
+                Import/Export
+              </Button>
               <Button variant="outline" className="border-gray-300 hover:bg-gray-50">
                 <Download className="h-4 w-4 mr-2" />
                 Export Users
@@ -231,6 +242,13 @@ const UserManagementTab = () => {
         onClose={() => setIsRoleAssignmentOpen(false)}
         selectedCount={selectedUsers.length}
         onAssignRole={handleBulkAssignRole}
+      />
+
+      {/* Bulk Import/Export Dialog */}
+      <BulkUserImportExportDialog
+        isOpen={isBulkImportExportOpen}
+        onClose={() => setIsBulkImportExportOpen(false)}
+        users={users}
       />
     </div>
   );
