@@ -13,9 +13,14 @@ import SystemMonitoringTab from "@/components/admin/SystemMonitoringTab";
 import RolePermissionTab from "@/components/admin/RolePermissionTab";
 import GlobalSettingsTab from "@/components/admin/GlobalSettingsTab";
 import ComplianceManagementTab from "@/components/admin/ComplianceManagementTab";
+import DepartmentAdminTab from "@/components/admin/DepartmentAdminTab";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = React.useState("overview");
+
+  // Simulate current user role - in real app this would come from authentication
+  const [currentUserRole, setCurrentUserRole] = React.useState("super-admin"); // or "department-admin"
+  const [departmentAccess, setDepartmentAccess] = React.useState(["finance", "hr"]); // for department admins
 
   const headerStats = [
     { label: "Total Users", value: "1,247", change: "+12 this week", icon: <Users className="h-5 w-5" /> },
@@ -24,17 +29,24 @@ const AdminDashboard = () => {
     { label: "Security Alerts", value: "3", change: "2 resolved today", icon: <AlertTriangle className="h-5 w-5" /> }
   ];
 
-  const navigationItems = [
-    { id: "overview", label: "Overview", icon: Activity },
-    { id: "users", label: "Users", icon: Users },
-    { id: "roles", label: "Roles", icon: Shield },
-    { id: "modules", label: "Modules", icon: Database },
-    { id: "configuration", label: "Config", icon: Settings },
-    { id: "monitoring", label: "Monitor", icon: Activity },
-    { id: "security", label: "Security", icon: Shield },
-    { id: "compliance", label: "Compliance", icon: AlertTriangle },
-    { id: "settings", label: "Settings", icon: Settings }
+  // Define navigation items with access control
+  const allNavigationItems = [
+    { id: "overview", label: "Overview", icon: Activity, requiredRole: ["super-admin", "department-admin"] },
+    { id: "users", label: "Users", icon: Users, requiredRole: ["super-admin", "department-admin"] },
+    { id: "roles", label: "Roles", icon: Shield, requiredRole: ["super-admin"] },
+    { id: "department-admin", label: "Dept Admin", icon: Shield, requiredRole: ["super-admin", "department-admin"] },
+    { id: "modules", label: "Modules", icon: Database, requiredRole: ["super-admin"] },
+    { id: "configuration", label: "Config", icon: Settings, requiredRole: ["super-admin"] },
+    { id: "monitoring", label: "Monitor", icon: Activity, requiredRole: ["super-admin"] },
+    { id: "security", label: "Security", icon: Shield, requiredRole: ["super-admin"] },
+    { id: "compliance", label: "Compliance", icon: AlertTriangle, requiredRole: ["super-admin", "department-admin"] },
+    { id: "settings", label: "Settings", icon: Settings, requiredRole: ["super-admin"] }
   ];
+
+  // Filter navigation items based on user role
+  const navigationItems = allNavigationItems.filter(item => 
+    item.requiredRole.includes(currentUserRole)
+  );
 
   const renderContent = () => {
     switch (activeTab) {
@@ -44,6 +56,8 @@ const AdminDashboard = () => {
         return <UserManagementTab />;
       case "roles":
         return <RolePermissionTab />;
+      case "department-admin":
+        return <DepartmentAdminTab currentUserRole={currentUserRole} departmentAccess={departmentAccess} />;
       case "modules":
         return <ModuleManagementTab />;
       case "configuration":
@@ -72,8 +86,39 @@ const AdminDashboard = () => {
               <Shield className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h3 className="text-lg font-bold">Admin Portal</h3>
-              <p className="text-blue-100 text-sm">System Control Center</p>
+              <h3 className="text-lg font-bold">
+                {currentUserRole === "super-admin" ? "Super Admin" : "Department Admin"}
+              </h3>
+              <p className="text-blue-100 text-sm">
+                {currentUserRole === "super-admin" ? "System Control Center" : `${departmentAccess.join(", ").toUpperCase()} Access`}
+              </p>
+            </div>
+          </div>
+          
+          {/* Role Switcher for Demo */}
+          <div className="mt-4 pt-4 border-t border-blue-300/30">
+            <div className="text-xs text-blue-100 mb-2">Demo: Switch Role</div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setCurrentUserRole("super-admin")}
+                className={`px-3 py-1 rounded text-xs ${
+                  currentUserRole === "super-admin" 
+                    ? "bg-white text-blue-700" 
+                    : "bg-blue-500/50 text-white"
+                }`}
+              >
+                Super Admin
+              </button>
+              <button
+                onClick={() => setCurrentUserRole("department-admin")}
+                className={`px-3 py-1 rounded text-xs ${
+                  currentUserRole === "department-admin" 
+                    ? "bg-white text-blue-700" 
+                    : "bg-blue-500/50 text-white"
+                }`}
+              >
+                Dept Admin
+              </button>
             </div>
           </div>
         </div>
@@ -130,13 +175,16 @@ const AdminDashboard = () => {
         <div className="bg-white border-b border-gray-200 shadow-sm">
           <div className="px-8 py-6">
             <PageHeader
-              title="Super Admin Portal"
-              description="Complete system administration and control center"
-              badge="Super Admin"
-              badgeVariant="destructive"
+              title={currentUserRole === "super-admin" ? "Super Admin Portal" : "Department Admin Portal"}
+              description={currentUserRole === "super-admin" 
+                ? "Complete system administration and control center"
+                : `Department administration for ${departmentAccess.join(", ").toUpperCase()} modules`
+              }
+              badge={currentUserRole === "super-admin" ? "Super Admin" : "Department Admin"}
+              badgeVariant={currentUserRole === "super-admin" ? "destructive" : "secondary"}
               breadcrumbs={[
                 { label: "Dashboard", href: "/dashboard" },
-                { label: "Admin Portal" }
+                { label: currentUserRole === "super-admin" ? "Admin Portal" : "Department Admin" }
               ]}
               stats={headerStats}
               actions={
@@ -145,10 +193,12 @@ const AdminDashboard = () => {
                     <Shield className="h-4 w-4 mr-2" />
                     Security Center
                   </Button>
-                  <Button size="sm" className="shadow-sm bg-blue-600 hover:bg-blue-700">
-                    <Settings className="h-4 w-4 mr-2" />
-                    Global Settings
-                  </Button>
+                  {currentUserRole === "super-admin" && (
+                    <Button size="sm" className="shadow-sm bg-blue-600 hover:bg-blue-700">
+                      <Settings className="h-4 w-4 mr-2" />
+                      Global Settings
+                    </Button>
+                  )}
                 </div>
               }
             />
