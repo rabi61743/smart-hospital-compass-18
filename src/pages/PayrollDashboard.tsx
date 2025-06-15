@@ -2,7 +2,6 @@
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import PayrollHeader from "@/components/payroll/PayrollHeader";
 import PayrollStatsCards from "@/components/payroll/PayrollStatsCards";
 import EmployeeManagementTab from "@/components/payroll/EmployeeManagementTab";
 import DepartmentManagementTab from "@/components/payroll/DepartmentManagementTab";
@@ -22,7 +21,16 @@ import TaxManagementTab from "@/components/payroll/TaxManagementTab";
 
 const PayrollDashboard = () => {
   return (
-    <div className="p-6 space-y-6">
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Payroll Management</h1>
+          <p className="text-gray-600 mt-1">
+            Comprehensive payroll and HR management system
+          </p>
+        </div>
+      </div>
+
       <PayrollStatsCards />
 
       <Tabs defaultValue="employees" className="space-y-6">
