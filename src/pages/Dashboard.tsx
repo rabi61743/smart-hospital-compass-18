@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -36,8 +37,47 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
+      {/* Left Sidebar Navigation */}
+      <div className="fixed left-0 top-0 h-full w-80 bg-white border-r border-gray-200 shadow-lg z-10">
+        <div className="p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-6">Quick Actions</h3>
+          <div className="space-y-4">
+            {navigationItems.map((item, index) => (
+              <Link key={index} to={item.href}>
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start h-12 text-left"
+                >
+                  <item.icon className="h-5 w-5 mr-3" />
+                  {item.label}
+                </Button>
+              </Link>
+            ))}
+          </div>
+        </div>
+        
+        {/* Quick Stats in Sidebar */}
+        <div className="px-6 py-4 border-t border-gray-200">
+          <h4 className="text-sm font-medium text-gray-700 mb-4">Today's Summary</h4>
+          <div className="space-y-3">
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-600">Active Patients</span>
+              <span className="text-sm font-medium">847</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-600">Pending Appointments</span>
+              <span className="text-sm font-medium">23</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-600">Commission Pending</span>
+              <span className="text-sm font-medium text-orange-600">₹5,200</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Main Content */}
-      <div className="flex-1 pr-80">
+      <div className="flex-1 pl-80">
         {/* Header */}
         <header className="bg-white shadow-sm border-b">
           <div className="px-4 sm:px-6 lg:px-8">
@@ -255,45 +295,6 @@ const Dashboard = () => {
               </Card>
             </TabsContent>
           </Tabs>
-        </div>
-      </div>
-
-      {/* Right Sidebar Navigation */}
-      <div className="fixed right-0 top-0 h-full w-80 bg-white border-l border-gray-200 shadow-lg z-10">
-        <div className="p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-6">Quick Actions</h3>
-          <div className="space-y-4">
-            {navigationItems.map((item, index) => (
-              <Link key={index} to={item.href}>
-                <Button 
-                  variant="outline" 
-                  className="w-full justify-start h-12 text-left"
-                >
-                  <item.icon className="h-5 w-5 mr-3" />
-                  {item.label}
-                </Button>
-              </Link>
-            ))}
-          </div>
-        </div>
-        
-        {/* Quick Stats in Sidebar */}
-        <div className="px-6 py-4 border-t border-gray-200">
-          <h4 className="text-sm font-medium text-gray-700 mb-4">Today's Summary</h4>
-          <div className="space-y-3">
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Active Patients</span>
-              <span className="text-sm font-medium">847</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Pending Appointments</span>
-              <span className="text-sm font-medium">23</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Commission Pending</span>
-              <span className="text-sm font-medium text-orange-600">₹5,200</span>
-            </div>
-          </div>
         </div>
       </div>
     </div>
