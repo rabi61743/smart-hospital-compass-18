@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import { 
   Calendar,
   Clock,
@@ -14,23 +15,47 @@ import AppointmentCalendar from "./AppointmentCalendar";
 import AppointmentScheduler from "./AppointmentScheduler";
 import PatientCheckIn from "./PatientCheckIn";
 import TelemedicineHub from "./TelemedicineHub";
+import AppointmentDetailsDialog from "./AppointmentDetailsDialog";
 
 const AppointmentManagement = () => {
   const [showScheduler, setShowScheduler] = useState(false);
-  const [selectedAppointment, setSelectedAppointment] = useState<string | null>(null);
+  const [selectedAppointment, setSelectedAppointment] = useState<any>(null);
+  const [isAppointmentDetailsOpen, setIsAppointmentDetailsOpen] = useState(false);
+  const { toast } = useToast();
 
   const handleScheduleAppointment = () => {
     setShowScheduler(true);
   };
 
   const handleViewAppointment = (appointmentId: string) => {
-    setSelectedAppointment(appointmentId);
+    // Mock appointment data for demonstration
+    const mockAppointment = {
+      id: appointmentId,
+      patientName: 'Rajesh Kumar',
+      patientId: 'P001',
+      date: '2024-01-20',
+      time: '10:00 AM',
+      type: 'Consultation',
+      status: 'Confirmed',
+      notes: 'Follow-up consultation for hypertension management',
+      duration: '30 minutes',
+      phone: '+91 98765 43210',
+      email: 'rajesh.kumar@email.com'
+    };
+    
+    setSelectedAppointment(mockAppointment);
+    setIsAppointmentDetailsOpen(true);
+    
     console.log('View appointment:', appointmentId);
   };
 
   const handleAppointmentScheduled = (appointment: any) => {
     console.log('New appointment scheduled:', appointment);
     setShowScheduler(false);
+    toast({
+      title: "Appointment Scheduled",
+      description: `Appointment for ${appointment.patientName} has been scheduled successfully.`,
+    });
   };
 
   const stats = [
@@ -102,10 +127,19 @@ const AppointmentManagement = () => {
                   Close
                 </Button>
               </div>
-              <AppointmentScheduler />
+              <AppointmentScheduler onAppointmentScheduled={handleAppointmentScheduled} />
             </div>
           </div>
         </div>
+      )}
+
+      {/* Appointment Details Dialog */}
+      {selectedAppointment && (
+        <AppointmentDetailsDialog
+          isOpen={isAppointmentDetailsOpen}
+          onClose={() => setIsAppointmentDetailsOpen(false)}
+          appointment={selectedAppointment}
+        />
       )}
     </div>
   );

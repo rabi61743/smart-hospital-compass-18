@@ -127,19 +127,54 @@ const UserManagementTab = () => {
     setSelectedUsers([]);
   };
 
-  const handleBulkExport = () => {
+  const handleExportAllUsers = () => {
+    const csvContent = generateUserCSV(users);
+    downloadCSV(csvContent, `all-users-export-${new Date().toISOString().split('T')[0]}.csv`);
+    
     toast({
-      title: "Export Started",
-      description: `Exporting data for ${selectedUsers.length} selected users.`,
+      title: "Export Completed",
+      description: `Successfully exported ${users.length} users to CSV.`,
     });
   };
 
-  const handleBulkAssignRole = (role: string) => {
+  const generateUserCSV = (usersToExport: typeof users) => {
+    const headers = ['Name', 'Email', 'Role', 'Department', 'Status', 'Last Login', 'Permissions'];
+    const csvRows = [
+      headers.join(','),
+      ...usersToExport.map(user => [
+        user.name,
+        user.email,
+        user.role,
+        user.department,
+        user.status,
+        user.lastLogin,
+        user.permissions.join(';')
+      ].join(','))
+    ];
+    return csvRows.join('\n');
+  };
+
+  const downloadCSV = (content: string, filename: string) => {
+    const blob = new Blob([content], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleBulkExport = () => {
+    const selectedUsersData = users.filter(user => selectedUsers.includes(user.id));
+    const csvContent = generateUserCSV(selectedUsersData);
+    downloadCSV(csvContent, `selected-users-export-${new Date().toISOString().split('T')[0]}.csv`);
+    
     toast({
-      title: "Role Assigned",
-      description: `${role} role has been assigned to ${selectedUsers.length} users.`,
+      title: "Export Completed",
+      description: `Successfully exported ${selectedUsers.length} selected users to CSV.`,
     });
-    setSelectedUsers([]);
   };
 
   const clearSelection = () => {
@@ -185,7 +220,11 @@ const UserManagementTab = () => {
                 <Upload className="h-4 w-4 mr-2" />
                 Import/Export
               </Button>
-              <Button variant="outline" className="border-gray-300 hover:bg-gray-50">
+              <Button 
+                variant="outline" 
+                onClick={handleExportAllUsers}
+                className="border-gray-300 hover:bg-gray-50"
+              >
                 <Download className="h-4 w-4 mr-2" />
                 Export Users
               </Button>

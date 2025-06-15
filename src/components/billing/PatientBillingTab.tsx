@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -7,7 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, Filter, Eye, Edit, Send } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import NewBillDialog from "./NewBillDialog";
+import BillDetailsDialog from "./BillDetailsDialog";
+import EditBillDialog from "./EditBillDialog";
+import SendBillDialog from "./SendBillDialog";
 
 const PatientBillingTab = () => {
   const [bills, setBills] = useState([{
@@ -49,9 +52,50 @@ const PatientBillingTab = () => {
   }]);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [selectedBill, setSelectedBill] = useState<any>(null);
+  const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isSendDialogOpen, setIsSendDialogOpen] = useState(false);
+  const { toast } = useToast();
 
   const handleBillCreated = (newBill: any) => {
     setBills(prevBills => [newBill, ...prevBills]);
+  };
+
+  const handleViewBill = (bill: any) => {
+    setSelectedBill(bill);
+    setIsViewDialogOpen(true);
+  };
+
+  const handleEditBill = (bill: any) => {
+    setSelectedBill(bill);
+    setIsEditDialogOpen(true);
+  };
+
+  const handleSendBill = (bill: any) => {
+    setSelectedBill(bill);
+    setIsSendDialogOpen(true);
+  };
+
+  const handleBillUpdated = (updatedBill: any) => {
+    setBills(prevBills => 
+      prevBills.map(bill => 
+        bill.id === updatedBill.id ? updatedBill : bill
+      )
+    );
+    setIsEditDialogOpen(false);
+    toast({
+      title: "Bill Updated",
+      description: `Bill ${updatedBill.billNumber} has been updated successfully.`,
+    });
+  };
+
+  const handleBillSent = (bill: any, method: string) => {
+    setIsSendDialogOpen(false);
+    toast({
+      title: "Bill Sent",
+      description: `Bill ${bill.billNumber} has been sent via ${method} to ${bill.patientName}.`,
+    });
   };
 
   const getStatusColor = (status: string) => {
@@ -157,13 +201,13 @@ const PatientBillingTab = () => {
                   </TableCell>
                   <TableCell>
                     <div className="flex gap-2">
-                      <Button variant="ghost" size="sm">
+                      <Button variant="ghost" size="sm" onClick={() => handleViewBill(bill)}>
                         <Eye className="w-4 h-4" />
                       </Button>
-                      <Button variant="ghost" size="sm">
+                      <Button variant="ghost" size="sm" onClick={() => handleEditBill(bill)}>
                         <Edit className="w-4 h-4" />
                       </Button>
-                      <Button variant="ghost" size="sm">
+                      <Button variant="ghost" size="sm" onClick={() => handleSendBill(bill)}>
                         <Send className="w-4 h-4" />
                       </Button>
                     </div>
@@ -174,6 +218,29 @@ const PatientBillingTab = () => {
           </Table>
         </CardContent>
       </Card>
+
+      {/* Dialogs */}
+      {selectedBill && (
+        <>
+          <BillDetailsDialog
+            isOpen={isViewDialogOpen}
+            onClose={() => setIsViewDialogOpen(false)}
+            bill={selectedBill}
+          />
+          <EditBillDialog
+            isOpen={isEditDialogOpen}
+            onClose={() => setIsEditDialogOpen(false)}
+            bill={selectedBill}
+            onBillUpdated={handleBillUpdated}
+          />
+          <SendBillDialog
+            isOpen={isSendDialogOpen}
+            onClose={() => setIsSendDialogOpen(false)}
+            bill={selectedBill}
+            onBillSent={handleBillSent}
+          />
+        </>
+      )}
     </div>
   );
 };
