@@ -237,14 +237,47 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* Enhanced Content Area */}
-        <div className="flex-1 overflow-auto bg-gray-50">
-          <div className="p-8">
-            <ContentSection variant="transparent" className="max-w-7xl mx-auto">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                {renderContent()}
-              </div>
-            </ContentSection>
+        {/* Enhanced Content Area with improved layout */}
+        <div className="flex-1 overflow-auto bg-gradient-to-br from-gray-50 to-gray-100/50">
+          <div className="p-8 max-w-[1600px] mx-auto">
+            {/* Content container with enhanced styling */}
+            <div className="min-h-full">
+              <ContentSection 
+                variant="transparent" 
+                className="w-full"
+              >
+                {/* Main content card with enhanced styling */}
+                <div className="bg-white rounded-2xl shadow-lg border border-gray-200/60 overflow-hidden backdrop-blur-sm">
+                  {/* Content header with subtle gradient */}
+                  <div className="bg-gradient-to-r from-white to-gray-50/30 border-b border-gray-100 px-8 py-6">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-1 h-8 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900">
+                            {navigationItems.find(item => item.id === activeTab)?.label || "Overview"}
+                          </h3>
+                          <p className="text-sm text-gray-500 mt-0.5">
+                            {currentUserRole === "super-admin" ? "System Administration" : "Department Management"}
+                          </p>
+                        </div>
+                      </div>
+                      
+                      {/* Status indicator */}
+                      <div className="flex items-center space-x-2 px-3 py-1.5 bg-green-50 rounded-full border border-green-200">
+                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                        <span className="text-xs font-medium text-green-700">Live</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Content body with enhanced padding */}
+                  <div className="p-8">
+                    {renderContent()}
+                  </div>
+                </div>
+              </ContentSection>
+            </div>
           </div>
         </div>
       </div>
