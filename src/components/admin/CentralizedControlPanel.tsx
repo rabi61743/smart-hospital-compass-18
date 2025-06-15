@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -26,7 +25,20 @@ import {
   RefreshCw,
   Power,
   Wifi,
-  HardDrive
+  HardDrive,
+  Receipt,
+  TrendingUp,
+  FileText,
+  Calendar,
+  Clipboard,
+  Printer,
+  MessageSquare,
+  Bell,
+  Search,
+  BarChart3,
+  UserPlus,
+  Building,
+  Headphones
 } from "lucide-react";
 
 const CentralizedControlPanel = () => {
@@ -133,6 +145,190 @@ const CentralizedControlPanel = () => {
       time: '15 minutes ago'
     }
   ];
+
+  const quickAccessModules = [
+    {
+      name: 'Patient Management',
+      description: 'Manage patient records and appointments',
+      icon: Users,
+      path: '/patient-portal',
+      color: 'bg-blue-100 text-blue-700 hover:bg-blue-200',
+      category: 'Clinical'
+    },
+    {
+      name: 'Doctor Portal',
+      description: 'Medical staff interface and tools',
+      icon: Stethoscope,
+      path: '/doctor-dashboard',
+      color: 'bg-green-100 text-green-700 hover:bg-green-200',
+      category: 'Clinical'
+    },
+    {
+      name: 'Pharmacy System',
+      description: 'Drug inventory and prescriptions',
+      icon: Pill,
+      path: '/pharmacy-dashboard',
+      color: 'bg-purple-100 text-purple-700 hover:bg-purple-200',
+      category: 'Clinical'
+    },
+    {
+      name: 'Laboratory',
+      description: 'Lab tests and results management',
+      icon: TestTube,
+      path: '/lab-results',
+      color: 'bg-orange-100 text-orange-700 hover:bg-orange-200',
+      category: 'Clinical'
+    },
+    {
+      name: 'Finance & Billing',
+      description: 'Financial operations and billing',
+      icon: DollarSign,
+      path: '/finance-dashboard',
+      color: 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200',
+      category: 'Financial'
+    },
+    {
+      name: 'Commission Tracking',
+      description: 'Track and manage commissions',
+      icon: TrendingUp,
+      path: '/commission-tracking',
+      color: 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200',
+      category: 'Financial'
+    },
+    {
+      name: 'Payroll & HR',
+      description: 'Employee management and payroll',
+      icon: UserCheck,
+      path: '/payroll-dashboard',
+      color: 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200',
+      category: 'Operations'
+    },
+    {
+      name: 'Performance Tracking',
+      description: 'Monitor staff performance',
+      icon: BarChart3,
+      path: '/performance-dashboard',
+      color: 'bg-pink-100 text-pink-700 hover:bg-pink-200',
+      category: 'Operations'
+    },
+    {
+      name: 'Audit & Compliance',
+      description: 'Security and regulatory compliance',
+      icon: Shield,
+      path: '/audit-dashboard',
+      color: 'bg-red-100 text-red-700 hover:bg-red-200',
+      category: 'Operations'
+    },
+    {
+      name: 'Patient Registration',
+      description: 'Register new patients',
+      icon: UserPlus,
+      path: '/patient-registration',
+      color: 'bg-cyan-100 text-cyan-700 hover:bg-cyan-200',
+      category: 'Clinical'
+    },
+    {
+      name: 'Prescription Management',
+      description: 'Manage prescriptions and medications',
+      icon: Clipboard,
+      path: '/prescription-management',
+      color: 'bg-teal-100 text-teal-700 hover:bg-teal-200',
+      category: 'Clinical'
+    },
+    {
+      name: 'Patient History',
+      description: 'View patient medical history',
+      icon: FileText,
+      path: '/patient-history',
+      color: 'bg-slate-100 text-slate-700 hover:bg-slate-200',
+      category: 'Clinical'
+    }
+  ];
+
+  const systemTools = [
+    {
+      name: 'User Management',
+      description: 'Manage system users and permissions',
+      icon: Users,
+      action: () => alert('Opening User Management...'),
+      color: 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+    },
+    {
+      name: 'Backup Systems',
+      description: 'Database backup and recovery',
+      icon: Database,
+      action: () => alert('Initiating system backup...'),
+      color: 'bg-green-100 text-green-700 hover:bg-green-200'
+    },
+    {
+      name: 'Security Scan',
+      description: 'Run comprehensive security audit',
+      icon: Shield,
+      action: () => alert('Starting security scan...'),
+      color: 'bg-red-100 text-red-700 hover:bg-red-200'
+    },
+    {
+      name: 'System Monitor',
+      description: 'Real-time system performance',
+      icon: Monitor,
+      action: () => alert('Opening system monitor...'),
+      color: 'bg-purple-100 text-purple-700 hover:bg-purple-200'
+    },
+    {
+      name: 'Global Settings',
+      description: 'Configure system-wide settings',
+      icon: Settings,
+      action: () => alert('Opening global settings...'),
+      color: 'bg-orange-100 text-orange-700 hover:bg-orange-200'
+    },
+    {
+      name: 'Health Check',
+      description: 'Comprehensive system health check',
+      icon: Heart,
+      action: () => alert('Running health check...'),
+      color: 'bg-pink-100 text-pink-700 hover:bg-pink-200'
+    },
+    {
+      name: 'Reports Generator',
+      description: 'Generate system reports',
+      icon: FileText,
+      action: () => alert('Opening reports generator...'),
+      color: 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'
+    },
+    {
+      name: 'Notification Center',
+      description: 'Manage system notifications',
+      icon: Bell,
+      action: () => alert('Opening notification center...'),
+      color: 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'
+    },
+    {
+      name: 'System Search',
+      description: 'Search across all modules',
+      icon: Search,
+      action: () => alert('Opening system search...'),
+      color: 'bg-cyan-100 text-cyan-700 hover:bg-cyan-200'
+    },
+    {
+      name: 'Support Center',
+      description: 'Get help and documentation',
+      icon: Headphones,
+      action: () => alert('Opening support center...'),
+      color: 'bg-teal-100 text-teal-700 hover:bg-teal-200'
+    }
+  ];
+
+  const handleModuleAccess = (path: string) => {
+    window.open(path, '_blank');
+  };
+
+  const groupedModules = quickAccessModules.reduce((acc, module) => {
+    if (!acc[module.category]) {
+      acc[module.category] = [];
+    }
+    acc[module.category].push(module);
+    return acc;
+  }, {} as Record<string, typeof quickAccessModules>);
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -265,6 +461,74 @@ const CentralizedControlPanel = () => {
         </Card>
       </div>
 
+      {/* Quick Access to All Modules */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Power className="h-5 w-5" />
+            Quick Access to All Modules
+          </CardTitle>
+          <CardDescription>
+            Direct access to all hospital management modules and systems
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Tabs defaultValue="modules" className="space-y-4">
+            <TabsList>
+              <TabsTrigger value="modules">Hospital Modules</TabsTrigger>
+              <TabsTrigger value="tools">System Tools</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="modules">
+              <div className="space-y-6">
+                {Object.entries(groupedModules).map(([category, modules]) => (
+                  <div key={category}>
+                    <h3 className="text-lg font-semibold mb-3 text-gray-700">{category}</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                      {modules.map((module) => {
+                        const IconComponent = module.icon;
+                        return (
+                          <Button
+                            key={module.name}
+                            variant="outline"
+                            className={`h-24 flex-col p-4 transition-all duration-200 ${module.color} border-2 hover:shadow-md`}
+                            onClick={() => handleModuleAccess(module.path)}
+                          >
+                            <IconComponent className="h-6 w-6 mb-2" />
+                            <span className="text-sm font-medium text-center leading-tight">{module.name}</span>
+                            <span className="text-xs text-center opacity-75 mt-1">{module.description}</span>
+                          </Button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="tools">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                {systemTools.map((tool) => {
+                  const IconComponent = tool.icon;
+                  return (
+                    <Button
+                      key={tool.name}
+                      variant="outline"
+                      className={`h-24 flex-col p-4 transition-all duration-200 ${tool.color} border-2 hover:shadow-md`}
+                      onClick={tool.action}
+                    >
+                      <IconComponent className="h-6 w-6 mb-2" />
+                      <span className="text-sm font-medium text-center leading-tight">{tool.name}</span>
+                      <span className="text-xs text-center opacity-75 mt-1">{tool.description}</span>
+                    </Button>
+                  );
+                })}
+              </div>
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
+
       {/* System Modules Status */}
       <Card>
         <CardHeader>
@@ -378,47 +642,6 @@ const CentralizedControlPanel = () => {
               </div>
             </TabsContent>
           </Tabs>
-        </CardContent>
-      </Card>
-
-      {/* Quick Actions */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Power className="h-5 w-5" />
-            System Control & Quick Actions
-          </CardTitle>
-          <CardDescription>
-            Perform critical system operations and maintenance tasks
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            <Button variant="outline" className="h-20 flex-col">
-              <Users className="h-6 w-6 mb-2" />
-              <span className="text-xs">User Management</span>
-            </Button>
-            <Button variant="outline" className="h-20 flex-col">
-              <Database className="h-6 w-6 mb-2" />
-              <span className="text-xs">Backup Systems</span>
-            </Button>
-            <Button variant="outline" className="h-20 flex-col">
-              <Shield className="h-6 w-6 mb-2" />
-              <span className="text-xs">Security Scan</span>
-            </Button>
-            <Button variant="outline" className="h-20 flex-col">
-              <Monitor className="h-6 w-6 mb-2" />
-              <span className="text-xs">System Monitor</span>
-            </Button>
-            <Button variant="outline" className="h-20 flex-col">
-              <Settings className="h-6 w-6 mb-2" />
-              <span className="text-xs">Global Settings</span>
-            </Button>
-            <Button variant="outline" className="h-20 flex-col">
-              <Heart className="h-6 w-6 mb-2" />
-              <span className="text-xs">Health Check</span>
-            </Button>
-          </div>
         </CardContent>
       </Card>
 
