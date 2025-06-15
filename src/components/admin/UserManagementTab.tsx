@@ -1,10 +1,10 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Checkbox } from "@/components/ui/checkbox";
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -29,11 +29,17 @@ import {
   UserCheck,
   AlertCircle
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import BulkUserOperationsBar from './BulkUserOperationsBar';
+import BulkRoleAssignmentDialog from './BulkRoleAssignmentDialog';
 
 const UserManagementTab = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRole, setFilterRole] = useState('all');
   const [isAddUserOpen, setIsAddUserOpen] = useState(false);
+  const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
+  const [isRoleAssignmentOpen, setIsRoleAssignmentOpen] = useState(false);
+  const { toast } = useToast();
 
   const users = [
     {
@@ -125,6 +131,66 @@ const UserManagementTab = () => {
     }
   };
 
+  const handleSelectUser = (userId: number) => {
+    setSelectedUsers(prev => 
+      prev.includes(userId) 
+        ? prev.filter(id => id !== userId)
+        : [...prev, userId]
+    );
+  };
+
+  const handleSelectAll = () => {
+    if (selectedUsers.length === users.length) {
+      setSelectedUsers([]);
+    } else {
+      setSelectedUsers(users.map(user => user.id));
+    }
+  };
+
+  const handleBulkActivate = () => {
+    toast({
+      title: "Users Activated",
+      description: `${selectedUsers.length} users have been activated successfully.`,
+    });
+    setSelectedUsers([]);
+  };
+
+  const handleBulkDeactivate = () => {
+    toast({
+      title: "Users Deactivated",
+      description: `${selectedUsers.length} users have been deactivated successfully.`,
+    });
+    setSelectedUsers([]);
+  };
+
+  const handleBulkDelete = () => {
+    toast({
+      title: "Users Deleted",
+      description: `${selectedUsers.length} users have been deleted successfully.`,
+      variant: "destructive",
+    });
+    setSelectedUsers([]);
+  };
+
+  const handleBulkExport = () => {
+    toast({
+      title: "Export Started",
+      description: `Exporting data for ${selectedUsers.length} selected users.`,
+    });
+  };
+
+  const handleBulkAssignRole = (role: string) => {
+    toast({
+      title: "Role Assigned",
+      description: `${role} role has been assigned to ${selectedUsers.length} users.`,
+    });
+    setSelectedUsers([]);
+  };
+
+  const clearSelection = () => {
+    setSelectedUsers([]);
+  };
+
   return (
     <div className="space-y-8 p-6">
       {/* Enhanced Statistics Cards */}
@@ -181,6 +247,21 @@ const UserManagementTab = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Bulk Operations Bar */}
+      {selectedUsers.length > 0 && (
+        <BulkUserOperationsBar
+          selectedCount={selectedUsers.length}
+          totalCount={users.length}
+          onSelectAll={handleSelectAll}
+          onBulkActivate={handleBulkActivate}
+          onBulkDeactivate={handleBulkDeactivate}
+          onBulkDelete={handleBulkDelete}
+          onBulkExport={handleBulkExport}
+          onBulkAssignRole={() => setIsRoleAssignmentOpen(true)}
+          onClearSelection={clearSelection}
+        />
+      )}
 
       {/* Enhanced User Management Controls */}
       <Card className="border-0 shadow-xl">
@@ -284,6 +365,13 @@ const UserManagementTab = () => {
             <Table>
               <TableHeader>
                 <TableRow className="bg-gray-50 border-b border-gray-200">
+                  <TableHead className="font-semibold text-gray-700 w-12">
+                    <Checkbox
+                      checked={selectedUsers.length === users.length && users.length > 0}
+                      onCheckedChange={handleSelectAll}
+                      className="ml-2"
+                    />
+                  </TableHead>
                   <TableHead className="font-semibold text-gray-700">User</TableHead>
                   <TableHead className="font-semibold text-gray-700">Role</TableHead>
                   <TableHead className="font-semibold text-gray-700">Department</TableHead>
@@ -294,7 +382,14 @@ const UserManagementTab = () => {
               </TableHeader>
               <TableBody>
                 {users.map((user, index) => (
-                  <TableRow key={user.id} className={`hover:bg-gray-50 transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}`}>
+                  <TableRow key={user.id} className={`hover:bg-gray-50 transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-gray-25'} ${selectedUsers.includes(user.id) ? 'bg-blue-50' : ''}`}>
+                    <TableCell className="py-4">
+                      <Checkbox
+                        checked={selectedUsers.includes(user.id)}
+                        onCheckedChange={() => handleSelectUser(user.id)}
+                        className="ml-2"
+                      />
+                    </TableCell>
                     <TableCell className="py-4">
                       <div className="flex items-center space-x-3">
                         <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
@@ -357,6 +452,14 @@ const UserManagementTab = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Bulk Role Assignment Dialog */}
+      <BulkRoleAssignmentDialog
+        isOpen={isRoleAssignmentOpen}
+        onClose={() => setIsRoleAssignmentOpen(false)}
+        selectedCount={selectedUsers.length}
+        onAssignRole={handleBulkAssignRole}
+      />
     </div>
   );
 };
