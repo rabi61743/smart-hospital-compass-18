@@ -1,24 +1,13 @@
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import { 
-  UserPlus, 
-  Download, 
-  Search, 
-  Filter,
-  Users,
-  UserCheck,
-  Clock,
-  AlertCircle
-} from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import PatientRegistrationStats from './patient-management/PatientRegistrationStats';
 import PatientOnboardingTable from './patient-management/PatientOnboardingTable';
 import PatientRegistrationDialog from './patient-management/PatientRegistrationDialog';
+import PatientSearchFilters from './patient-management/PatientSearchFilters';
+import PatientResultsSummary from './patient-management/PatientResultsSummary';
+import PatientManagementHeader from './patient-management/PatientManagementHeader';
 
 const PatientAccountManagementTab = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -91,9 +80,6 @@ const PatientAccountManagementTab = () => {
     }
   ];
 
-  const statuses = ['all', 'completed', 'in-progress', 'pending', 'incomplete'];
-  const registrationTypes = ['all', 'walk-in', 'online', 'referral', 'emergency'];
-
   const filteredRegistrations = patientRegistrations.filter(patient => {
     const matchesSearch = patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          patient.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -118,90 +104,30 @@ const PatientAccountManagementTab = () => {
 
       {/* Main Patient Account Management */}
       <Card className="border-0 shadow-xl">
-        <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 border-b">
-          <div className="flex justify-between items-center">
-            <div>
-              <CardTitle className="text-2xl font-bold text-gray-800 flex items-center gap-3">
-                <div className="p-2 bg-green-600 rounded-lg">
-                  <Users className="h-6 w-6 text-white" />
-                </div>
-                Patient Account Management
-              </CardTitle>
-              <CardDescription className="text-gray-600 mt-2 text-base">
-                Manage patient registrations, onboarding process, and account setup
-              </CardDescription>
-            </div>
-            <div className="flex gap-3">
-              <Button variant="outline" onClick={handleExport} className="border-gray-300 hover:bg-gray-50">
-                <Download className="h-4 w-4 mr-2" />
-                Export Data
-              </Button>
-              <Button onClick={() => setIsRegistrationDialogOpen(true)} className="bg-green-600 hover:bg-green-700 shadow-md">
-                <UserPlus className="h-4 w-4 mr-2" />
-                Register Patient
-              </Button>
-            </div>
-          </div>
-        </CardHeader>
+        <PatientManagementHeader
+          onExport={handleExport}
+          onRegisterPatient={() => setIsRegistrationDialogOpen(true)}
+        />
         <CardContent className="p-6">
           {/* Search and Filters */}
           <div className="space-y-4 mb-6">
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <Input
-                  placeholder="Search by name, email, or patient ID..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 border-gray-300 focus:border-green-500 h-11"
-                />
-              </div>
-              
-              <div className="flex gap-3">
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-48 border-gray-300 focus:border-green-500 h-11">
-                    <div className="flex items-center gap-2">
-                      <Filter className="h-4 w-4" />
-                      <SelectValue placeholder="Status" />
-                    </div>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {statuses.map(status => (
-                      <SelectItem key={status} value={status}>
-                        {status === 'all' ? 'All Status' : status.charAt(0).toUpperCase() + status.slice(1)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
-                <Select value={registrationTypeFilter} onValueChange={setRegistrationTypeFilter}>
-                  <SelectTrigger className="w-48 border-gray-300 focus:border-green-500 h-11">
-                    <SelectValue placeholder="Registration Type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {registrationTypes.map(type => (
-                      <SelectItem key={type} value={type}>
-                        {type === 'all' ? 'All Types' : type.charAt(0).toUpperCase() + type.slice(1)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
+            <PatientSearchFilters
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              statusFilter={statusFilter}
+              setStatusFilter={setStatusFilter}
+              registrationTypeFilter={registrationTypeFilter}
+              setRegistrationTypeFilter={setRegistrationTypeFilter}
+            />
 
             {/* Results Summary */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Badge variant="outline" className="px-3 py-1">
-                  {filteredRegistrations.length} of {patientRegistrations.length} registrations
-                </Badge>
-                {(statusFilter !== 'all' || registrationTypeFilter !== 'all' || searchTerm) && (
-                  <Badge className="bg-green-100 text-green-800 px-3 py-1">
-                    Filters Active
-                  </Badge>
-                )}
-              </div>
-            </div>
+            <PatientResultsSummary
+              filteredCount={filteredRegistrations.length}
+              totalCount={patientRegistrations.length}
+              statusFilter={statusFilter}
+              registrationTypeFilter={registrationTypeFilter}
+              searchTerm={searchTerm}
+            />
           </div>
 
           {/* Patient Onboarding Table */}
