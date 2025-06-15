@@ -74,8 +74,8 @@ const QuickAccessModules = ({ modules, tools }: QuickAccessModulesProps) => {
                           onClick={() => handleModuleAccess(module.path)}
                         >
                           <IconComponent className="h-6 w-6 mb-2" />
-                          <span className="text-sm font-medium text-center leading-tight">{module.name}</span>
-                          <span className="text-xs text-center opacity-75 mt-1">{module.description}</span>
+                          <span className="text-sm font-medium text-center leading-tight truncate w-full">{module.name}</span>
+                          <span className="text-xs text-center opacity-75 mt-1 truncate w-full" title={module.description}>{module.description}</span>
                         </Button>
                       );
                     })}
@@ -97,8 +97,8 @@ const QuickAccessModules = ({ modules, tools }: QuickAccessModulesProps) => {
                     onClick={tool.action}
                   >
                     <IconComponent className="h-6 w-6 mb-2" />
-                    <span className="text-sm font-medium text-center leading-tight">{tool.name}</span>
-                    <span className="text-xs text-center opacity-75 mt-1">{tool.description}</span>
+                    <span className="text-sm font-medium text-center leading-tight truncate w-full">{tool.name}</span>
+                    <span className="text-xs text-center opacity-75 mt-1 truncate w-full" title={tool.description}>{tool.description}</span>
                   </Button>
                 );
               })}
