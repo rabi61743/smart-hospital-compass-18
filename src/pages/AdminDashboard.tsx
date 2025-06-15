@@ -63,6 +63,36 @@ const AdminDashboard = () => {
 
   return (
     <div className="flex h-screen">
+      {/* Left Vertical Navigation */}
+      <div className="w-64 bg-white border-r border-gray-200 shadow-lg">
+        <div className="p-4 border-b border-gray-200">
+          <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">
+            Admin Tools
+          </h3>
+        </div>
+        <nav className="p-2">
+          <div className="space-y-1">
+            {navigationItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveTab(item.id)}
+                  className={`w-full flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    activeTab === item.id
+                      ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-600'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  }`}
+                >
+                  <Icon className="h-4 w-4 mr-3" />
+                  {item.label}
+                </button>
+              );
+            })}
+          </div>
+        </nav>
+      </div>
+
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
         <div className="space-y-6 p-6">
@@ -97,36 +127,6 @@ const AdminDashboard = () => {
             {renderContent()}
           </ContentSection>
         </div>
-      </div>
-
-      {/* Right Vertical Navigation */}
-      <div className="w-64 bg-white border-l border-gray-200 shadow-lg">
-        <div className="p-4 border-b border-gray-200">
-          <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">
-            Admin Tools
-          </h3>
-        </div>
-        <nav className="p-2">
-          <div className="space-y-1">
-            {navigationItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveTab(item.id)}
-                  className={`w-full flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
-                    activeTab === item.id
-                      ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-600'
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                  }`}
-                >
-                  <Icon className="h-4 w-4 mr-3" />
-                  {item.label}
-                </button>
-              );
-            })}
-          </div>
-        </nav>
       </div>
     </div>
   );
