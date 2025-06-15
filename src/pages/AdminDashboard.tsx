@@ -62,70 +62,108 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="flex h-screen">
-      {/* Left Vertical Navigation */}
-      <div className="w-64 bg-white border-r border-gray-200 shadow-lg">
-        <div className="p-4 border-b border-gray-200">
-          <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">
-            Admin Tools
-          </h3>
-        </div>
-        <nav className="p-2">
-          <div className="space-y-1">
-            {navigationItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveTab(item.id)}
-                  className={`w-full flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
-                    activeTab === item.id
-                      ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-600'
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                  }`}
-                >
-                  <Icon className="h-4 w-4 mr-3" />
-                  {item.label}
-                </button>
-              );
-            })}
+    <div className="flex h-screen bg-gray-50">
+      {/* Enhanced Left Vertical Navigation */}
+      <div className="w-72 bg-white border-r border-gray-200 shadow-xl">
+        {/* Header with gradient */}
+        <div className="p-6 bg-gradient-to-br from-blue-600 to-blue-700 text-white">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
+              <Shield className="h-6 w-6 text-white" />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold">Admin Portal</h3>
+              <p className="text-blue-100 text-sm">System Control Center</p>
+            </div>
           </div>
+        </div>
+
+        {/* Navigation with enhanced styling */}
+        <nav className="p-4 space-y-2">
+          <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4 px-3">
+            Navigation
+          </div>
+          {navigationItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = activeTab === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => setActiveTab(item.id)}
+                className={`w-full flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 group ${
+                  isActive
+                    ? 'bg-blue-50 text-blue-700 shadow-md border border-blue-100'
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 hover:shadow-sm'
+                }`}
+              >
+                <div className={`p-2 rounded-lg mr-3 transition-colors ${
+                  isActive 
+                    ? 'bg-blue-100 text-blue-700' 
+                    : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200'
+                }`}>
+                  <Icon className="h-4 w-4" />
+                </div>
+                <span className="font-medium">{item.label}</span>
+                {isActive && (
+                  <div className="ml-auto w-2 h-2 bg-blue-500 rounded-full"></div>
+                )}
+              </button>
+            );
+          })}
         </nav>
+
+        {/* Footer section */}
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100 bg-gray-50/50">
+          <div className="text-xs text-gray-500 text-center">
+            <div className="flex items-center justify-center space-x-1 mb-1">
+              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              <span>System Online</span>
+            </div>
+            <div>MediFlow Admin v2.1</div>
+          </div>
+        </div>
       </div>
 
-      {/* Main Content Area */}
+      {/* Enhanced Main Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="space-y-6 p-6">
-          <PageHeader
-            title="Super Admin Portal"
-            description="Complete system administration and control center"
-            badge="Super Admin"
-            badgeVariant="destructive"
-            breadcrumbs={[
-              { label: "Dashboard", href: "/dashboard" },
-              { label: "Admin Portal" }
-            ]}
-            stats={headerStats}
-            actions={
-              <>
-                <Button variant="outline" size="sm">
-                  <Shield className="h-4 w-4 mr-2" />
-                  Security Center
-                </Button>
-                <Button size="sm">
-                  <Settings className="h-4 w-4 mr-2" />
-                  Global Settings
-                </Button>
-              </>
-            }
-          />
+        {/* Enhanced Header */}
+        <div className="bg-white border-b border-gray-200 shadow-sm">
+          <div className="px-8 py-6">
+            <PageHeader
+              title="Super Admin Portal"
+              description="Complete system administration and control center"
+              badge="Super Admin"
+              badgeVariant="destructive"
+              breadcrumbs={[
+                { label: "Dashboard", href: "/dashboard" },
+                { label: "Admin Portal" }
+              ]}
+              stats={headerStats}
+              actions={
+                <div className="flex items-center space-x-3">
+                  <Button variant="outline" size="sm" className="shadow-sm">
+                    <Shield className="h-4 w-4 mr-2" />
+                    Security Center
+                  </Button>
+                  <Button size="sm" className="shadow-sm bg-blue-600 hover:bg-blue-700">
+                    <Settings className="h-4 w-4 mr-2" />
+                    Global Settings
+                  </Button>
+                </div>
+              }
+            />
+          </div>
         </div>
 
-        {/* Content Area */}
-        <div className="flex-1 overflow-auto">
-          <ContentSection variant="transparent" className="p-6">
-            {renderContent()}
-          </ContentSection>
+        {/* Enhanced Content Area */}
+        <div className="flex-1 overflow-auto bg-gray-50">
+          <div className="p-8">
+            <ContentSection variant="transparent" className="max-w-7xl mx-auto">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                {renderContent()}
+              </div>
+            </ContentSection>
+          </div>
         </div>
       </div>
     </div>
