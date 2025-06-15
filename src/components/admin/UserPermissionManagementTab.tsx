@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -11,7 +10,7 @@ import {
   Shield, 
   Users, 
   Clock, 
-  Template, 
+  FileTemplate, 
   Search, 
   Filter,
   UserCheck,
@@ -189,7 +188,7 @@ const UserPermissionManagementTab = () => {
                 User Permissions
               </TabsTrigger>
               <TabsTrigger value="templates" className="flex items-center gap-2">
-                <Template className="h-4 w-4" />
+                <FileTemplate className="h-4 w-4" />
                 Templates
               </TabsTrigger>
               <TabsTrigger value="audit-trail" className="flex items-center gap-2">

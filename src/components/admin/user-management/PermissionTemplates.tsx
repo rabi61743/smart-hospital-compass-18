@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { 
-  Template, 
+  FileTemplate, 
   Plus, 
   Edit, 
   Trash2, 
@@ -292,7 +291,7 @@ const PermissionTemplates = ({ onApplyTemplate }: PermissionTemplatesProps) => {
                           className="flex-1"
                           onClick={() => onApplyTemplate(template.permissions)}
                         >
-                          <Template className="h-3 w-3 mr-1" />
+                          <FileTemplate className="h-3 w-3 mr-1" />
                           Apply
                         </Button>
                         <Button variant="outline" size="sm">
