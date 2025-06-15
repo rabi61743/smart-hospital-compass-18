@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { ContentSection } from "@/components/layout/ContentSection";
@@ -16,6 +15,8 @@ import GlobalSettingsTab from "@/components/admin/GlobalSettingsTab";
 import ComplianceManagementTab from "@/components/admin/ComplianceManagementTab";
 
 const AdminDashboard = () => {
+  const [activeTab, setActiveTab] = React.useState("overview");
+
   const headerStats = [
     { label: "Total Users", value: "1,247", change: "+12 this week", icon: <Users className="h-5 w-5" /> },
     { label: "Active Modules", value: "15/18", change: "3 modules disabled", icon: <Database className="h-5 w-5" /> },
@@ -23,131 +24,110 @@ const AdminDashboard = () => {
     { label: "Security Alerts", value: "3", change: "2 resolved today", icon: <AlertTriangle className="h-5 w-5" /> }
   ];
 
+  const navigationItems = [
+    { id: "overview", label: "Overview", icon: Activity },
+    { id: "users", label: "Users", icon: Users },
+    { id: "roles", label: "Roles", icon: Shield },
+    { id: "modules", label: "Modules", icon: Database },
+    { id: "configuration", label: "Config", icon: Settings },
+    { id: "monitoring", label: "Monitor", icon: Activity },
+    { id: "security", label: "Security", icon: Shield },
+    { id: "compliance", label: "Compliance", icon: AlertTriangle },
+    { id: "settings", label: "Settings", icon: Settings }
+  ];
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case "overview":
+        return <AdminOverviewTab />;
+      case "users":
+        return <UserManagementTab />;
+      case "roles":
+        return <RolePermissionTab />;
+      case "modules":
+        return <ModuleManagementTab />;
+      case "configuration":
+        return <SystemConfigurationTab />;
+      case "monitoring":
+        return <SystemMonitoringTab />;
+      case "security":
+        return <SecurityAuditTab />;
+      case "compliance":
+        return <ComplianceManagementTab />;
+      case "settings":
+        return <GlobalSettingsTab />;
+      default:
+        return <AdminOverviewTab />;
+    }
+  };
+
   return (
-    <div className="space-y-6">
-      <PageHeader
-        title="Super Admin Portal"
-        description="Complete system administration and control center"
-        badge="Super Admin"
-        badgeVariant="destructive"
-        breadcrumbs={[
-          { label: "Dashboard", href: "/dashboard" },
-          { label: "Admin Portal" }
-        ]}
-        stats={headerStats}
-        actions={
-          <>
-            <Button variant="outline" size="sm">
-              <Shield className="h-4 w-4 mr-2" />
-              Security Center
-            </Button>
-            <Button size="sm">
-              <Settings className="h-4 w-4 mr-2" />
-              Global Settings
-            </Button>
-          </>
-        }
-      />
+    <div className="flex h-screen">
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="space-y-6 p-6">
+          <PageHeader
+            title="Super Admin Portal"
+            description="Complete system administration and control center"
+            badge="Super Admin"
+            badgeVariant="destructive"
+            breadcrumbs={[
+              { label: "Dashboard", href: "/dashboard" },
+              { label: "Admin Portal" }
+            ]}
+            stats={headerStats}
+            actions={
+              <>
+                <Button variant="outline" size="sm">
+                  <Shield className="h-4 w-4 mr-2" />
+                  Security Center
+                </Button>
+                <Button size="sm">
+                  <Settings className="h-4 w-4 mr-2" />
+                  Global Settings
+                </Button>
+              </>
+            }
+          />
+        </div>
 
-      <ContentSection variant="transparent">
-        <Tabs defaultValue="overview" className="space-y-6">
-          {/* Arc Browser Style Navigation */}
-          <div className="flex items-center justify-center w-full">
-            <TabsList className="inline-flex h-12 items-center justify-center rounded-full bg-gray-100/80 backdrop-blur-sm p-1 text-muted-foreground border border-gray-200/50 shadow-sm">
-              <TabsTrigger 
-                value="overview" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm h-9"
-              >
-                Overview
-              </TabsTrigger>
-              <TabsTrigger 
-                value="users" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm h-9"
-              >
-                Users
-              </TabsTrigger>
-              <TabsTrigger 
-                value="roles" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm h-9"
-              >
-                Roles
-              </TabsTrigger>
-              <TabsTrigger 
-                value="modules" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm h-9"
-              >
-                Modules
-              </TabsTrigger>
-              <TabsTrigger 
-                value="configuration" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm h-9"
-              >
-                Config
-              </TabsTrigger>
-              <TabsTrigger 
-                value="monitoring" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm h-9"
-              >
-                Monitor
-              </TabsTrigger>
-              <TabsTrigger 
-                value="security" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm h-9"
-              >
-                Security
-              </TabsTrigger>
-              <TabsTrigger 
-                value="compliance" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm h-9"
-              >
-                Compliance
-              </TabsTrigger>
-              <TabsTrigger 
-                value="settings" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm h-9"
-              >
-                Settings
-              </TabsTrigger>
-            </TabsList>
+        {/* Content Area */}
+        <div className="flex-1 overflow-auto">
+          <ContentSection variant="transparent" className="p-6">
+            {renderContent()}
+          </ContentSection>
+        </div>
+      </div>
+
+      {/* Right Vertical Navigation */}
+      <div className="w-64 bg-white border-l border-gray-200 shadow-lg">
+        <div className="p-4 border-b border-gray-200">
+          <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">
+            Admin Tools
+          </h3>
+        </div>
+        <nav className="p-2">
+          <div className="space-y-1">
+            {navigationItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveTab(item.id)}
+                  className={`w-full flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    activeTab === item.id
+                      ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-600'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  }`}
+                >
+                  <Icon className="h-4 w-4 mr-3" />
+                  {item.label}
+                </button>
+              );
+            })}
           </div>
-
-          <TabsContent value="overview">
-            <AdminOverviewTab />
-          </TabsContent>
-
-          <TabsContent value="users">
-            <UserManagementTab />
-          </TabsContent>
-
-          <TabsContent value="roles">
-            <RolePermissionTab />
-          </TabsContent>
-
-          <TabsContent value="modules">
-            <ModuleManagementTab />
-          </TabsContent>
-
-          <TabsContent value="configuration">
-            <SystemConfigurationTab />
-          </TabsContent>
-
-          <TabsContent value="monitoring">
-            <SystemMonitoringTab />
-          </TabsContent>
-
-          <TabsContent value="security">
-            <SecurityAuditTab />
-          </TabsContent>
-
-          <TabsContent value="compliance">
-            <ComplianceManagementTab />
-          </TabsContent>
-
-          <TabsContent value="settings">
-            <GlobalSettingsTab />
-          </TabsContent>
-        </Tabs>
-      </ContentSection>
+        </nav>
+      </div>
     </div>
   );
 };
