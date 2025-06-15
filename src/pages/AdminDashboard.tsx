@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { ContentSection } from "@/components/layout/ContentSection";
@@ -52,20 +51,65 @@ const AdminDashboard = () => {
 
       <ContentSection variant="transparent">
         <Tabs defaultValue="overview" className="space-y-6">
-          <ScrollArea className="w-full whitespace-nowrap">
-            <TabsList className="inline-flex w-max min-w-full bg-white border rounded-lg p-1">
-              <TabsTrigger value="overview" className="data-[state=active]:bg-red-50 data-[state=active]:text-red-700">System Overview</TabsTrigger>
-              <TabsTrigger value="users" className="data-[state=active]:bg-red-50 data-[state=active]:text-red-700">User Management</TabsTrigger>
-              <TabsTrigger value="roles" className="data-[state=active]:bg-red-50 data-[state=active]:text-red-700">Roles & Permissions</TabsTrigger>
-              <TabsTrigger value="modules" className="data-[state=active]:bg-red-50 data-[state=active]:text-red-700">Module Management</TabsTrigger>
-              <TabsTrigger value="configuration" className="data-[state=active]:bg-red-50 data-[state=active]:text-red-700">System Configuration</TabsTrigger>
-              <TabsTrigger value="monitoring" className="data-[state=active]:bg-red-50 data-[state=active]:text-red-700">System Monitoring</TabsTrigger>
-              <TabsTrigger value="security" className="data-[state=active]:bg-red-50 data-[state=active]:text-red-700">Security & Audit</TabsTrigger>
-              <TabsTrigger value="compliance" className="data-[state=active]:bg-red-50 data-[state=active]:text-red-700">Compliance</TabsTrigger>
-              <TabsTrigger value="settings" className="data-[state=active]:bg-red-50 data-[state=active]:text-red-700">Global Settings</TabsTrigger>
+          {/* Arc Browser Style Navigation */}
+          <div className="flex items-center justify-center w-full">
+            <TabsList className="inline-flex h-12 items-center justify-center rounded-full bg-gray-100/80 backdrop-blur-sm p-1 text-muted-foreground border border-gray-200/50 shadow-sm">
+              <TabsTrigger 
+                value="overview" 
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm h-9"
+              >
+                Overview
+              </TabsTrigger>
+              <TabsTrigger 
+                value="users" 
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm h-9"
+              >
+                Users
+              </TabsTrigger>
+              <TabsTrigger 
+                value="roles" 
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm h-9"
+              >
+                Roles
+              </TabsTrigger>
+              <TabsTrigger 
+                value="modules" 
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm h-9"
+              >
+                Modules
+              </TabsTrigger>
+              <TabsTrigger 
+                value="configuration" 
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm h-9"
+              >
+                Config
+              </TabsTrigger>
+              <TabsTrigger 
+                value="monitoring" 
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm h-9"
+              >
+                Monitor
+              </TabsTrigger>
+              <TabsTrigger 
+                value="security" 
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm h-9"
+              >
+                Security
+              </TabsTrigger>
+              <TabsTrigger 
+                value="compliance" 
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm h-9"
+              >
+                Compliance
+              </TabsTrigger>
+              <TabsTrigger 
+                value="settings" 
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm h-9"
+              >
+                Settings
+              </TabsTrigger>
             </TabsList>
-            <ScrollBar orientation="horizontal" />
-          </ScrollArea>
+          </div>
 
           <TabsContent value="overview">
             <AdminOverviewTab />
