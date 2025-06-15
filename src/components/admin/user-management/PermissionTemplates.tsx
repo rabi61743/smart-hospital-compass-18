@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { 
-  FileTemplate, 
+  File, 
   Plus, 
   Edit, 
   Trash2, 
@@ -291,7 +291,7 @@ const PermissionTemplates = ({ onApplyTemplate }: PermissionTemplatesProps) => {
                           className="flex-1"
                           onClick={() => onApplyTemplate(template.permissions)}
                         >
-                          <FileTemplate className="h-3 w-3 mr-1" />
+                          <File className="h-3 w-3 mr-1" />
                           Apply
                         </Button>
                         <Button variant="outline" size="sm">

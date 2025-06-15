@@ -10,7 +10,7 @@ import {
   Shield, 
   Users, 
   Clock, 
-  FileTemplate, 
+  File, 
   Search, 
   Filter,
   UserCheck,
@@ -188,7 +188,7 @@ const UserPermissionManagementTab = () => {
                 User Permissions
               </TabsTrigger>
               <TabsTrigger value="templates" className="flex items-center gap-2">
-                <FileTemplate className="h-4 w-4" />
+                <File className="h-4 w-4" />
                 Templates
               </TabsTrigger>
               <TabsTrigger value="audit-trail" className="flex items-center gap-2">
