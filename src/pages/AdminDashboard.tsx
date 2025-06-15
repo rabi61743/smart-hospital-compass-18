@@ -1,4 +1,3 @@
-
 import React from 'react';
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminHeader from "@/components/admin/AdminHeader";
@@ -15,6 +14,7 @@ import GlobalSettingsTab from "@/components/admin/GlobalSettingsTab";
 import ComplianceManagementTab from "@/components/admin/ComplianceManagementTab";
 import DepartmentAdminTab from "@/components/admin/DepartmentAdminTab";
 import ModuleAdminTab from "@/components/admin/ModuleAdminTab";
+import RBACTab from "@/components/admin/RBACTab";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = React.useState("overview");
@@ -28,6 +28,7 @@ const AdminDashboard = () => {
     { id: "overview", label: "Overview", icon: Activity, requiredRole: ["super-admin", "department-admin"] },
     { id: "users", label: "Users", icon: Users, requiredRole: ["super-admin", "department-admin"] },
     { id: "roles", label: "Roles", icon: Shield, requiredRole: ["super-admin"] },
+    { id: "rbac", label: "RBAC", icon: Shield, requiredRole: ["super-admin", "department-admin"] },
     { id: "department-admin", label: "Dept Admin", icon: Shield, requiredRole: ["super-admin", "department-admin"] },
     { id: "module-admin", label: "Module Admin", icon: Database, requiredRole: ["super-admin", "department-admin"] },
     { id: "modules", label: "Modules", icon: Database, requiredRole: ["super-admin"] },
@@ -51,6 +52,8 @@ const AdminDashboard = () => {
         return <UserManagementTab />;
       case "roles":
         return <RolePermissionTab />;
+      case "rbac":
+        return <RBACTab currentUserRole={currentUserRole} departmentAccess={departmentAccess} />;
       case "department-admin":
         return <DepartmentAdminTab currentUserRole={currentUserRole} departmentAccess={departmentAccess} />;
       case "module-admin":
