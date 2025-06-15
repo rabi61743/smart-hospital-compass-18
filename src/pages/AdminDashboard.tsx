@@ -14,6 +14,7 @@ import RolePermissionTab from "@/components/admin/RolePermissionTab";
 import GlobalSettingsTab from "@/components/admin/GlobalSettingsTab";
 import ComplianceManagementTab from "@/components/admin/ComplianceManagementTab";
 import DepartmentAdminTab from "@/components/admin/DepartmentAdminTab";
+import ModuleAdminTab from "@/components/admin/ModuleAdminTab";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = React.useState("overview");
@@ -28,6 +29,7 @@ const AdminDashboard = () => {
     { id: "users", label: "Users", icon: Users, requiredRole: ["super-admin", "department-admin"] },
     { id: "roles", label: "Roles", icon: Shield, requiredRole: ["super-admin"] },
     { id: "department-admin", label: "Dept Admin", icon: Shield, requiredRole: ["super-admin", "department-admin"] },
+    { id: "module-admin", label: "Module Admin", icon: Database, requiredRole: ["super-admin", "department-admin"] },
     { id: "modules", label: "Modules", icon: Database, requiredRole: ["super-admin"] },
     { id: "configuration", label: "Config", icon: Settings, requiredRole: ["super-admin"] },
     { id: "monitoring", label: "Monitor", icon: Activity, requiredRole: ["super-admin"] },
@@ -51,6 +53,8 @@ const AdminDashboard = () => {
         return <RolePermissionTab />;
       case "department-admin":
         return <DepartmentAdminTab currentUserRole={currentUserRole} departmentAccess={departmentAccess} />;
+      case "module-admin":
+        return <ModuleAdminTab currentUserRole={currentUserRole} departmentAccess={departmentAccess} />;
       case "modules":
         return <ModuleManagementTab />;
       case "configuration":

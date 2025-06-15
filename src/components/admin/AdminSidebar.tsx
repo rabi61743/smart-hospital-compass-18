@@ -23,6 +23,7 @@ const AdminSidebar = ({
     { id: "users", label: "Users", icon: Users, requiredRole: ["super-admin", "department-admin"] },
     { id: "roles", label: "Roles", icon: Shield, requiredRole: ["super-admin"] },
     { id: "department-admin", label: "Dept Admin", icon: Shield, requiredRole: ["super-admin", "department-admin"] },
+    { id: "module-admin", label: "Module Admin", icon: Database, requiredRole: ["super-admin", "department-admin"] },
     { id: "modules", label: "Modules", icon: Database, requiredRole: ["super-admin"] },
     { id: "configuration", label: "Config", icon: Settings, requiredRole: ["super-admin"] },
     { id: "monitoring", label: "Monitor", icon: Activity, requiredRole: ["super-admin"] },
