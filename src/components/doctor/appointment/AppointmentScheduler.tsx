@@ -7,7 +7,11 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar, Clock, User, Phone } from "lucide-react";
 
-const AppointmentScheduler = () => {
+interface AppointmentSchedulerProps {
+  onAppointmentScheduled?: (appointment: any) => void;
+}
+
+const AppointmentScheduler = ({ onAppointmentScheduled }: AppointmentSchedulerProps) => {
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [patientName, setPatientName] = useState('');
@@ -25,14 +29,20 @@ const AppointmentScheduler = () => {
   ];
 
   const handleSchedule = () => {
-    console.log('Scheduling appointment:', {
+    const appointmentData = {
       date: selectedDate,
       time: selectedTime,
-      patient: patientName,
+      patientName,
       type: appointmentType,
       duration,
       notes
-    });
+    };
+
+    console.log('Scheduling appointment:', appointmentData);
+    
+    if (onAppointmentScheduled) {
+      onAppointmentScheduled(appointmentData);
+    }
   };
 
   return (

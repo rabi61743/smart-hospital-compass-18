@@ -181,6 +181,14 @@ const UserManagementTab = () => {
     setSelectedUsers([]);
   };
 
+  const handleBulkAssignRole = (role: string) => {
+    toast({
+      title: "Role Assigned",
+      description: `${role} role has been assigned to ${selectedUsers.length} users successfully.`,
+    });
+    setSelectedUsers([]);
+  };
+
   return (
     <div className="space-y-8 p-6">
       {/* Statistics Cards */}
