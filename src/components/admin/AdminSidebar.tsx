@@ -40,9 +40,9 @@ const AdminSidebar = ({
   );
 
   return (
-    <div className="w-72 bg-white border-r border-gray-200 shadow-xl relative">
+    <div className="w-72 bg-white border-r border-gray-200 shadow-xl flex flex-col h-full">
       {/* Header with gradient */}
-      <div className="p-6 bg-gradient-to-br from-blue-600 to-blue-700 text-white">
+      <div className="p-6 bg-gradient-to-br from-blue-600 to-blue-700 text-white shrink-0">
         <div className="flex items-center space-x-3">
           <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
             <Shield className="h-6 w-6 text-white" />
@@ -85,42 +85,44 @@ const AdminSidebar = ({
         </div>
       </div>
 
-      {/* Navigation with enhanced styling */}
-      <nav className="p-4 space-y-2 pb-32">
-        <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4 px-3">
-          Navigation
-        </div>
-        {navigationItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = activeTab === item.id;
-          return (
-            <button
-              key={item.id}
-              onClick={() => setActiveTab(item.id)}
-              className={`w-full flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 group ${
-                isActive
-                  ? 'bg-blue-50 text-blue-700 shadow-md border border-blue-100'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 hover:shadow-sm'
-              }`}
-            >
-              <div className={`p-2 rounded-lg mr-3 transition-colors ${
-                isActive 
-                  ? 'bg-blue-100 text-blue-700' 
-                  : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200'
-              }`}>
-                <Icon className="h-4 w-4" />
-              </div>
-              <span className="font-medium">{item.label}</span>
-              {isActive && (
-                <div className="ml-auto w-2 h-2 bg-blue-500 rounded-full"></div>
-              )}
-            </button>
-          );
-        })}
-      </nav>
+      {/* Navigation with scrollable content */}
+      <div className="flex-1 overflow-hidden flex flex-col">
+        <nav className="flex-1 overflow-y-auto p-4 space-y-2">
+          <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4 px-3">
+            Navigation
+          </div>
+          {navigationItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = activeTab === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => setActiveTab(item.id)}
+                className={`w-full flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 group ${
+                  isActive
+                    ? 'bg-blue-50 text-blue-700 shadow-md border border-blue-100'
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 hover:shadow-sm'
+                }`}
+              >
+                <div className={`p-2 rounded-lg mr-3 transition-colors ${
+                  isActive 
+                    ? 'bg-blue-100 text-blue-700' 
+                    : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200'
+                }`}>
+                  <Icon className="h-4 w-4" />
+                </div>
+                <span className="font-medium">{item.label}</span>
+                {isActive && (
+                  <div className="ml-auto w-2 h-2 bg-blue-500 rounded-full"></div>
+                )}
+              </button>
+            );
+          })}
+        </nav>
+      </div>
 
-      {/* Enhanced Footer section */}
-      <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-gray-100 to-gray-50 border-t border-gray-200">
+      {/* Footer section */}
+      <div className="p-6 bg-gradient-to-t from-gray-100 to-gray-50 border-t border-gray-200 shrink-0">
         <div className="space-y-3">
           {/* System Status */}
           <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm border border-gray-200">
