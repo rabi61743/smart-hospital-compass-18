@@ -107,18 +107,18 @@ const QuickAccessModules = ({ modules, tools }: QuickAccessModulesProps) => {
                         <Button
                           key={module.name}
                           variant="outline"
-                          className={`h-32 flex-col p-6 transition-all duration-300 ${module.color} border-2 hover:shadow-lg hover:scale-105 hover:-translate-y-1 group relative overflow-hidden`}
+                          className={`h-36 flex-col p-6 transition-all duration-300 ${module.color} border-2 hover:shadow-xl hover:scale-105 hover:-translate-y-1 group relative overflow-hidden`}
                           onClick={() => handleModuleAccess(module.path)}
                         >
-                          <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                          <IconComponent className="h-8 w-8 mb-3 group-hover:scale-110 transition-transform" />
-                          <span className="text-sm font-semibold text-center leading-tight truncate w-full" title={module.name}>
+                          <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-black/10 opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-[1px]" />
+                          <IconComponent className="h-10 w-10 mb-4 group-hover:scale-110 transition-transform relative z-10 drop-shadow-sm" />
+                          <span className="text-sm font-bold text-center leading-tight truncate w-full relative z-10 text-gray-800 group-hover:text-gray-900 drop-shadow-sm" title={module.name}>
                             {module.name}
                           </span>
-                          <span className="text-xs text-center opacity-75 mt-2 truncate w-full leading-relaxed" title={module.description}>
+                          <span className="text-xs text-center mt-2 truncate w-full leading-relaxed relative z-10 text-gray-600 group-hover:text-gray-700 font-medium" title={module.description}>
                             {module.description}
                           </span>
-                          <ExternalLink className="absolute top-2 right-2 h-3 w-3 opacity-0 group-hover:opacity-70 transition-opacity" />
+                          <ExternalLink className="absolute top-3 right-3 h-4 w-4 opacity-60 group-hover:opacity-90 transition-opacity relative z-10 text-gray-700" />
                         </Button>
                       );
                     })}
@@ -147,15 +147,15 @@ const QuickAccessModules = ({ modules, tools }: QuickAccessModulesProps) => {
                     <Button
                       key={tool.name}
                       variant="outline"
-                      className={`h-32 flex-col p-6 transition-all duration-300 ${tool.color} border-2 hover:shadow-lg hover:scale-105 hover:-translate-y-1 group relative overflow-hidden`}
+                      className={`h-36 flex-col p-6 transition-all duration-300 ${tool.color} border-2 hover:shadow-xl hover:scale-105 hover:-translate-y-1 group relative overflow-hidden`}
                       onClick={tool.action}
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <IconComponent className="h-8 w-8 mb-3 group-hover:scale-110 transition-transform" />
-                      <span className="text-sm font-semibold text-center leading-tight truncate w-full" title={tool.name}>
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-black/10 opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-[1px]" />
+                      <IconComponent className="h-10 w-10 mb-4 group-hover:scale-110 transition-transform relative z-10 drop-shadow-sm" />
+                      <span className="text-sm font-bold text-center leading-tight truncate w-full relative z-10 text-gray-800 group-hover:text-gray-900 drop-shadow-sm" title={tool.name}>
                         {tool.name}
                       </span>
-                      <span className="text-xs text-center opacity-75 mt-2 truncate w-full leading-relaxed" title={tool.description}>
+                      <span className="text-xs text-center mt-2 truncate w-full leading-relaxed relative z-10 text-gray-600 group-hover:text-gray-700 font-medium" title={tool.description}>
                         {tool.description}
                       </span>
                     </Button>
