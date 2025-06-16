@@ -21,6 +21,7 @@ import PrescriptionManagement from "./pages/PrescriptionManagement";
 import CommissionTracking from "./pages/CommissionTracking";
 import PerformanceDashboard from "./pages/PerformanceDashboard";
 import AuditDashboard from "./pages/AuditDashboard";
+import AdminPermissionManagement from "./pages/AdminPermissionManagement";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<HorizontalLayout><Dashboard /></HorizontalLayout>} />
           <Route path="/admin-dashboard" element={<HorizontalLayout><AdminDashboard /></HorizontalLayout>} />
+          <Route path="/admin/permissions" element={<HorizontalLayout><AdminPermissionManagement /></HorizontalLayout>} />
           <Route path="/patient-portal" element={<HorizontalLayout><PatientPortal /></HorizontalLayout>} />
           <Route path="/doctor-dashboard" element={<HorizontalLayout><DoctorDashboard /></HorizontalLayout>} />
           <Route path="/pharmacy-dashboard" element={<HorizontalLayout><PharmacyDashboard /></HorizontalLayout>} />
