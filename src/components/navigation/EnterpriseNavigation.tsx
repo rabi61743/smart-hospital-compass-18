@@ -1,7 +1,27 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronDown, ChevronRight, Menu, X } from 'lucide-react';
+import { 
+  ChevronDown, 
+  ChevronRight, 
+  Menu, 
+  X,
+  LayoutDashboard,
+  Stethoscope,
+  Users,
+  UserCheck,
+  Pill,
+  DollarSign,
+  Receipt,
+  TrendingUp,
+  Building,
+  Shield,
+  FileText,
+  Activity,
+  Settings,
+  Database,
+  FlaskConical
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -12,21 +32,21 @@ import { cn } from '@/lib/utils';
 
 // Icon mapping for navigation items
 const iconMap: { [key: string]: React.ComponentType<any> } = {
-  LayoutDashboard: require('lucide-react').LayoutDashboard,
-  Stethoscope: require('lucide-react').Stethoscope,
-  Users: require('lucide-react').Users,
-  UserCheck: require('lucide-react').UserCheck,
-  Pill: require('lucide-react').Pill,
-  DollarSign: require('lucide-react').DollarSign,
-  Receipt: require('lucide-react').Receipt,
-  TrendingUp: require('lucide-react').TrendingUp,
-  Building: require('lucide-react').Building,
-  Shield: require('lucide-react').Shield,
-  FileText: require('lucide-react').FileText,
-  Activity: require('lucide-react').Activity,
-  Settings: require('lucide-react').Settings,
-  Database: require('lucide-react').Database,
-  FlaskConical: require('lucide-react').FlaskConical
+  LayoutDashboard,
+  Stethoscope,
+  Users,
+  UserCheck,
+  Pill,
+  DollarSign,
+  Receipt,
+  TrendingUp,
+  Building,
+  Shield,
+  FileText,
+  Activity,
+  Settings,
+  Database,
+  FlaskConical
 };
 
 interface NavigationItemProps {
