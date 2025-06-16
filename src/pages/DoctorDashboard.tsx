@@ -21,11 +21,13 @@ import {
   CheckCircle2,
   UserCheck,
   Heart,
-  ClipboardList
+  ClipboardList,
+  Hospital,
+  User
 } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import PatientManagement from "@/components/doctor/PatientManagement";
 import AppointmentManagement from "@/components/doctor/appointment/AppointmentManagement";
-import DoctorHeader from "@/components/doctor/DoctorHeader";
 import DoctorWelcome from "@/components/doctor/DoctorWelcome";
 import DoctorStatsCards from "@/components/doctor/DoctorStatsCards";
 import DoctorOverviewTab from "@/components/doctor/DoctorOverviewTab";
@@ -72,23 +74,34 @@ const DoctorDashboard = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex">
       {/* Enhanced Left Sidebar Navigation */}
       <div className="fixed left-0 top-0 h-full w-80 bg-white border-r border-gray-200 shadow-xl z-10 overflow-y-auto">
-        {/* Sidebar Header */}
+        {/* Sidebar Header with Branding */}
         <div className="p-6 border-b border-gray-100">
           <div className="flex items-center space-x-3 mb-6">
-            <div className="p-2 bg-blue-600 rounded-lg">
-              <Stethoscope className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <span className="text-lg font-bold text-gray-900">Doctor Portal</span>
-              <p className="text-sm text-gray-500">Dr. Smith - Cardiology</p>
-            </div>
+            <Link to="/" className="flex items-center space-x-2">
+              <div className="p-2 bg-blue-600 rounded-lg">
+                <Stethoscope className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <span className="text-lg font-bold text-gray-900">MediFlow Doctor</span>
+                <p className="text-sm text-gray-500">Dr. Smith - Cardiology</p>
+              </div>
+            </Link>
           </div>
           
-          {/* Status Toggle */}
-          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-            <div className="flex items-center space-x-2">
-              <div className={`w-3 h-3 rounded-full ${isAvailable ? 'bg-green-500' : 'bg-red-500'}`}></div>
-              <span className="text-sm font-medium">{isAvailable ? 'Available' : 'Busy'}</span>
+          {/* User Profile & Status */}
+          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg mb-4">
+            <div className="flex items-center space-x-3">
+              <Avatar className="h-8 w-8">
+                <AvatarImage src="/api/placeholder/32/32" alt="Dr. Profile" />
+                <AvatarFallback>DR</AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="text-sm font-medium">Dr. Smith</p>
+                <div className="flex items-center space-x-2">
+                  <div className={`w-2 h-2 rounded-full ${isAvailable ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                  <span className="text-xs text-gray-600">{isAvailable ? 'Available' : 'Busy'}</span>
+                </div>
+              </div>
             </div>
             <Button
               size="sm"
@@ -97,6 +110,20 @@ const DoctorDashboard = () => {
               className="h-7 text-xs"
             >
               Toggle
+            </Button>
+          </div>
+
+          {/* Quick Action Buttons */}
+          <div className="flex space-x-2">
+            <Button variant="outline" size="sm" className="flex-1">
+              <Video className="h-4 w-4 mr-2" />
+              Telemedicine
+            </Button>
+            <Button variant="outline" size="sm">
+              <Bell className="h-4 w-4" />
+            </Button>
+            <Button variant="outline" size="sm">
+              <Settings className="h-4 w-4" />
             </Button>
           </div>
         </div>
@@ -192,8 +219,6 @@ const DoctorDashboard = () => {
 
       {/* Main Content */}
       <div className="flex-1 pl-80">
-        <DoctorHeader />
-
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <DoctorWelcome />
           <DoctorStatsCards />
